@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.0.0 — 2026-10-15
+## 0.1 — 2026-10-15
 
-First standalone public release.
+First standalone public preview release.
 
 - Discover and pair with LG webOS TVs on your local network.
 - D-pad with hold-to-repeat, touchpad, dedicated scroll strip, and two-finger scrolling.

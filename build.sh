@@ -7,10 +7,13 @@ BT="$SDK/build-tools/${BUILD_TOOLS_VERSION:-35.0.0}"
 JAR="$SDK/platforms/android-35/android.jar"
 if [[ -n "${JAVA_HOME:-}" ]]; then export PATH="$JAVA_HOME/bin:$PATH"; fi
 VERSION_NAME=$(cat VERSION)
-if [[ ! "$VERSION_NAME" =~ ^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})$ ]]; then
-    echo 'VERSION must be major.minor.patch (each component 0–99)' >&2; exit 1
+if [[ ! "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+    echo 'VERSION must be major.minor or major.minor.patch' >&2; exit 1
 fi
-VERSION_CODE=$((10#${BASH_REMATCH[1]} * 10000 + 10#${BASH_REMATCH[2]} * 100 + 10#${BASH_REMATCH[3]}))
+VERSION_CODE=$(cat VERSION_CODE)
+if [[ ! "$VERSION_CODE" =~ ^[1-9][0-9]{0,8}$ ]]; then
+    echo 'VERSION_CODE must be a positive integer of at most nine digits' >&2; exit 1
+fi
 mode=${1:-debug}
 link_flags=()
 case "$mode" in

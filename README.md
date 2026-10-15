@@ -43,7 +43,7 @@ About 53 KB. Native Java. Zero third-party runtime libraries.</p>
 To verify a download, put its `.sha256` file beside the APK and run:
 
 ```sh
-sha256sum --check tv-remote-v1.0.0.apk.sha256
+sha256sum --check tv-remote-v0.1.apk.sha256
 ```
 
 Use the filename for your version. Every release also includes the APK signing certificate details. Future official releases use the same signing identity so they can install as updates. Locally built debug APKs use a different key and cannot update official APKs in place.
@@ -91,10 +91,10 @@ export ANDROID_HOME="$HOME/opt/android-sdk"  # or your SDK location
 export JAVA_HOME="/path/to/jdk-21"
 ./test.sh
 ./build.sh debug
-adb install -r dist/tv-remote-v1.0.0-debug.apk
+adb install -r dist/tv-remote-v0.1-debug.apk
 ```
 
-The SDK build tools compile resources, compile Java, dex, align, sign, and verify the APK. Debug signing uses a separate cached development key. `VERSION` is the single version source; its `major.minor.patch` components map to `major × 10000 + minor × 100 + patch` (each component 0–99).
+The SDK build tools compile resources, compile Java, dex, align, sign, and verify the APK. Debug signing uses a separate cached development key. `VERSION` sets the displayed version and release tag (`0.1` → `v0.1`). `VERSION_CODE` is Android’s independent update counter; increase it for every release, including prereleases.
 
 `./test.sh` runs the real protocol client against a temporary mock TV, covering first pairing, saved-key reconnect, certificate pin rejection, pointer frames, input lists, power transitions, SSDP discovery, wake-packet bytes, and held-key timing. It fetches a checksum-pinned JSON-java JAR for JVM tests only; Android supplies JSON APIs in the app. Tests use ports 1900, 1990, and 3001 and clean up the mock on exit.
 

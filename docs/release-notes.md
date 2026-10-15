@@ -1,3 +1,5 @@
+First public preview release, **v0.1**.
+
 A tiny local-network Android remote for LG webOS TVs. No account, cloud, ads, or analytics.
 
 D-pad and touchpad · dedicated scroll strip · inputs and apps · keyboard · media controls · Wake-on-LAN and Bluetooth LE wake.
