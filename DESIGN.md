@@ -20,6 +20,8 @@ colors:
   on-error: "#690005"
   error-container: "#51262B"
   on-error-container: "#FFDAD6"
+  web-primary-hover: "#5A8FFF"
+  web-on-primary: "#FFFFFF"
 typography:
   headline-large: {fontFamily: sans-serif, fontSize: "32px", fontWeight: 400, lineHeight: "40px", letterSpacing: "0px"}
   headline-small: {fontFamily: sans-serif, fontSize: "24px", fontWeight: 400, lineHeight: "32px", letterSpacing: "0px"}
@@ -32,6 +34,12 @@ typography:
   remote-title: {fontSize: "19px", fontWeight: 500}
   remote-label: {fontSize: "15px", fontWeight: 400}
   remote-ok: {fontSize: "20px", fontWeight: 700}
+  web-display: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "clamp(3.5rem, 9vw, 6rem)", fontWeight: 780, lineHeight: 0.9, letterSpacing: "-0.035em", fontVariation: "'wdth' 112"}
+  web-lede: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "clamp(1.125rem, 2vw, 1.3125rem)", fontWeight: 400, lineHeight: 1.375}
+  web-body: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "17px", fontWeight: 400, lineHeight: 1.5}
+  web-action: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "19px", fontWeight: 700}
+  web-label: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "15px", fontWeight: 500}
+  web-small: {fontFamily: "Archivo Variable, ui-sans-serif, system-ui, sans-serif", fontSize: "13px", fontWeight: 400}
 rounded:
   row: "12px"
   card: "16px"
@@ -40,6 +48,9 @@ rounded:
   mode: "24px"
   sheet: "28px"
   round-control: "42px"
+  web-full: "9999px"
+  web-phone-screen: "34px"
+  web-phone-frame: "44px"
 spacing:
   compact: "4px"
   small: "8px"
@@ -87,6 +98,38 @@ components:
     rounded: "{rounded.mode}"
   sheet:
     backgroundColor: "{colors.surface}"
+  web-button-primary:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.web-on-primary}"
+    typography: "{typography.web-action}"
+    rounded: "{rounded.web-full}"
+    padding: "0px 32px 0px 24px"
+    height: "60px"
+  web-button-primary-hover:
+    backgroundColor: "{colors.web-primary-hover}"
+  web-button-ghost:
+    textColor: "{colors.muted}"
+    rounded: "{rounded.web-full}"
+    padding: "0px 20px"
+    height: "44px"
+  web-button-ghost-hover:
+    backgroundColor: "{colors.raised}"
+    textColor: "{colors.text}"
+  web-mode-toggle:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.muted}"
+    typography: "{typography.web-label}"
+    rounded: "{rounded.sheet}"
+    padding: "4px"
+  web-mode-toggle-selected:
+    backgroundColor: "{colors.raised}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.mode}"
+    height: "48px"
+  web-phone-frame:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.web-phone-frame}"
+    padding: "10px"
 ---
 
 # Design System: TV Remote
@@ -125,9 +168,13 @@ This is a code-derived record of the Expo implementation, not a runtime visual a
 
 ## Typography
 
-Android Paper uses native sans-serif and sans-serif-medium. The implemented setup heading uses headline-large; sheet headings use headline-small. Title-medium identifies sections and devices; title-small labels settings groups. Body-large, body-medium and body-small support instructions, secondary copy and status. Label-large serves Paper buttons. No custom display font is installed.
+Android Paper uses native sans-serif and sans-serif-medium. The implemented setup heading uses headline-large; sheet headings use headline-small. Title-medium identifies sections and devices; title-small labels settings groups. Body-large, body-medium and body-small support instructions, secondary copy and status. Label-large serves Paper buttons. The native app installs no custom display font; the web download site is the only surface with its own face (below).
 
 The remote retains its own title, ordinary label and bold OK sizes. Status and rocker labels are small (12); mode labels use 14. These inherit Paper text defaults unless overridden; do not invent a new type ramp or normalize them into large marketing headings.
+
+**Web download site (`site/`) only.** Archivo Variable, self-hosted with its width axis (`@fontsource-variable/archivo/wdth.css`; `public/fonts/archivo-latin-wdth.woff2` for the static 404), serves display and body; ui-monospace serves only the footer checksum. `web-display` sets the product name once, widened (font-stretch 112%), heavy and tightly tracked; the 404 heading reuses the weight and width at 32px. `web-lede` carries the one sentence in muted text, capped near 30ch; `web-body` is the page base; `web-action` labels the download; `web-label` serves mode choices, facts and the ghost link; `web-small` the footer. Version and size use tabular numerals.
+
+**The Archivo Stays On The Web Rule.** Archivo belongs to the browser surface; native screens keep Paper's system faces.
 
 ## Layout
 
@@ -139,7 +186,7 @@ The D-pad is a three-by-three arrangement of 84-unit circular cells with 8-unit 
 
 ## Elevation & Depth
 
-The custom remote uses tonal layering with no authored drop shadows. Setup notices use Paper Surface elevation 1; Paper supplies its native elevation behavior. Sheets separate from the canvas through their surface tone and a translucent black scrim. Preserve the theme's elevation ramp rather than inventing a web shadow system.
+The custom remote uses tonal layering with no authored drop shadows. Setup notices use Paper Surface elevation 1; Paper supplies its native elevation behavior. The web download site is equally flat: its phone frame is a surface-toned bezel with a raised one-pixel ring around a canvas-toned screen, and nothing on the page casts a shadow. Sheets separate from the canvas through their surface tone and a translucent black scrim. Preserve the theme's elevation ramp rather than inventing a web shadow system.
 
 ## Shapes
 
@@ -156,6 +203,20 @@ Remote keys are rounded rectangles; D-pad controls and rockers use the circular-
 
 The sidecar's HTML/CSS samples translate selected native controls for the design panel. Browser focus treatment is preview-only; native Paper, ripple, accessibility and gesture behavior remain authoritative.
 
+### Web download site (`site/`)
+
+A single download page and static 404 built inside this world with shadcn/ui primitives. `site/src/styles.css` maps shadcn's semantic roles onto the app palette: background → `background`, foreground → `text`, card → `surface`, secondary → `raised`, muted-foreground → `muted`, primary → `accent`, ring → `primary`. Note the inversion: shadcn "primary" is the OK blue, and the Material action blue appears only as the focus ring.
+
+- **Download button:** fully rounded, filled OK blue with white `web-action` text and a 24px leading icon; hover lightens to `web-primary-hover`; press scales to 0.98 over 150ms (off under reduced motion). The 404 repeats it at 56px tall.
+- **Ghost link button:** fully rounded, 44px, muted 15px semibold text and 20px icon; hover fills `raised` and lifts text to `text`.
+- **Mode toggle:** the web mirror of the app's mode selector: a surface pill (28px radius, 4px inset) holding two choices of at least 48px with 24px corners and 18px icons; the selected choice fills `raised`. Capped at 300px wide.
+- **Phone frame:** 44px-radius surface bezel, 10px padding, one-pixel `raised` ring, 34px-radius screen at the screenshot's 720:1447 ratio, height min(72dvh, 700px) with a 440px floor.
+- **Screenshot crossfade:** the page's single motion moment. Switching modes fades the outgoing screen to 0 opacity with a 6px blur and the incoming one in, 300ms ease-out; reduced motion removes the transition.
+- **Browser surfaces:** dark color-scheme and theme-color canvas, selection in OK blue at 40% under `text`, scrollbar thumb `raised` on the canvas track, focus rings 2px in `primary` (offset 3px from the canvas on buttons, inset on toggle choices).
+- **Layout:** content capped at 1180px with 24px side padding (40px from 640px); two columns from 1024px (copy column max 34rem, figure on the right), otherwise copy then figure; 80px header, hairline `raised` rule above the footer.
+
+**The Large Blue Text Rule.** White on the filled OK blue measures about 3.8:1 (about 3.1:1 on hover), so it carries only large text: 19px bold or bigger. Smaller labels never sit on filled blue.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -163,6 +224,7 @@ The sidecar's HTML/CSS samples translate selected native controls for the design
 - **Do** preserve the remote control order, central geometry and landing zone.
 - **Do** reuse the dark palette and Paper theme for new setup or menu surfaces.
 - **Do** retain accessible labels, selected/disabled states and reduced-motion handling.
+- **Do** build web surfaces from the app palette through the shadcn role mapping, with OK blue as the only filled action.
 
 ### Don't:
 

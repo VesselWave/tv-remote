@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+
+/* The app's palette (../DESIGN.md) mapped onto shadcn's semantic roles. */
+@theme inline {
+  --color-background: #0f1115;
+  --color-foreground: #e9ecf2;
+  --color-card: #1e222a;
+  --color-secondary: #2a2f3a;
+  --color-muted-foreground: #a4adbe;
+  --color-primary: #3d7bff;
+  --color-primary-hover: #5a8fff;
+  --color-primary-foreground: #ffffff;
+  --color-ring: #adc6ff;
+  --color-power: #ff5a5f;
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --spacing-15: 3.75rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-background);
+    scrollbar-color: var(--color-secondary) var(--color-background);
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-size: 17px;
+  }
+  ::selection {
+    background: rgb(61 123 255 / 0.4);
+    color: var(--color-foreground);
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+}

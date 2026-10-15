@@ -30,3 +30,6 @@ node_modules/
 .wrangler/
 modules/**/build/
 /.impeccable/questions/
+/.impeccable/review/
+/.impeccable/decision/
+/.impeccable/build/

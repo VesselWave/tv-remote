@@ -1,12 +1,14 @@
 {
+  // Worker `tvremote` on tvremote.vwave.me. The Worker renders "/" with the latest GitHub release;
+  // Vite's build output in dist/ supplies the scripts, styles, fonts and screenshots.
   "name": "tvremote",
-  "main": "src/worker.js",
+  "main": "worker/index.tsx",
   "compatibility_date": "2026-10-15",
   "workers_dev": false,
   "preview_urls": false,
   "routes": [{ "pattern": "tvremote.vwave.me", "custom_domain": true }],
   "assets": {
-    "directory": "./public",
+    "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "run_worker_first": ["/", "/index.html", "/download", "/latest.json"]
