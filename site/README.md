@@ -1,15 +1,21 @@
 # Download site
 
-https://tvremote.vwave.me is a one-page site for downloading the latest TV Remote APK.
+https://tvremote.vwave.me is the one-page download site: name, one line, the Download button, and the app's Buttons/Touchpad switch flipping between real screenshots.
 
-- Cloudflare Worker `tvremote` on the `vwave.me` zone, configured by [`wrangler.json`](wrangler.json).
-- `public/` holds the static page. Its palette and screenshot come from the app (see `../DESIGN.md`).
-- [`src/worker.js`](src/worker.js) reads the latest GitHub release through the GitHub API, cached at the edge for ten minutes. It fills in the version, size, date and SHA-256 on `/`, redirects `/download` to the release's `tv-remote-v*.apk`, and serves the same data at `/latest.json`. If GitHub can't be reached, the page shows generic text and `/download` opens the releases page.
+- **Stack:** React 19, TypeScript, Tailwind CSS v4 and shadcn/ui components (`src/components/ui`, restyled to the app's palette in `src/styles.css`), built with Vite under Bun.
+- **Hosting:** Cloudflare Worker `tvremote` on the `vwave.me` zone ([`wrangler.jsonc`](wrangler.jsonc)). Static files come from Vite's `dist/`.
+- **Release data:** [`worker/index.tsx`](worker/index.tsx) reads the latest GitHub release through the GitHub API, cached at the edge for ten minutes. It server-renders `/` with that release and embeds it so React hydrates without a flash, redirects `/download` to the `tv-remote-v*.apk` asset, and serves `/latest.json`. If GitHub can't be reached, the page shows generic text and `/download` opens the releases page.
+- **Screenshots:** `public/screens/*.webp` are scaled from `../docs/screenshots`; refresh them when the UI changes. Their `.json` sidecars record where they came from.
 
-New releases appear automatically; the site only needs redeploying when it changes:
+New releases appear on their own. Redeploy only when the site changes:
 
 ```sh
-cd site && wrangler deploy
+cd site
+bun install
+bun run typecheck
+bun run deploy        # vite build + wrangler deploy
 ```
+
+`bun run preview` builds and serves the Worker locally with `wrangler dev`.
 
 Verify with `curl -fsS https://tvremote.vwave.me/latest.json` and `curl -fsSI https://tvremote.vwave.me/download`. The second should return a 302 to the release APK.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-15T18:52:53.905166+00:00",
+  "generatedAt": "2026-10-15T22:49:58.944289+00:00",
   "title": "Design System: TV Remote",
   "extensions": {
     "colorMeta": {
@@ -31,6 +31,14 @@
       "error": {
         "role": "error",
         "displayName": "Material error coral"
+      },
+      "web-primary-hover": {
+        "role": "primary",
+        "displayName": "Web download hover blue"
+      },
+      "web-on-primary": {
+        "role": "primary",
+        "displayName": "White on OK blue (large text only)"
       }
     },
     "elevation": {
@@ -49,6 +57,21 @@
         "name": "sheet-animation",
         "value": "fade",
         "purpose": "Native modal animation; none when reduced motion is enabled. No custom duration is specified."
+      },
+      {
+        "name": "web-screen-crossfade",
+        "value": "opacity + filter 300ms ease-out; outgoing opacity 0 with blur(6px)",
+        "purpose": "Download page mode switch between screenshots; the page's single motion moment. None under prefers-reduced-motion."
+      },
+      {
+        "name": "web-button-press",
+        "value": "background-color, transform 150ms ease-out; active scale(0.98)",
+        "purpose": "Web button feedback; none under prefers-reduced-motion."
+      },
+      {
+        "name": "web-toggle-state",
+        "value": "color, background-color 200ms ease-out",
+        "purpose": "Web mode toggle state change; none under prefers-reduced-motion."
       }
     ],
     "nativeStates": {
@@ -63,11 +86,92 @@
         "app/theme.ts",
         "app/components/",
         "App.tsx",
-        "node_modules/react-native-paper/src/styles/themes/v3/tokens.tsx"
+        "node_modules/react-native-paper/src/styles/themes/v3/tokens.tsx",
+        "site/src/styles.css",
+        "site/src/App.tsx",
+        "site/src/components/ui/button.tsx",
+        "site/src/components/ui/toggle-group.tsx",
+        "site/index.html",
+        "site/public/404.html"
       ],
       "visualApproval": "No runtime screenshot or visual approval; saved screenshots are stale.",
       "panelSamples": "HTML/CSS translations only. Hover and focus styles support browser previews; they are not native requirements.",
-      "tonalRamps": "No synthetic palette ramps recorded: only implemented elevation tones are documented."
+      "tonalRamps": "No synthetic palette ramps recorded: only implemented elevation tones are documented.",
+      "webSurface": "Web entries are code-derived from site/ and cross-checked against .impeccable/review screenshots from the finish review."
+    },
+    "typographyMeta": {
+      "web-display": {
+        "displayName": "Web display",
+        "purpose": "Product name on the download page, once; font-stretch 112%. Web surface only."
+      },
+      "web-lede": {
+        "displayName": "Web lede",
+        "purpose": "The single muted sentence under the name, about 30ch."
+      },
+      "web-body": {
+        "displayName": "Web body",
+        "purpose": "Download page base text."
+      },
+      "web-action": {
+        "displayName": "Web action",
+        "purpose": "Download button label; large text so white on OK blue passes."
+      },
+      "web-label": {
+        "displayName": "Web label",
+        "purpose": "Mode choices, facts line and ghost link."
+      },
+      "web-small": {
+        "displayName": "Web small",
+        "purpose": "Footer release link, checksum and disclaimer."
+      }
+    },
+    "breakpoints": [
+      {
+        "name": "web-sm",
+        "value": "640px",
+        "purpose": "Download page side padding 24px to 40px."
+      },
+      {
+        "name": "web-lg",
+        "value": "1024px",
+        "purpose": "Download page becomes two columns."
+      }
+    ],
+    "webSurface": {
+      "scope": "site/ download page and public/404.html only; the native app is unaffected.",
+      "font": {
+        "family": "Archivo Variable",
+        "source": "@fontsource-variable/archivo/wdth.css; public/fonts/archivo-latin-wdth.woff2 (OFL) for 404",
+        "axes": "wght 100-900, wdth 62-125%",
+        "mono": "ui-monospace stack, footer checksum only"
+      },
+      "shadcnRoleMapping": {
+        "background": "#0F1115",
+        "foreground": "#E9ECF2",
+        "card": "#1E222A",
+        "secondary": "#2A2F3A",
+        "muted-foreground": "#A4ADBE",
+        "primary": "#3D7BFF",
+        "primary-hover": "#5A8FFF",
+        "primary-foreground": "#FFFFFF",
+        "ring": "#ADC6FF",
+        "power": "#FF5A5F"
+      },
+      "browserSurfaces": {
+        "colorScheme": "dark",
+        "themeColor": "#0F1115",
+        "selection": "rgb(61 123 255 / 0.4) under #E9ECF2",
+        "scrollbar": "#2A2F3A thumb on #0F1115",
+        "focusRing": "2px #ADC6FF; 3px canvas offset on buttons, inset on toggle choices"
+      },
+      "contrast": "White on #3D7BFF about 3.8:1, on #5A8FFF about 3.1:1: large text only (19px bold).",
+      "layout": {
+        "maxWidth": "1180px",
+        "sidePadding": "24px, 40px from 640px",
+        "header": "80px",
+        "copyColumn": "max 34rem",
+        "phoneHeight": "min(72dvh, 700px), min 440px"
+      }
     }
   },
   "components": [
@@ -125,6 +229,38 @@
       "description": "Panel translation; native behavior remains authoritative.",
       "html": "<fieldset class=\"ds-field\"><legend>TV IP address</legend><input aria-label=\"TV IP address\" placeholder=\"192.168.86.112\" inputmode=\"decimal\"></fieldset>",
       "css": ".ds-field{border:1px solid #7C8595;border-radius:4px;background:#1E222A;color:#A4ADBE;font:16px sans-serif;padding:8px 16px}.ds-field legend{font-size:12px}.ds-field input{background:transparent;color:#E9ECF2;border:0;font:16px sans-serif;width:100%;outline:none}.ds-field:hover{border-color:#E9ECF2}.ds-field:focus-within{border-color:#ADC6FF;outline:1px solid #ADC6FF;color:#ADC6FF}"
+    },
+    {
+      "name": "Web Download Button",
+      "kind": "button",
+      "refersTo": "web-button-primary",
+      "description": "Download page primary action; large text only on filled blue.",
+      "html": "<a class=\"ds-web-dl\" href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M2 12H4V17H20V12H22V17A2 2 0 0 1 20 19H4A2 2 0 0 1 2 17V12M12 15L17.55 9.54L16.13 8.13L13 11.25V2H11V11.25L7.88 8.13L6.46 9.55L12 15Z\"/></svg>Download APK</a>",
+      "css": ".ds-web-dl{font-family:'Archivo Variable',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;gap:10px;height:60px;padding:0 32px 0 24px;border-radius:9999px;background:#3D7BFF;color:#FFFFFF;font-size:19px;font-weight:700;text-decoration:none;transition:background-color .15s ease-out,transform .15s ease-out}.ds-web-dl svg{width:24px;height:24px}.ds-web-dl:hover{background:#5A8FFF}.ds-web-dl:active{transform:scale(.98)}.ds-web-dl:focus-visible{outline:none;box-shadow:0 0 0 3px #0F1115,0 0 0 5px #ADC6FF}@media (prefers-reduced-motion:reduce){.ds-web-dl{transition:none}.ds-web-dl:active{transform:none}}"
+    },
+    {
+      "name": "Web Ghost Button",
+      "kind": "button",
+      "refersTo": "web-button-ghost",
+      "description": "Quiet header link on the download page.",
+      "html": "<a class=\"ds-web-ghost\" href=\"#\">GitHub</a>",
+      "css": ".ds-web-ghost{font-family:'Archivo Variable',ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:9999px;color:#A4ADBE;font-size:15px;font-weight:600;text-decoration:none;transition:background-color .15s ease-out}.ds-web-ghost:hover{background:#2A2F3A;color:#E9ECF2}.ds-web-ghost:focus-visible{outline:none;box-shadow:0 0 0 3px #0F1115,0 0 0 5px #ADC6FF}"
+    },
+    {
+      "name": "Web Mode Toggle",
+      "kind": "nav",
+      "refersTo": "web-mode-toggle",
+      "description": "Web mirror of the app's mode selector; swaps the phone screenshot.",
+      "html": "<div class=\"ds-web-modes\" role=\"group\" aria-label=\"Remote mode\"><button aria-pressed=\"true\">Buttons</button><button aria-pressed=\"false\">Touchpad</button></div>",
+      "css": ".ds-web-modes{display:flex;width:min(100%,300px);border-radius:28px;background:#1E222A;padding:4px}.ds-web-modes button{font-family:'Archivo Variable',ui-sans-serif,system-ui,sans-serif;flex:1;min-height:48px;padding:0 20px;border:0;border-radius:24px;background:transparent;color:#A4ADBE;font-size:15px;font-weight:500;cursor:pointer;transition:color .2s ease-out,background-color .2s ease-out}.ds-web-modes button:hover{color:#E9ECF2}.ds-web-modes [aria-pressed=\"true\"]{background:#2A2F3A;color:#E9ECF2}.ds-web-modes button:focus-visible{outline:none;box-shadow:inset 0 0 0 2px #ADC6FF}"
+    },
+    {
+      "name": "Web Phone Frame",
+      "kind": "card",
+      "refersTo": "web-phone-frame",
+      "description": "Flat tonal bezel around the app screenshot; no shadow.",
+      "html": "<div class=\"ds-web-phone\"><div></div></div>",
+      "css": ".ds-web-phone{display:inline-block;border-radius:44px;background:#1E222A;padding:10px;box-shadow:0 0 0 1px #2A2F3A}.ds-web-phone div{width:150px;aspect-ratio:720/1447;border-radius:34px;background:#0F1115}"
     }
   ],
   "narrative": {
@@ -143,14 +279,25 @@
       },
       {
         "name": "The Remote Order Rule",
-        "body": "Keep header \u2192 power/input/mute \u2192 volume/apps/keyboard/channel \u2192 playback \u2192 mode selector \u2192 central pad \u2192 72-unit landing zone \u2192 back/home/TV settings.",
+        "body": "Keep header → power/input/mute → volume/apps/keyboard/channel → playback → mode selector → central pad → 72-unit landing zone → back/home/TV settings.",
         "section": "layout"
+      },
+      {
+        "name": "The Archivo Stays On The Web Rule",
+        "body": "Archivo belongs to the browser surface; native screens keep Paper's system faces.",
+        "section": "typography"
+      },
+      {
+        "name": "The Large Blue Text Rule",
+        "body": "White on the filled OK blue measures about 3.8:1 (about 3.1:1 on hover), so it carries only large text: 19px bold or bigger. Smaller labels never sit on filled blue.",
+        "section": "colors"
       }
     ],
     "dos": [
       "Do preserve the remote control order, central geometry and landing zone.",
       "Do reuse the dark palette and Paper theme for new setup or menu surfaces.",
-      "Do retain accessible labels, selected/disabled states and reduced-motion handling."
+      "Do retain accessible labels, selected/disabled states and reduced-motion handling.",
+      "Do build web surfaces from the app palette through the shadcn role mapping, with OK blue as the only filled action."
     ],
     "donts": [
       "Don't use stale screenshots to rearrange the current source remote.",
