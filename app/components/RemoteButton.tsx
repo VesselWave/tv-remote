@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
   label: { textAlign: 'center' }, caption: { fontSize: 12, marginTop: 2, textAlign: 'center' }, pressed: { backgroundColor: palette.raised }, disabled: { opacity: 0.44 },
   dpad: { alignSelf: 'center', gap: 8 }, dpadRow: { flexDirection: 'row', gap: 8 },
   round: { width: 84, height: 84, borderRadius: 42 }, spacer: { width: 84, height: 84 },
-  rocker: { width: 64, height: 144, borderRadius: 42, backgroundColor: palette.surface, overflow: 'hidden' },
+  rocker: { width: 84, height: 144, borderRadius: 42, backgroundColor: palette.surface, overflow: 'hidden' },
   rockerButton: { flex: 1, borderRadius: 42 }, rockerLabel: { color: palette.muted, textAlign: 'center', fontSize: 12 },
 });

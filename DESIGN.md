@@ -135,7 +135,7 @@ The safe-area app contains a centered, scrollable phone layout capped at 600 nat
 
 **The Remote Order Rule.** Keep header → power/input/mute → volume/apps/keyboard/channel → playback → mode selector → central pad → 72-unit landing zone → back/home/TV settings.
 
-The D-pad is a three-by-three arrangement of 84-unit circular cells with 8-unit gaps; the pad region has a minimum height of 268. Volume and channel rockers are 64 wide and 144 tall. Remote buttons have a minimum height of 48; bottom navigation uses 52. Sheets occupy at most 90% of screen height, cap width at 600, and pad their bottom by the larger of 24 or the safe-area inset. These are current geometry, not a claim of tested behavior at every font scale or device size.
+The D-pad is a three-by-three arrangement of 84-unit circular cells with 8-unit gaps; the pad region has a minimum height of 268. Volume and channel rockers are 84 wide (matching the D-pad cells) and 144 tall; Apps and Keyboard take the remaining width. Remote buttons have a minimum height of 48; bottom navigation uses 52. Sheets occupy at most 90% of screen height, cap width at 600, and pad their bottom by the larger of 24 or the safe-area inset. These are current geometry, not a claim of tested behavior at every font scale or device size.
 
 ## Elevation & Depth
 
