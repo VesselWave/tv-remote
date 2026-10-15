@@ -46,7 +46,9 @@ done
 [[ -f "$KS" ]] || { echo "Signing keystore not found: $KS" >&2; exit 1; }
 
 bunx expo prebuild --platform android --no-install
-(cd android && ./gradlew assembleRelease -PreactNativeArchitectures="$ABIS" --console=plain)
+# GRADLE_FLAGS passes extra Gradle options, such as --max-workers=2 on machines with little memory.
+# shellcheck disable=SC2086
+(cd android && ./gradlew assembleRelease -PreactNativeArchitectures="$ABIS" --console=plain ${GRADLE_FLAGS:-})
 
 UNSIGNED=android/app/build/outputs/apk/release/app-release.apk
 suffix=""

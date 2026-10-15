@@ -6,7 +6,7 @@ The remote is rebuilt with Expo and React Native, keeping the same layout and pr
 
 - Icons on the remote's buttons, in the outline style of LG ThinQ's TV control widget: inputs, mute/unmute, apps, keyboard, channel up/down, the Buttons/Touchpad switch, back, home and TV settings. Larger buttons keep a short caption.
 - Material setup, settings, app and input pickers, and keyboard sheets. Apps are searchable.
-- The touchpad fills the space below the controls, with a wider scroll grip.
+- Wider volume and channel rockers. The touchpad fills the space below the controls, with a wider scroll grip.
 - Hold-to-repeat stops when the app goes to the background. Haptic feedback on presses.
 - Runs on Android 7.0 or newer (was 9). The APK is now about 30 MB, arm64 only.
 - Updates 0.1 in place and keeps your pairing.
