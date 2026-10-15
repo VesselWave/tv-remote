@@ -20,3 +20,12 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+
+# Expo / Bun
+node_modules/
+.expo/
+/android/
+/ios/
+*.tsbuildinfo
+.wrangler/
+modules/**/build/

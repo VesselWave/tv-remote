@@ -1,11 +1,13 @@
 # Contributing
 
 Small, focused changes are welcome. Open an issue before a large UI or protocol change.
-Keep the APK framework-only: no third-party runtime libraries, account requirements,
-analytics, or cloud services.
+Keep the app local: no account requirements, analytics, ads, or cloud services. Prefer
+Expo and React Native Paper components over new dependencies, and keep protocol code in
+the Java engine under `src/lean/tvremote`.
 
-Run `./test.sh` before submitting a change. For Android compilation, set `ANDROID_HOME`
-and `JAVA_HOME`, then run `./build.sh debug`. See [the README](README.md#build-it-yourself).
+Run `bun run typecheck`, `bun run lint`, `bun test`, and `./test.sh` before submitting a
+change. For Android compilation, set `ANDROID_HOME` and `JAVA_HOME`, then run
+`./build.sh debug`. See [the README](README.md#build-it-yourself).
 PR CI runs the same checks and uploads a debug APK without using release secrets.
 
 For protocol bugs, include your TV model, firmware/webOS version, phone, Android version,

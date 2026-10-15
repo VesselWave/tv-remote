@@ -292,94 +292,95 @@ public final class MainActivity extends Activity implements Tv.Listener {
     private void showRemote() {
         remoteShown = true;
         LinearLayout root = column();
-        root.setGravity(Gravity.CENTER_HORIZONTAL);
-        root.setPadding(dp(20), dp(12), dp(20), dp(16));
+        root.setPadding(dp(16), dp(8), dp(16), dp(12));
 
-        // header
         LinearLayout header = row();
         LinearLayout titles = column();
-        title = text("", 20, TEXT, true);
-        status = text("", 14, MUTED, false);
+        title = text("", 19, TEXT, true);
+        title.setSingleLine();
+        title.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        status = text("", 12, MUTED, false);
+        status.setSingleLine();
         titles.addView(title);
         titles.addView(status);
         titles.setOnClickListener(v -> {
             if (tv.state() == Tv.State.DISCONNECTED) tv.connect();
         });
         header.addView(titles, new LinearLayout.LayoutParams(0, -2, 1));
-        TextView more = button("⋯", 22, SURFACE, this::showMenu);
-        header.addView(more, lp(48, 48, 0, 0, 0, 0));
-        root.addView(header, lp(-1, -2, 0, 0, 0, 20));
+        header.addView(button("⋯", 22, SURFACE, this::showMenu), lp(48, 48, 8, 0, 0, 0));
+        root.addView(header, lp(-1, 48, 0, 0, 0, 12));
 
-        // power / input / mute
         LinearLayout top = row();
-        View power = icon(R.drawable.ic_power, POWER, "Power", this::power);
-        top.addView(power, weighted(56));
-        top.addView(button("Input", 16, SURFACE, this::inputs), weighted(56));
-        muteButton = button("Mute", 16, SURFACE, this::toggleMute);
-        top.addView(muteButton, weighted(56));
-        root.addView(top, lp(-1, -2, 0, 0, 0, 16));
+        top.addView(icon(R.drawable.ic_power, POWER, "Power", this::power), weighted(48));
+        top.addView(button("Inputs", 15, SURFACE, this::inputs), weighted(48));
+        muteButton = button("Mute", 15, SURFACE, this::toggleMute);
+        top.addView(muteButton, weighted(48));
+        root.addView(top, lp(-1, 48, 0, 0, 0, 12));
 
-        // d-pad or touchpad
-        LinearLayout modes = row();
-        modes.setBackground(rounded(SURFACE, 20));
-        modes.setPadding(dp(4), dp(4), dp(4), dp(4));
-        modeButtons = segment("Buttons", () -> setTouchpad(false));
-        modeTouchpad = segment("Touchpad", () -> setTouchpad(true));
-        modes.addView(modeButtons, new LinearLayout.LayoutParams(0, dp(32), 1));
-        modes.addView(modeTouchpad, new LinearLayout.LayoutParams(0, dp(32), 1));
-        root.addView(modes, lp(220, -2, 0, 0, 0, 12));
-        padArea = new FrameLayout(this);
-        root.addView(padArea, lp(-1, 292, 0, 0, 0, 0));
-        setTouchpad(prefs.touchpad());
+        LinearLayout controls = row();
+        controls.addView(rocker("VOL", "ssap://audio/volumeUp", "ssap://audio/volumeDown"), lp(64, 144, 0, 0, 0, 0));
+        LinearLayout shortcuts = column();
+        shortcuts.addView(button("Apps", 15, SURFACE, this::apps), lp(-1, 66, 0, 0, 0, 12));
+        shortcuts.addView(button("Keyboard", 15, SURFACE, this::keyboard), lp(-1, 66, 0, 0, 0, 0));
+        LinearLayout.LayoutParams shortcutLayout = new LinearLayout.LayoutParams(0, dp(144), 1);
+        shortcutLayout.setMargins(dp(12), 0, dp(12), 0);
+        controls.addView(shortcuts, shortcutLayout);
+        controls.addView(rocker("CH", "ssap://tv/channelUp", "ssap://tv/channelDown"), lp(64, 144, 0, 0, 0, 0));
+        root.addView(controls, lp(-1, 144, 0, 0, 0, 12));
 
-        // back / home / settings
-        LinearLayout nav = row();
-        nav.addView(button("Back", 16, SURFACE, () -> tv.button("BACK")), weighted(52));
-        nav.addView(button("Home", 16, SURFACE, () -> tv.button("HOME")), weighted(52));
-        nav.addView(button("Settings", 16, SURFACE, () -> tv.button("MENU")), weighted(52));
-        root.addView(nav, lp(-1, -2, 0, 16, 0, 16));
-
-        // volume and channel rockers around apps / keyboard
-        LinearLayout mid = row();
-        mid.addView(rocker("VOL", "ssap://audio/volumeUp", "ssap://audio/volumeDown"), lp(84, 168, 0, 0, 0, 0));
-        LinearLayout center = column();
-        center.addView(button("Apps", 16, SURFACE, this::apps), lp(-1, 76, 0, 0, 0, 16));
-        center.addView(button("Keyboard", 16, SURFACE, this::keyboard), lp(-1, 76, 0, 0, 0, 0));
-        LinearLayout.LayoutParams clp = new LinearLayout.LayoutParams(0, -2, 1);
-        clp.setMargins(dp(16), 0, dp(16), 0);
-        mid.addView(center, clp);
-        mid.addView(rocker("CH", "ssap://tv/channelUp", "ssap://tv/channelDown"), lp(84, 168, 0, 0, 0, 0));
-        root.addView(mid, lp(-1, -2, 0, 0, 0, 16));
-
-        // media
         LinearLayout media = row();
-        media.addView(icon(R.drawable.ic_rewind, TEXT, "Rewind", () -> tv.request("ssap://media.controls/rewind")), weighted(52));
-        media.addView(icon(R.drawable.ic_play, TEXT, "Play", () -> tv.request("ssap://media.controls/play")), weighted(52));
-        media.addView(icon(R.drawable.ic_pause, TEXT, "Pause", () -> tv.request("ssap://media.controls/pause")), weighted(52));
-        media.addView(icon(R.drawable.ic_forward, TEXT, "Fast forward", () -> tv.request("ssap://media.controls/fastForward")), weighted(52));
-        root.addView(media, lp(-1, -2, 0, 0, 0, 0));
+        media.addView(icon(R.drawable.ic_rewind, TEXT, "Rewind", () -> tv.request("ssap://media.controls/rewind")), weighted(48));
+        media.addView(icon(R.drawable.ic_play, TEXT, "Play", () -> tv.request("ssap://media.controls/play")), weighted(48));
+        media.addView(icon(R.drawable.ic_pause, TEXT, "Pause", () -> tv.request("ssap://media.controls/pause")), weighted(48));
+        media.addView(icon(R.drawable.ic_forward, TEXT, "Fast forward", () -> tv.request("ssap://media.controls/fastForward")), weighted(48));
+        root.addView(media, lp(-1, 48, 0, 0, 0, 12));
 
-        ScrollView scroll = new ScrollView(this);
-        scroll.setFillViewport(true);
-        scroll.addView(root);
-        setContent(scroll);
+        LinearLayout modes = row();
+        modes.setBackground(rounded(SURFACE, 24));
+        modes.setPadding(dp(4), dp(4), dp(4), dp(4));
+        modeButtons = button("Buttons", 14, SURFACE, () -> setControlMode(false));
+        modeTouchpad = button("Touchpad", 14, SURFACE, () -> setControlMode(true));
+        modes.addView(modeButtons, new LinearLayout.LayoutParams(0, dp(40), 1));
+        modes.addView(modeTouchpad, new LinearLayout.LayoutParams(0, dp(40), 1));
+        LinearLayout.LayoutParams modeLayout = lp(240, 48, 0, 0, 0, 12);
+        modeLayout.gravity = Gravity.CENTER_HORIZONTAL;
+        root.addView(modes, modeLayout);
+        padArea = new FrameLayout(this);
+        LinearLayout.LayoutParams padLayout = new LinearLayout.LayoutParams(-1, 0, 1);
+        padLayout.bottomMargin = dp(72);
+        root.addView(padArea, padLayout);
+        refreshControls();
+
+        // Keep navigation below a noninteractive landing zone for stray finger taps.
+        LinearLayout nav = row();
+        nav.addView(button("Back", 16, SURFACE_HI, () -> tv.button("BACK")), weighted(52));
+        nav.addView(button("Home", 16, SURFACE_HI, () -> tv.button("HOME")), weighted(52));
+        nav.addView(button("Settings", 16, SURFACE_HI, () -> tv.button("MENU")), weighted(52));
+        root.addView(nav, lp(-1, 52, 0, 0, 0, 0));
+
+        FrameLayout screen = new FrameLayout(this);
+        screen.addView(root, new FrameLayout.LayoutParams(-1, -1));
+        setContent(screen);
         renderStatus(tv.state(), null);
     }
 
-    private void setTouchpad(boolean on) {
+    private void refreshControls() {
         stopHeldKey();
-        prefs.setTouchpad(on);
-        modeButtons.setBackground(on ? null : rounded(SURFACE_HI, 16));
-        modeTouchpad.setBackground(on ? rounded(SURFACE_HI, 16) : null);
-        modeButtons.setTextColor(on ? MUTED : TEXT);
-        modeTouchpad.setTextColor(on ? TEXT : MUTED);
+        boolean touchpad = prefs.touchpad();
+        modeButtons.setBackground(ripple(touchpad ? SURFACE : SURFACE_HI, 20));
+        modeTouchpad.setBackground(ripple(touchpad ? SURFACE_HI : SURFACE, 20));
+        modeButtons.setTextColor(touchpad ? MUTED : TEXT);
+        modeTouchpad.setTextColor(touchpad ? TEXT : MUTED);
+        modeButtons.setSelected(!touchpad);
+        modeTouchpad.setSelected(touchpad);
         padArea.removeAllViews();
-        View pad = on ? new Touchpad(this, SURFACE, MUTED, prefs.naturalScrolling(), new Touchpad.Pointer() {
+        View pad = touchpad ? new Touchpad(this, SURFACE, MUTED, prefs.naturalScrolling(), new Touchpad.Pointer() {
             @Override public void move(int dx, int dy) { tv.move(dx, dy); }
             @Override public void click() { tv.click(); }
             @Override public void scroll(int dx, int dy) { tv.scroll(dx, dy); }
         }) : dpad();
-        padArea.addView(pad, new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER));
+        padArea.addView(pad, new FrameLayout.LayoutParams(touchpad ? -1 : -2,
+                touchpad ? -1 : -2, Gravity.CENTER));
     }
 
     private View dpad() {
@@ -623,6 +624,11 @@ public final class MainActivity extends Activity implements Tv.Listener {
                 .show();
     }
 
+    private void setControlMode(boolean touchpad) {
+        prefs.setTouchpad(touchpad);
+        refreshControls();
+    }
+
     private void showScrollDirection() {
         new AlertDialog.Builder(this)
                 .setTitle("Scroll direction")
@@ -631,7 +637,7 @@ public final class MainActivity extends Activity implements Tv.Listener {
                         "Traditional\nContent moves opposite to your fingers"
                 }, prefs.naturalScrolling() ? 0 : 1, (dialog, which) -> {
                     prefs.setNaturalScrolling(which == 0);
-                    if (prefs.touchpad()) setTouchpad(true);
+                    refreshControls();
                     dialog.dismiss();
                 })
                 .setNegativeButton("Cancel", null)
@@ -742,13 +748,6 @@ public final class MainActivity extends Activity implements Tv.Listener {
         v.setBackground(ripple(SURFACE, 18));
         v.setOnClickListener(x -> tap(x, action));
         return v;
-    }
-
-    private TextView segment(String label, Runnable action) {
-        TextView t = text(label, 14, MUTED, true);
-        t.setGravity(Gravity.CENTER);
-        t.setOnClickListener(v -> tap(v, action));
-        return t;
     }
 
     private TextView pill(String label, Runnable action) {

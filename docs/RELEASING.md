@@ -54,7 +54,7 @@ separate cached key. The package ID remains `lean.tvremote`.
 
 1. Update `VERSION` (`major.minor` or `major.minor.patch`) and increase the positive integer in `VERSION_CODE`. Android uses this independent counter to determine update order.
 2. Update `CHANGELOG.md` and `docs/release-notes.md`. Refresh screenshots if the UI changed.
-3. Run `./test.sh` and `./build.sh debug`; test on a real phone and TV for behavior changes.
+3. Run `bun run typecheck`, `bun run lint`, `bun test`, `./test.sh` and `./build.sh debug`; test on a real phone and TV for behavior changes.
 4. Commit and push `main`, then create and push the matching tag:
 
 ```sh

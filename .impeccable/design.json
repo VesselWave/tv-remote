@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T18:52:53.905166+00:00",
+  "title": "Design System: TV Remote",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Remote confirmation blue"
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Material action blue"
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Dark canvas"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Control surface"
+      },
+      "raised": {
+        "role": "neutral",
+        "displayName": "Raised surface"
+      },
+      "power": {
+        "role": "error",
+        "displayName": "Remote power red"
+      },
+      "error": {
+        "role": "error",
+        "displayName": "Material error coral"
+      }
+    },
+    "elevation": {
+      "source": "app/theme.ts; Paper supplies platform elevation behavior",
+      "levels": {
+        "level0": "transparent",
+        "level1": "#20252E",
+        "level2": "#242A35",
+        "level3": "#28303D",
+        "level4": "#2B3340",
+        "level5": "#303948"
+      }
+    },
+    "motion": [
+      {
+        "name": "sheet-animation",
+        "value": "fade",
+        "purpose": "Native modal animation; none when reduced motion is enabled. No custom duration is specified."
+      }
+    ],
+    "nativeStates": {
+      "remoteDisabledOpacity": 0.44,
+      "touchpadDisabledOpacity": 0.6,
+      "remoteRipple": "#FFFFFF22",
+      "sheetScrim": "#00000099"
+    },
+    "evidence": {
+      "mode": "code-first",
+      "sources": [
+        "app/theme.ts",
+        "app/components/",
+        "App.tsx",
+        "node_modules/react-native-paper/src/styles/themes/v3/tokens.tsx"
+      ],
+      "visualApproval": "No runtime screenshot or visual approval; saved screenshots are stale.",
+      "panelSamples": "HTML/CSS translations only. Hover and focus styles support browser previews; they are not native requirements.",
+      "tonalRamps": "No synthetic palette ramps recorded: only implemented elevation tones are documented."
+    }
+  },
+  "components": [
+    {
+      "name": "Remote Button",
+      "kind": "button",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<button class=\"ds-remote\">Inputs</button>",
+      "css": ".ds-remote{font-family:sans-serif;cursor:pointer;background:#1E222A;color:#E9ECF2;border:0;border-radius:18px;min-height:48px;padding:0 4px;font-size:15px;}.ds-remote:hover,.ds-remote:active{background:#2A2F3A}.ds-remote:disabled{opacity:.44}.ds-remote:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
+      "refersTo": "remote-button"
+    },
+    {
+      "name": "Remote OK",
+      "kind": "button",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<button class=\"ds-ok\">OK</button>",
+      "css": ".ds-ok{font-family:sans-serif;cursor:pointer;background:#1E222A;color:#E9ECF2;border:0;border-radius:18px;min-height:48px;padding:0 4px;font-size:15px;width:84px;height:84px;border-radius:42px;background:#3D7BFF;font-size:20px;font-weight:700}.ds-ok:hover,.ds-ok:active{background:#2A2F3A}.ds-ok:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
+      "refersTo": "remote-ok"
+    },
+    {
+      "name": "Material Connect Button",
+      "kind": "button",
+      "refersTo": "button-contained",
+      "description": "Contained setup action translated for the panel; platform ripple remains native.",
+      "html": "<button class=\"ds-connect\">Connect</button>",
+      "css": ".ds-connect{background:#ADC6FF;color:#002E69;border:0;border-radius:20px;min-height:52px;padding:0 24px;font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer}.ds-connect:hover,.ds-connect:active{background:#ADC6FF;background-image:linear-gradient(#002E6914,#002E6914)}.ds-connect:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}"
+    },
+    {
+      "name": "Remote Navigation",
+      "kind": "nav",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"TV navigation\"><button>Back</button><button>Home</button><button>Settings</button></nav>",
+      "css": ".ds-nav{display:flex;gap:10px}.ds-nav button{font-family:sans-serif;cursor:pointer;background:#1E222A;color:#E9ECF2;border:0;border-radius:18px;min-height:48px;padding:0 4px;font-size:15px;flex:1;min-height:52px;background:#2A2F3A}.ds-nav button:hover{outline:1px solid #7C8595}.ds-nav button:active{background:#1E222A}.ds-nav button:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
+      "refersTo": "remote-navigation"
+    },
+    {
+      "name": "Mode Selector",
+      "kind": "nav",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<div class=\"ds-modes\" role=\"tablist\"><button role=\"tab\" aria-selected=\"true\">Buttons</button><button role=\"tab\" aria-selected=\"false\">Touchpad</button></div>",
+      "css": ".ds-modes{display:flex;min-width:240px;border-radius:28px;background:#1E222A;padding:4px}.ds-modes button{font-family:sans-serif;cursor:pointer;flex:1;min-height:48px;padding:0 16px;border:0;border-radius:24px;font-size:14px;background:transparent;color:#A4ADBE}.ds-modes [aria-selected=\"true\"]{background:#2A2F3A;color:#E9ECF2}.ds-modes button:hover,.ds-modes button:active{background:#2A2F3A}.ds-modes button:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
+      "refersTo": "mode-selected"
+    },
+    {
+      "name": "Device Card",
+      "kind": "card",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<div class=\"ds-device\"><strong>LG TV</strong><span>192.168.86.112</span><small>Connected</small></div>",
+      "css": ".ds-device{display:flex;flex-direction:column;gap:4px;background:#2A2F3A;color:#E9ECF2;border-radius:16px;padding:20px;font-family:sans-serif}.ds-device strong{font-size:16px;font-weight:500;line-height:24px}.ds-device span{font-size:14px;line-height:20px;color:#A4ADBE}.ds-device small{font-size:12px;line-height:16px;color:#A4ADBE}",
+      "refersTo": "device-card"
+    },
+    {
+      "name": "Outlined TV Field",
+      "kind": "input",
+      "description": "Panel translation; native behavior remains authoritative.",
+      "html": "<fieldset class=\"ds-field\"><legend>TV IP address</legend><input aria-label=\"TV IP address\" placeholder=\"192.168.86.112\" inputmode=\"decimal\"></fieldset>",
+      "css": ".ds-field{border:1px solid #7C8595;border-radius:4px;background:#1E222A;color:#A4ADBE;font:16px sans-serif;padding:8px 16px}.ds-field legend{font-size:12px}.ds-field input{background:transparent;color:#E9ECF2;border:0;font:16px sans-serif;width:100%;outline:none}.ds-field:hover{border-color:#E9ECF2}.ds-field:focus-within{border-color:#ADC6FF;outline:1px solid #ADC6FF;color:#ADC6FF}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The familiar Android remote",
+    "overview": "Keep the existing remote's dark palette, control geometry and button order. Setup, settings and menus use React Native Paper's Android Material 3 components. PRODUCT.md supplies this binding direction; MainActivity.java is the reference for the incumbent remote, ahead of older saved screenshots.\n\nThis is a code-derived record of the Expo implementation, not a runtime visual approval. Sources are `app/theme.ts`, `app/components/`, `App.tsx` and the installed Paper Android theme. Frontmatter uses portable px strings for numeric native dimensions; interpret them as React Native layout units and native text sizes, not browser sizing requirements.",
+    "keyCharacteristics": [
+      "Dark tonal surfaces with a blue central confirmation control.",
+      "Familiar Material forms, lists and modal menus.",
+      "Preserved remote order and generous central controls."
+    ],
+    "rules": [
+      {
+        "name": "The Two Blues Rule",
+        "body": "Preserve the remote's accent blue; use Paper primary for Material actions and selections.",
+        "section": "colors"
+      },
+      {
+        "name": "The Remote Order Rule",
+        "body": "Keep header \u2192 power/input/mute \u2192 volume/apps/keyboard/channel \u2192 playback \u2192 mode selector \u2192 central pad \u2192 72-unit landing zone \u2192 back/home/TV settings.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do preserve the remote control order, central geometry and landing zone.",
+      "Do reuse the dark palette and Paper theme for new setup or menu surfaces.",
+      "Do retain accessible labels, selected/disabled states and reduced-motion handling."
+    ],
+    "donts": [
+      "Don't use stale screenshots to rearrange the current source remote.",
+      "Don't replace the remote with a generic Material dashboard.",
+      "Don't treat code-derived dimensions or panel samples as runtime visual approval."
+    ]
+  }
+}

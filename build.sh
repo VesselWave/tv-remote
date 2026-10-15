@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Framework-only Android build. No Gradle or third-party runtime dependencies.
+# Builds the Expo app into a signed, verified APK: ./build.sh [debug|release]
+# Expo generates android/ with Gradle; apksigner then applies the debug or release identity.
 set -euo pipefail
 cd "$(dirname "$0")"
-SDK=${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/opt/android-sdk}}
-BT="$SDK/build-tools/${BUILD_TOOLS_VERSION:-35.0.0}"
-JAR="$SDK/platforms/android-35/android.jar"
+export ANDROID_HOME=${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/opt/android-sdk}}
+BT="$ANDROID_HOME/build-tools/${BUILD_TOOLS_VERSION:-36.0.0}"
 if [[ -n "${JAVA_HOME:-}" ]]; then export PATH="$JAVA_HOME/bin:$PATH"; fi
 VERSION_NAME=$(cat VERSION)
 if [[ ! "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
@@ -14,11 +14,11 @@ VERSION_CODE=$(cat VERSION_CODE)
 if [[ ! "$VERSION_CODE" =~ ^[1-9][0-9]{0,8}$ ]]; then
     echo 'VERSION_CODE must be a positive integer of at most nine digits' >&2; exit 1
 fi
+# Comma-separated Android ABIs. arm64-v8a covers current phones and keeps the APK near 30 MB.
+ABIS=${ABIS:-arm64-v8a}
 mode=${1:-debug}
-link_flags=()
 case "$mode" in
     debug)
-        link_flags+=(--debug-mode)
         KS="${DEBUG_KEYSTORE:-${XDG_CACHE_HOME:-$HOME/.cache}/tv-remote/debug.keystore}"
         mkdir -p "$(dirname "$KS")"
         export TVREMOTE_STORE_PASSWORD=android TVREMOTE_KEY_PASSWORD=android
@@ -39,34 +39,25 @@ case "$mode" in
         ;;
     *) echo 'Usage: ./build.sh [debug|release]' >&2; exit 1 ;;
 esac
-for tool in aapt2 d8 zipalign apksigner; do
-    [[ -x "$BT/$tool" ]] || { echo "Missing $BT/$tool; install Android SDK build-tools 35.0.0" >&2; exit 1; }
+for tool in zipalign apksigner; do
+    [[ -x "$BT/$tool" ]] || { echo "Missing $BT/$tool; install Android SDK build-tools 36.0.0" >&2; exit 1; }
 done
-[[ -f "$JAR" ]] || { echo "Missing $JAR; install platforms;android-35" >&2; exit 1; }
+[[ -d node_modules ]] || { echo 'Run bun install first' >&2; exit 1; }
 [[ -f "$KS" ]] || { echo "Signing keystore not found: $KS" >&2; exit 1; }
-rm -rf build
-mkdir -p build/classes build/dex build/gen dist
-"$BT/aapt2" compile --dir res -o build/res.zip
-"$BT/aapt2" link -o build/unsigned.apk -I "$JAR" --manifest AndroidManifest.xml --java build/gen \
-    --min-sdk-version 28 --target-sdk-version 35 --version-code "$VERSION_CODE" \
-    --version-name "$VERSION_NAME" "${link_flags[@]}" build/res.zip
-find src build/gen -name '*.java' | sort > build/sources.txt
-javac -nowarn --release 11 -classpath "$JAR" -d build/classes @build/sources.txt
-mapfile -t classes < <(find build/classes -name '*.class' | sort)
-"$BT/d8" --release --min-api 28 --lib "$JAR" --output build/dex "${classes[@]}"
-python3 - <<'PYZIP'
-import zipfile
-with zipfile.ZipFile('build/unsigned.apk', 'a', zipfile.ZIP_DEFLATED) as apk:
-    apk.write('build/dex/classes.dex', 'classes.dex')
-PYZIP
-"$BT/zipalign" -f -p 4 build/unsigned.apk build/aligned.apk
+
+bunx expo prebuild --platform android --no-install
+(cd android && ./gradlew assembleRelease -PreactNativeArchitectures="$ABIS" --console=plain)
+
+UNSIGNED=android/app/build/outputs/apk/release/app-release.apk
 suffix=""
 if [[ "$mode" == debug ]]; then suffix="-debug"; fi
+mkdir -p dist
 APK="dist/tv-remote-v$VERSION_NAME$suffix.apk"
+"$BT/zipalign" -c -P 16 4 "$UNSIGNED"
 "$BT/apksigner" sign --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
     --ks-pass env:TVREMOTE_STORE_PASSWORD --key-pass env:TVREMOTE_KEY_PASSWORD \
-    --out "$APK" build/aligned.apk
+    --out "$APK" "$UNSIGNED"
+rm -f "$APK.idsig"
 "$BT/apksigner" verify --verbose --print-certs "$APK" > "$APK.certificate.txt"
-"$BT/zipalign" -c -p 4 "$APK"
 (cd dist && sha256sum "$(basename "$APK")" > "$(basename "$APK").sha256")
 ls -lh "$APK"

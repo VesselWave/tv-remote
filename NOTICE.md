@@ -5,7 +5,8 @@ sponsored by, or endorsed by LG Electronics. LG, LG ThinQ, and webOS are tradema
 of their respective owners.
 
 The app and test tools were extracted from VesselWave's private `rea-stuff`
-research workspace, commit `2b50a50`. The local protocol was documented through
+research workspace, commit `2b50a50`. The Expo app (0.2) followed from the same
+workspace, commit `2dd8635`, which now includes this repository as a submodule. The local protocol was documented through
 interoperability research on ThinQ 5.2.12500. Public implementation notes are in
 [docs/PROTOCOL.md](docs/PROTOCOL.md). No ThinQ APK, decompiled application, or
 research dump is distributed here.
@@ -20,3 +21,8 @@ The test runner downloads JSON-java 20240303 from Maven Central. It is used only
 on the JVM, is not bundled into the APK, and is licensed by its authors under
 [the JSON-java public domain notice](https://github.com/stleary/JSON-java/blob/20240303/LICENSE).
 Android supplies `org.json` at runtime.
+
+Since 0.2 the APK bundles open-source runtime libraries under their own licenses,
+including Expo, React Native and React (MIT), React Native Paper (MIT),
+`@expo/vector-icons` (MIT) with Material Design Icons by Pictogrammers (Apache-2.0),
+and their dependencies. `bun.lock` lists the exact versions.
