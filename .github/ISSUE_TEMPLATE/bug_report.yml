@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a problem with TV Remote.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: TV Remote version
+      placeholder: e.g. 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: devices
+    attributes:
+      label: Phone, Android version, TV model, and webOS version
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include steps, expected behavior, and actual behavior. Remove pairing keys, addresses, and personal information from logs.
+    validations:
+      required: true

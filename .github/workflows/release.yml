@@ -1,0 +1,58 @@
+name: Signed APK release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Match release tag to VERSION
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: test "$RELEASE_TAG" = "v$(cat VERSION)"
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Run tests
+        run: ./test.sh
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+      - name: Install Android SDK packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Restore signing identity, build, and verify release APK
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_KEYSTORE: ${{ runner.temp }}/release.keystore
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          TVREMOTE_STORE_PASSWORD: ${{ secrets.TVREMOTE_STORE_PASSWORD }}
+          TVREMOTE_KEY_PASSWORD: ${{ secrets.TVREMOTE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          : "${RELEASE_KEYSTORE_BASE64:?Missing release signing secrets; see docs/RELEASING.md}"
+          umask 077
+          printf '%s' "$RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RELEASE_KEYSTORE"
+          trap 'rm -f "$RELEASE_KEYSTORE"' EXIT
+          ./build.sh release
+      - name: Publish APK, checksum, and signing certificate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" --verify-tag --title "TV Remote $RELEASE_TAG" \
+            --notes-file docs/release-notes.md \
+            "dist/tv-remote-$RELEASE_TAG.apk" \
+            "dist/tv-remote-$RELEASE_TAG.apk.sha256" \
+            "dist/tv-remote-$RELEASE_TAG.apk.certificate.txt"
+      - name: Remove signing material
+        if: always()
+        run: rm -f "${{ runner.temp }}/release.keystore"

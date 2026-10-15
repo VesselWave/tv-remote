@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 108dp adaptive canvas; artwork kept inside the 66dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- screen -->
+    <path android:fillColor="#00000000" android:strokeColor="#FFE9ECF2" android:strokeWidth="4"
+        android:pathData="M33,36h42a4,4 0 0 1 4,4v24a4,4 0 0 1 -4,4h-42a4,4 0 0 1 -4,-4v-24a4,4 0 0 1 4,-4z" />
+    <!-- stand -->
+    <path android:fillColor="#FF3D7BFF" android:pathData="M44,73h20v4h-20z" />
+    <!-- power glyph -->
+    <path android:fillColor="#00000000" android:strokeColor="#FFFF5A5F" android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M49.5,47.5a8,8 0 1 0 9,0 M54,44v9" />
+</vector>
