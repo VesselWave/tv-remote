@@ -1,5 +1,17 @@
 @import 'tailwindcss';
 
+.phone-screen {
+  width: min(350px, calc(100vw - 70px));
+}
+
+@media (min-width: 1024px) {
+  .phone-screen {
+    width: auto;
+    /* Header, footer, main padding, mode toggle, gap, and bezel stay visible. */
+    height: min(700px, max(200px, calc(100dvh - 294px)));
+  }
+}
+
 /* The app's palette (../DESIGN.md) mapped onto shadcn's semantic roles. */
 @theme inline {
   --color-background: #0f1115;

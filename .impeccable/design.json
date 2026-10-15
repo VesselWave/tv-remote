@@ -170,7 +170,7 @@
         "sidePadding": "24px, 40px from 640px",
         "header": "80px",
         "copyColumn": "max 34rem",
-        "phoneHeight": "min(72dvh, 700px), min 440px"
+        "phoneHeight": "desktop: min(700px, max(200px, 100dvh - 294px)); mobile: auto at min(350px, 100vw - 70px) width"
       }
     }
   },

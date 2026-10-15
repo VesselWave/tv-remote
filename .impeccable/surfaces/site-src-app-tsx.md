@@ -17,7 +17,7 @@ OWN-WORLD: The app's dark tonal stack (#0F1115 canvas, #1E222A surface, #2A2F3A 
 
 STORY: The visitor sees the phone running the remote, flips Buttons to Touchpad and sees both ways to drive the TV, then taps Download. Version, size and Android 7+ confirm what they're getting.
 
-FIRST VIEWPORT: Desktop has two columns. On the left, from the top: the icon with TV Remote; the name set large; one sentence; the blue Download APK button (the primary action, above the fold); and a muted facts line (version · size · Android 7+). On the right, the app's pill selector sits directly above a phone-sized screenshot, about 78% of the viewport tall. A GitHub link sits top right. On mobile the order is name, sentence, Download, facts, then pill and phone.
+FIRST VIEWPORT: Desktop has two columns. On the left, from the top: the icon with TV Remote; the name set large; one sentence; the blue Download APK button (the primary action, above the fold); and a muted facts line (version · size · Android 7+). On the right, the app's pill selector sits directly above a phone-sized screenshot, sized from the viewport height after reserving the header, footer, selector and spacing so the complete desktop page fits on one screen. A GitHub link sits top right. On mobile the order is name, sentence, Download, facts, then pill and phone.
 
 FORM: Buttons ⇄ Touchpad mode switch, structure 2 of 7 on the ordered list; surface seed key 8c077804.
 

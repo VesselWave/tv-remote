@@ -44,7 +44,7 @@ export default function App({ release }: { release: Release | null }) {
         </Button>
       </header>
 
-      <main className="grid flex-1 items-center gap-x-20 gap-y-14 pt-6 pb-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:pt-0">
+      <main className="grid flex-1 items-center gap-x-20 gap-y-14 pt-6 pb-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:py-6">
         <div className="max-w-[34rem]">
           <h1 className="font-display text-[clamp(3.5rem,9vw,6rem)] leading-[0.9] font-[780] tracking-[-0.035em] [font-stretch:112%]">
             TV Remote
@@ -83,7 +83,7 @@ export default function App({ release }: { release: Release | null }) {
             </ToggleGroupItem>
           </ToggleGroup>
           <div className="rounded-[44px] bg-card p-2.5 ring-1 ring-secondary">
-            <div className="relative aspect-[720/1447] h-[min(72dvh,700px)] min-h-[440px] overflow-hidden rounded-[34px] bg-background">
+            <div className="phone-screen relative aspect-[720/1447] overflow-hidden rounded-[34px] bg-background">
               {(Object.keys(screens) as Mode[]).map((key) => (
                 <img
                   key={key}

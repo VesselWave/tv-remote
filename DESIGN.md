@@ -210,10 +210,10 @@ A single download page and static 404 built inside this world with shadcn/ui pri
 - **Download button:** fully rounded, filled OK blue with white `web-action` text and a 24px leading icon; hover lightens to `web-primary-hover`; press scales to 0.98 over 150ms (off under reduced motion). The 404 repeats it at 56px tall.
 - **Ghost link button:** fully rounded, 44px, muted 15px semibold text and 20px icon; hover fills `raised` and lifts text to `text`.
 - **Mode toggle:** the web mirror of the app's mode selector: a surface pill (28px radius, 4px inset) holding two choices of at least 48px with 24px corners and 18px icons; the selected choice fills `raised`. Capped at 300px wide.
-- **Phone frame:** 44px-radius surface bezel, 10px padding, one-pixel `raised` ring, 34px-radius screen at the screenshot's 720:1447 ratio, height min(72dvh, 700px) with a 440px floor.
+- **Phone frame:** 44px-radius surface bezel, 10px padding, one-pixel `raised` ring, 34px-radius screen at the screenshot's 720:1447 ratio, mobile screen width min(350px, 100vw − 70px); from 1024px, screen height min(700px, max(200px, 100dvh − 294px)) reserves space for the header, footer, mode selector, bezel and main padding. Very short windows retain natural scrolling.
 - **Screenshot crossfade:** the page's single motion moment. Switching modes fades the outgoing screen to 0 opacity with a 6px blur and the incoming one in, 300ms ease-out; reduced motion removes the transition.
 - **Browser surfaces:** dark color-scheme and theme-color canvas, selection in OK blue at 40% under `text`, scrollbar thumb `raised` on the canvas track, focus rings 2px in `primary` (offset 3px from the canvas on buttons, inset on toggle choices).
-- **Layout:** content capped at 1180px with 24px side padding (40px from 640px); two columns from 1024px (copy column max 34rem, figure on the right), otherwise copy then figure; 80px header, hairline `raised` rule above the footer.
+- **Layout:** content capped at 1180px with 24px side padding (40px from 640px); two columns from 1024px (copy column max 34rem, figure on the right), otherwise copy then figure; desktop main padding 24px above and below; 80px header, hairline `raised` rule above the footer.
 
 **The Large Blue Text Rule.** White on the filled OK blue measures about 3.8:1 (about 3.1:1 on hover), so it carries only large text: 19px bold or bigger. Smaller labels never sit on filled blue.
 
