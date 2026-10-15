@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 /**
- * Square trackpad: drag to move, tap to click, drag the right strip to scroll.
+ * Trackpad: drag to move, tap to click, drag the right strip to scroll.
  * Movement is batched to one frame per display refresh so the pointer socket isn't flooded.
  */
 final class Touchpad extends View {
@@ -98,11 +98,9 @@ final class Touchpad extends View {
     }
 
     @Override protected void onMeasure(int widthSpec, int heightSpec) {
-        // Square, as wide as allowed but no taller than the space given.
         int w = MeasureSpec.getSize(widthSpec);
         int h = MeasureSpec.getMode(heightSpec) == MeasureSpec.UNSPECIFIED ? w : MeasureSpec.getSize(heightSpec);
-        int side = Math.min(w, h);
-        setMeasuredDimension(side, side);
+        setMeasuredDimension(w, h);
     }
 
     @Override protected void onDraw(Canvas c) {
@@ -122,13 +120,13 @@ final class Touchpad extends View {
         c.drawRoundRect(scrollBounds, 24 * density, 24 * density, scrollTrack);
         scrollLine.setAlpha(active ? 110 : 55);
         c.drawLine(lineX, top + 12 * density, lineX, bottom - 12 * density, scrollLine);
-        float halfGrip = 24 * density;
+        float halfGrip = 40 * density;
         float gripY = active ? Math.max(top + halfGrip + 8 * density,
                 Math.min(bottom - halfGrip - 8 * density, touchY)) : cy;
         scrollLine.setAlpha(active ? 255 : 200);
-        scrollBounds.set(lineX - 4 * density, gripY - halfGrip,
-                lineX + 4 * density, gripY + halfGrip);
-        c.drawRoundRect(scrollBounds, 4 * density, 4 * density, scrollLine);
+        scrollBounds.set(lineX - 10 * density, gripY - halfGrip,
+                lineX + 10 * density, gripY + halfGrip);
+        c.drawRoundRect(scrollBounds, 10 * density, 10 * density, scrollLine);
         if (touchX >= 0 && !scrollStrip) c.drawCircle(touchX, touchY, 28 * density, touch);
     }
 

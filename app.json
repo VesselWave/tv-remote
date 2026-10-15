@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "TV Remote",
+    "slug": "tv-remote",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "scheme": "tvremote",
+    "platforms": ["android"],
+    "android": {
+      "package": "lean.tvremote",
+      "permissions": ["INTERNET", "ACCESS_WIFI_STATE", "CHANGE_WIFI_MULTICAST_STATE", "BLUETOOTH", "BLUETOOTH_ADMIN", "BLUETOOTH_ADVERTISE"],
+      "blockedPermissions": ["android.permission.RECORD_AUDIO", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"]
+    },
+    "plugins": ["expo-dev-client", "expo-font", ["expo-splash-screen", {"backgroundColor": "#101418", "dark": {"backgroundColor": "#101418"}}], "./plugins/with-tv-remote.cjs"]
+  }
+}

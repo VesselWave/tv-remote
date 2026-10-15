@@ -1,0 +1,22 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'lean.tvremote'
+version = '1.0.0'
+
+android {
+  namespace 'lean.tvremote.module'
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+  // Keep the tested Java protocol engine as the single source of truth.
+  sourceSets {
+    main {
+      java.srcDirs += new File(projectDir, '../../../src')
+      java.exclude '**/MainActivity.java'
+    }
+  }
+}
