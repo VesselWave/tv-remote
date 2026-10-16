@@ -19,7 +19,7 @@ export interface RemoteState {
 /** `name` is the custom `label` if set, else the name the TV reports (`tvName`). */
 export interface SavedTv { host: string; name: string | null; tvName: string | null; label: string | null; paired: boolean }
 export interface FoundTv { host: string; name: string; btMac: string | null }
-export interface TvInput { id: string; label?: string; connected?: boolean }
+export interface TvInput { id: string; label?: string; connected?: boolean; hdmiSignalExist?: boolean }
 export interface TvApp { id: string; title?: string; params?: Record<string, unknown> }
 export interface TvResponse {
   devices?: TvInput[];

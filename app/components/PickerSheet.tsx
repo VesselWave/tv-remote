@@ -8,6 +8,8 @@ import { palette } from '../theme';
 import { Sheet } from './Sheet';
 
 type Choice = { id: string; title: string; description?: string; params?: Record<string, unknown> };
+const inputStatus = (input: TvInput) => input.connected === false ? 'Nothing connected'
+  : input.connected ? (input.hdmiSignalExist === false ? 'Connected, no signal' : 'Connected') : undefined;
 export function PickerSheet({ kind, onClose, report, ready }: {
   kind: 'apps' | 'inputs'; onClose: () => void; report: (message: string) => void; ready: boolean;
 }) {
@@ -26,7 +28,7 @@ export function PickerSheet({ kind, onClose, report, ready }: {
       if (generation.current !== token) return;
       const choices: Choice[] = kind === 'apps'
         ? (response.launchPoints || []).filter((app: TvApp) => !!app.id).map((app) => ({ id: app.id, title: app.title || app.id, params: app.params }))
-        : (response.devices || []).filter((input: TvInput) => !!input.id).map((input) => ({ id: input.id, title: input.label || input.id, description: input.connected === false ? 'Nothing connected' : input.id }));
+        : (response.devices || []).filter((input: TvInput) => !!input.id).map((input) => ({ id: input.id, title: input.label || input.id, description: inputStatus(input) }));
       setItems(choices.sort((a, b) => a.title.localeCompare(b.title)));
     }).catch((issue: unknown) => { if (generation.current === token) setError(errorMessage(issue)); })
       .finally(() => { if (generation.current === token) setLoading(false); });

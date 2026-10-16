@@ -6,6 +6,7 @@
 - Your existing pairing carries over.
 - Give a TV its own name on this phone, to tell apart several of the same model: tap the pencil next to it in the TV list. Leave it empty to go back to the TV's name.
 - The `.N` IP shorthand now uses the subnet of a TV the app already knows.
+- The input list says “Connected” under a port with something plugged in, or “Connected, no signal” if that device sends nothing, instead of the port’s ID.
 
 ## 0.3 — 2026-10-16
 
