@@ -18,27 +18,19 @@ Wave Remote is an Android app for controlling an LG webOS TV over your home netw
   <img src="docs/screenshots/touchpad.png" alt="Touchpad mode with a scroll strip on the right edge" width="32%">
 </p>
 
-## Features
-
 - D-pad with hold-to-repeat, or a touchpad with a scroll strip and two-finger scrolling
 - Volume, mute, channels, playback, inputs, apps and keyboard input
 - Your phone's volume buttons control the TV
 - Turn the TV on (Wake-on-LAN or Bluetooth) and off
 - Finds TVs on your network, or connects by IP address
 
-## Install
+## Setup
 
-1. Install the APK on an Android 7+ phone (arm64).
+1. Install the APK on an Android 7+ phone (arm64). Each release comes with a `.sha256` checksum and the signing certificate.
 2. Connect the phone to the same network as the TV. Guest Wi-Fi and client isolation can get in the way.
 3. Open the app, pick your TV and accept the pairing prompt on the TV. The prompt may say "LG Mobile" ([why](NOTICE.md)).
 
-Each release comes with a `.sha256` checksum and the signing certificate.
-
-### Turning the TV on
-
-Connect once while the TV is on so the app learns its wake addresses, and enable **Mobile TV On** (or **Turn on via Wi-Fi**) in the TV's settings. Bluetooth wake also needs the Nearby devices permission on Android 12+. A TV that's unplugged can't be woken.
-
-## Compatibility
+To turn the TV on from the app, connect once while it's on so the app learns its wake addresses, and enable **Mobile TV On** (or **Turn on via Wi-Fi**) in the TV's settings. Bluetooth wake also needs the Nearby devices permission on Android 12+.
 
 Tested with an LG 65UT7570PUB (webOS 24) and a Pixel 7. Other webOS TVs may work but haven't been checked. Android TV, Samsung, Roku and infrared aren't supported.
 
@@ -50,11 +42,7 @@ Tested with an LG 65UT7570PUB (webOS 24) and a Pixel 7. Other webOS TVs may work
 | Turning on doesn't work | Enable Mobile TV On and connect once while the TV is on. |
 | Keyboard does nothing | Select a text field on the TV first. |
 
-## Privacy
-
-The app only talks to your TV. There's no backend, telemetry or crash reporting. Pairing keys and settings stay in the app's private storage, and Android backup is off. It asks for network and Wi-Fi multicast access to find and control the TV, and Bluetooth for the optional wake-up.
-
-Newer TVs use TLS, with the certificate pinned at first pairing. Older ones may fall back to unencrypted WebSockets, so use a network you trust. To report a vulnerability, see [SECURITY.md](SECURITY.md).
+Pairing keys and settings stay in the app's private storage, and Android backup is off. Newer TVs use TLS, with the certificate pinned at first pairing; older ones may fall back to unencrypted WebSockets, so use a network you trust. To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Building
 
@@ -67,10 +55,8 @@ bun run typecheck && bun run lint && bun test
 ./build.sh debug    # writes dist/wave-remote-v<version>-debug.apk
 ```
 
-The UI is Expo and React Native. The TV protocol is a Java engine in `src/me/vwave/remote`, wrapped by the Expo module in `modules/wave-remote`. Expo Go can't load that module, so install the built APK.
+The UI is Expo and React Native. The TV protocol is a Java engine in `src/me/vwave/remote`, wrapped by the Expo module in `modules/wave-remote`. Expo Go can't load that module, so install the built APK. See [CONTRIBUTING.md](CONTRIBUTING.md), [docs/RELEASING.md](docs/RELEASING.md) and [docs/PROTOCOL.md](docs/PROTOCOL.md) for more; the download site lives in [`site/`](site/README.md).
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development, [docs/RELEASING.md](docs/RELEASING.md) for signed releases and [docs/PROTOCOL.md](docs/PROTOCOL.md) for protocol notes. The download site lives in [`site/`](site/README.md).
+---
 
-## License
-
-MIT; see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Wave Remote is an independent project, not affiliated with or endorsed by LG Electronics. LG and webOS are trademarks of their owners.
+MIT licensed ([LICENSE](LICENSE), [NOTICE.md](NOTICE.md)). An independent project, not affiliated with or endorsed by LG Electronics. LG and webOS are trademarks of their owners.
