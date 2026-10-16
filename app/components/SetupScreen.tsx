@@ -73,14 +73,14 @@ export function SetupScreen({ state, run, onConnect, onBack }: {
     {saved.length && !onBack ? <>
       <Text variant="titleMedium" style={styles.savedHeading} accessibilityRole="header">Your TVs</Text>
       <View style={styles.devices}>
-        {saved.map((tv) => <List.Item key={tv.host} title={tv.name || 'LG TV'} description={tv.host} titleNumberOfLines={2} left={(props) => <List.Icon {...props} icon="television" />} right={(props) => <List.Icon {...props} icon="chevron-right" />} onPress={() => connect({ host: tv.host, name: tv.name || 'LG TV' })} disabled={busy} style={styles.device} />)}
+        {saved.map((tv) => <List.Item key={tv.host} title={tv.name || 'LG TV'} description={tv.host} accessibilityLabel={`${tv.name || 'LG TV'}, ${tv.host}`} titleNumberOfLines={2} left={(props) => <List.Icon {...props} icon="television" />} right={(props) => <List.Icon {...props} icon="chevron-right" />} onPress={() => connect({ host: tv.host, name: tv.name || 'LG TV' })} disabled={busy} style={styles.device} />)}
       </View>
     </> : null}
     <View style={styles.sectionHeading}><Text variant="titleMedium" accessibilityRole="header">Nearby TVs</Text>
       {searching ? <ActivityIndicator size={20} /> : <Button icon="refresh" onPress={() => void search()} disabled={!native || busy}>Search again</Button>}
     </View>
     <View style={styles.devices}>
-      {devices.map((device) => <List.Item key={device.host} title={device.name} description={savedHosts.has(device.host) ? `${device.host} · Paired` : device.host} titleNumberOfLines={2} left={(props) => <List.Icon {...props} icon="television" />} right={(props) => <List.Icon {...props} icon="chevron-right" />} onPress={() => connect(device)} disabled={busy} style={styles.device} />)}
+      {devices.map((device) => <List.Item key={device.host} title={device.name} description={savedHosts.has(device.host) ? `${device.host} · Paired` : device.host} accessibilityLabel={`${device.name}, ${device.host}${savedHosts.has(device.host) ? ', paired' : ''}`} titleNumberOfLines={2} left={(props) => <List.Icon {...props} icon="television" />} right={(props) => <List.Icon {...props} icon="chevron-right" />} onPress={() => connect(device)} disabled={busy} style={styles.device} />)}
       {searching ? <Text variant="bodyMedium" style={styles.empty}>Looking for LG webOS TVs…</Text> : null}
       {!searching && !devices.length && searched ? <Text variant="bodyMedium" style={styles.empty}>{searchError || 'No TVs found. Turn your TV on, check Wi-Fi, or enter its IP address below.'}</Text> : null}
     </View>
