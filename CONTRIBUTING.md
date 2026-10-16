@@ -8,7 +8,6 @@ the Java engine under `src/me/vwave/remote`.
 Run `bun run typecheck`, `bun run lint`, `bun test`, and `./test.sh` before submitting a
 change. For Android compilation, set `ANDROID_HOME` and `JAVA_HOME`, then run
 `./build.sh debug`. See [the README](README.md#building).
-PR CI runs the same checks and uploads a debug APK without using release secrets.
 
 For manual protocol work, `python3 tools/mock_tv.py <host-ip>` runs a mock TV and
 `tools/ssap_probe.py` sends single requests to a real one. `tools/build-legacy.sh`

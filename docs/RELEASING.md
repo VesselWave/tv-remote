@@ -65,8 +65,7 @@ git push origin "v$(cat VERSION)"
 The release workflow checks the tag against `VERSION`, runs tests, restores the
 private keystore to a temporary runner file, builds and verifies the release APK,
 and publishes the APK, `.sha256`, and `.certificate.txt` to GitHub Releases.
-The temporary keystore is removed even when a step fails. Signing secrets are never
-used by pull request CI.
+The temporary keystore is removed even when a step fails.
 
 Verify the release assets and compare the certificate SHA-256 digest with the
 previous release. Download the APK and checksum into the same directory and run
