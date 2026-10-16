@@ -1,0 +1,4 @@
+- About 13 MB, down from 31 MB
+- No more "display over other apps" or storage permissions; the app never used them
+- A TV paired over an encrypted connection is never contacted unencrypted again
+- Looking for TVs only reads device details from the device that answered

@@ -6,12 +6,13 @@ Expo and React Native Paper components over new dependencies, and keep protocol 
 the Java engine under `src/me/vwave/remote`.
 
 Run `bun run typecheck`, `bun run lint`, `bun test`, and `./test.sh` before submitting a
-change. For Android compilation, set `ANDROID_HOME` and `JAVA_HOME`, then run
+change. After changing dependencies, run `bun install` and then `python3 tools/npm-lock.py`
+and commit both lockfiles: F-Droid installs with npm from `package-lock.json`. For Android compilation, set `ANDROID_HOME` and `JAVA_HOME`, then run
 `./build.sh debug`. See [the README](README.md#building).
 
 For manual protocol work, `python3 tools/mock_tv.py <host-ip>` runs a mock TV and
-`tools/ssap_probe.py` sends single requests to a real one. `tools/build-legacy.sh`
-builds the original framework-only Java app for comparison.
+`tools/ssap_probe.py` sends single requests to a real one. The original framework-only
+Java app is in the `v0.1` tag.
 
 For protocol bugs, include your TV model, firmware/webOS version, phone, Android version,
 and app version. Scrub client keys, device addresses, and personal information from logs.

@@ -17,6 +17,7 @@ __pycache__/
 .env.*
 !.env.example
 /tools/mock_tv.crt
+/tools/manifest.json
 .DS_Store
 .idea/
 .vscode/

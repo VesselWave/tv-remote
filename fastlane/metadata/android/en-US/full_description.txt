@@ -1,0 +1,18 @@
+Control your LG webOS TV from your Android phone, over your own Wi-Fi. Wave Remote talks to the TV directly: no account, no cloud, no ads, no analytics.
+
+<ul>
+<li>D-pad with hold-to-repeat, or a touchpad with a scroll strip and two-finger scrolling</li>
+<li>Volume, mute, channels, playback, inputs, apps and keyboard input</li>
+<li>Your phone's volume buttons control the TV</li>
+<li>Turn the TV on (Wake-on-LAN or Bluetooth) and off</li>
+<li>Finds TVs on your network, or connects by IP address</li>
+<li>Remembers several TVs and switches between them</li>
+</ul>
+
+<b>Setup:</b> connect your phone to the same network as the TV, open the app, pick your TV and accept the prompt on the TV. The prompt may say "LG Mobile": for compatibility, the app registers with the TV using the same public registration data as LG's mobile app. It only talks to your TV, never to LG or any other server.
+
+To turn the TV on from the app, connect once while it's on and enable <i>Mobile TV On</i> (or <i>Turn on via Wi-Fi</i>) in the TV's settings.
+
+Pairing keys stay on your phone. The connection to the TV is encrypted and the TV's certificate is pinned after the first pairing.
+
+Works with LG webOS TVs; tested with an LG 65UT7570PUB (webOS 24). Independent project, not affiliated with LG.

@@ -34,6 +34,7 @@ jobs:
           bun run typecheck
           bun run lint
           bun test
+          python3 tools/npm-lock.py --check
       - name: Test timing, pairing, pointer frames, pinning, discovery, and wake packets
         run: ./test.sh
       - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3

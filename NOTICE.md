@@ -25,4 +25,4 @@ Android supplies `org.json` at runtime.
 Since 0.2 the APK bundles open-source runtime libraries under their own licenses,
 including Expo, React Native and React (MIT), React Native Paper (MIT),
 `@expo/vector-icons` (MIT) with Material Design Icons by Pictogrammers (Apache-2.0),
-and their dependencies. `bun.lock` lists the exact versions.
+and their dependencies. `bun.lock` and `package-lock.json` list the exact versions.
