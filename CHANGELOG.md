@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4 — 2026-10-16
 
 - Remembers more than one TV. Use the switch button next to the remote's settings to change TVs or add another; each TV keeps its own pairing and wake-up details. Forgetting a TV only removes that one.
 - Your existing pairing carries over.
