@@ -52,10 +52,16 @@ separate cached key. The package ID remains `me.vwave.remote`.
 
 ## Publish a version
 
+Do every step, in order. A version isn't done until the download site shows it.
+
 1. Update `VERSION` (`major.minor` or `major.minor.patch`) and increase the positive integer in `VERSION_CODE`. Android uses this independent counter to determine update order.
-2. Update `CHANGELOG.md` and `docs/release-notes.md`. Refresh screenshots if the UI changed.
-3. Run `bun run typecheck`, `bun run lint`, `bun test`, `./test.sh` and `./build.sh debug`; test on a real phone and TV for behavior changes.
-4. Commit and push `main`, then create and push the matching tag:
+2. Date the `## Unreleased` heading in `CHANGELOG.md` (`## 0.4 — 2026-10-16`) and rewrite `docs/release-notes.md` for this version: what changed, whether it installs over the previous version and keeps the pairing, and the `sha256sum --check wave-remote-v<version>.apk.sha256` line.
+3. Run `bun run typecheck`, `bun run lint`, `bun test` and `./test.sh`. Build with `./build.sh release` (or `debug` without the signing key), install it on a real phone with `adb install -r`, and try each changelog item against a real TV.
+4. Refresh the screenshots from that phone, connected and showing the TV name and volume:
+   - `docs/screenshots/buttons.png` and `touchpad.png`: `adb exec-out screencap -p`, cropped to 1080×2170 from the top of the header to the bottom of the Back/Home/Settings row (on a 1080×2400 Pixel 7, `crop=1080:2170:0:140`).
+   - `site/public/screens/*.webp`: scaled from those to 720 px wide, e.g. `ffmpeg -i ../docs/screenshots/buttons.png -vf scale=720:-1:flags=lanczos -c:v libwebp -quality 85 buttons.webp`. Update the version and date in each `.webp.json` sidecar.
+   - `site/public/og.png`: re-render with `node og/render.cjs` (see [site/README.md](../site/README.md)) and look at the result.
+5. Commit and push `main`, then create and push the matching tag:
 
 ```sh
 git tag -a "v$(cat VERSION)" -m "Wave Remote $(cat VERSION)"
@@ -67,9 +73,9 @@ private keystore to a temporary runner file, builds and verifies the release APK
 and publishes the APK, `.sha256`, and `.certificate.txt` to GitHub Releases.
 The temporary keystore is removed even when a step fails.
 
-Verify the release assets and compare the certificate SHA-256 digest with the
-previous release. Download the APK and checksum into the same directory and run
-`sha256sum --check <filename>.apk.sha256`.
+6. Deploy the site while the workflow runs: `cd site && bun install && bun run typecheck && bun run deploy`.
+7. Once the release is published, verify it: download the APK and `.sha256` into one directory, run `sha256sum --check <filename>.apk.sha256`, and compare the certificate SHA-256 digest in `.certificate.txt` with the previous release's.
+8. Check the site: `curl -fsS https://remote.vwave.me/latest.json` shows the new version (it caches GitHub for up to ten minutes), `curl -fsSI https://remote.vwave.me/download` redirects to the new APK, and `/screens/buttons.webp` and `/og.png` match the committed files.
 
 If a release run fails before publishing, fix the cause and rerun the failed job.
 Do not move published tags or replace an already released APK; ship a new version.
