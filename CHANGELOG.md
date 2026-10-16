@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5 — 2026-10-16
+
+- The APK is about 13 MB, down from 31 MB.
+- Asks for fewer Android permissions: no more "display over other apps" or storage access, which the app never used.
+- A TV the app has already paired with over an encrypted connection is never contacted unencrypted again. Older TVs that only support unencrypted connections still work.
+- Looking for TVs only reads device details from the device that answered.
+- Builds no longer contain the build machine's network address.
+
 ## 0.4 — 2026-10-16
 
 - Remembers more than one TV. Use the switch button next to the remote's settings to change TVs or add another; each TV keeps its own pairing and wake-up details. Forgetting a TV only removes that one.
