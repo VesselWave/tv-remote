@@ -83,7 +83,11 @@ public final class ProtocolTest {
         String ev = events.poll(5, TimeUnit.SECONDS);
         check("pin mismatch refused (" + ev + ")", ev != null && ev.startsWith("state:DISCONNECTED") && ev.contains("certificate"));
 
-        // 7. A refused 3001 falls back to plain 3000 only for a TV that never pinned a certificate.
+        // 7. The reconnect probe sees the mock's TLS port and a closed one.
+        check("probe finds a listening TV", Net.reachable(host, Tv.SECURE_PORT, 1500));
+        check("probe reports a closed port", !Net.reachable("127.0.0.2", Tv.SECURE_PORT, 1500));
+
+        // 8. A refused 3001 falls back to plain 3000 only for a TV that never pinned a certificate.
         String legacyHost = "127.0.0.2";
         try (java.net.ServerSocket legacy = new java.net.ServerSocket(Tv.LEGACY_PORT, 1, java.net.InetAddress.getByName(legacyHost))) {
             legacy.setSoTimeout(3000);

@@ -9,8 +9,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
+import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -72,6 +74,19 @@ final class Net {
         for (int i = 0; i < 6; i++) p[i] = (byte) 0xFF;
         for (int i = 6; i < p.length; i += 6) System.arraycopy(m, 0, p, i, 6);
         return p;
+    }
+
+    /**
+     * Whether something accepts a TCP connection on {@code host:port} within {@code timeoutMs}. Cheap
+     * enough to poll: no TLS, no websocket, nothing that shows on the TV.
+     */
+    static boolean reachable(String host, int port, int timeoutMs) {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(host, port), timeoutMs);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /** SSDP search for webOS TVs, by IP address. */
