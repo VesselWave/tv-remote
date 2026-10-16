@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "tv-remote",
+      "name": "wave-remote",
       "dependencies": {
         "@expo/vector-icons": "^15.0.2",
         "eslint-config-expo": "~57.0.2",

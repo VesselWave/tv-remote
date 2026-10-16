@@ -1,4 +1,4 @@
-import type { RemoteState } from '../../modules/tv-remote';
+import type { RemoteState } from '../../modules/wave-remote';
 
 export function normalizeHost(raw: string): string | null {
   const host = raw.trim().replace(/^\.(\d{1,3})$/, '192.168.86.$1');

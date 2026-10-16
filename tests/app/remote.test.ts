@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { connectionLabel, normalizeHost } from '../../app/lib/remote';
-import type { RemoteState } from '../../modules/tv-remote';
+import type { RemoteState } from '../../modules/wave-remote';
 
 const disconnected: RemoteState = {
   host: '192.168.86.112', name: 'LG TV', paired: true, state: 'disconnected', detail: null,

@@ -20,20 +20,20 @@ link_flags=()
 case "$mode" in
     debug)
         link_flags+=(--debug-mode)
-        KS="${DEBUG_KEYSTORE:-${XDG_CACHE_HOME:-$HOME/.cache}/tv-remote/debug.keystore}"
+        KS="${DEBUG_KEYSTORE:-${XDG_CACHE_HOME:-$HOME/.cache}/wave-remote/debug.keystore}"
         mkdir -p "$(dirname "$KS")"
-        export TVREMOTE_STORE_PASSWORD=android TVREMOTE_KEY_PASSWORD=android
+        export WAVEREMOTE_STORE_PASSWORD=android WAVEREMOTE_KEY_PASSWORD=android
         KEY_ALIAS=androiddebugkey
         if [[ ! -f "$KS" ]]; then
-            keytool -genkeypair -keystore "$KS" -storepass:env TVREMOTE_STORE_PASSWORD \
-                -keypass:env TVREMOTE_KEY_PASSWORD -alias "$KEY_ALIAS" -keyalg RSA \
+            keytool -genkeypair -keystore "$KS" -storepass:env WAVEREMOTE_STORE_PASSWORD \
+                -keypass:env WAVEREMOTE_KEY_PASSWORD -alias "$KEY_ALIAS" -keyalg RSA \
                 -keysize 2048 -validity 10000 -dname 'CN=Android Debug,O=Android,C=US' >/dev/null 2>&1
         fi
         ;;
     release)
         : "${RELEASE_KEYSTORE:?Set RELEASE_KEYSTORE to your private signing keystore}"
-        : "${TVREMOTE_STORE_PASSWORD:?Set TVREMOTE_STORE_PASSWORD}"
-        : "${TVREMOTE_KEY_PASSWORD:?Set TVREMOTE_KEY_PASSWORD}"
+        : "${WAVEREMOTE_STORE_PASSWORD:?Set WAVEREMOTE_STORE_PASSWORD}"
+        : "${WAVEREMOTE_KEY_PASSWORD:?Set WAVEREMOTE_KEY_PASSWORD}"
         : "${RELEASE_KEY_ALIAS:?Set RELEASE_KEY_ALIAS}"
         KS="$RELEASE_KEYSTORE"
         KEY_ALIAS="$RELEASE_KEY_ALIAS"
@@ -63,9 +63,9 @@ PYZIP
 "$BT/zipalign" -f -p 4 build/unsigned.apk build/aligned.apk
 suffix=""
 if [[ "$mode" == debug ]]; then suffix="-debug"; fi
-APK="dist/tv-remote-legacy-v$VERSION_NAME$suffix.apk"
+APK="dist/wave-remote-legacy-v$VERSION_NAME$suffix.apk"
 "$BT/apksigner" sign --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
-    --ks-pass env:TVREMOTE_STORE_PASSWORD --key-pass env:TVREMOTE_KEY_PASSWORD \
+    --ks-pass env:WAVEREMOTE_STORE_PASSWORD --key-pass env:WAVEREMOTE_KEY_PASSWORD \
     --out "$APK" build/aligned.apk
 "$BT/apksigner" verify --verbose --print-certs "$APK" > "$APK.certificate.txt"
 "$BT/zipalign" -c -p 4 "$APK"

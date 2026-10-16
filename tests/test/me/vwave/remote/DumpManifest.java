@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 /** Prints the register manifest the app sends, for scripts/ssap_probe.py. */
 public final class DumpManifest {

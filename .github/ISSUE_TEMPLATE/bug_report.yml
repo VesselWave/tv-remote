@@ -1,10 +1,10 @@
 name: Bug report
-description: Report a problem with TV Remote.
+description: Report a problem with Wave Remote.
 body:
   - type: input
     id: version
     attributes:
-      label: TV Remote version
+      label: Wave Remote version
       placeholder: e.g. 1.0.0
     validations:
       required: true

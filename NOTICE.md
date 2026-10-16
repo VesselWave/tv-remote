@@ -1,6 +1,6 @@
 # Project and protocol provenance
 
-TV Remote is an independent project by VesselWave. It is not affiliated with,
+Wave Remote is an independent project by VesselWave. It is not affiliated with,
 sponsored by, or endorsed by LG Electronics. LG, LG ThinQ, and webOS are trademarks
 of their respective owners.
 

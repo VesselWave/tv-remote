@@ -1,7 +1,7 @@
 # Security
 
 Please report vulnerabilities privately through
-[GitHub private vulnerability reporting](https://github.com/VesselWave/tv-remote/security/advisories/new).
+[GitHub private vulnerability reporting](https://github.com/VesselWave/wave-remote/security/advisories/new).
 Include steps to reproduce and the affected app version. Do not post TV pairing keys
 or signing material in public issues. Only the latest release receives fixes.
 

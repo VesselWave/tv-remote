@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 import java.lang.reflect.Method;
 public final class WolTest {
     public static void main(String[] a) throws Exception {

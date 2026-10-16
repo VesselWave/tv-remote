@@ -2,7 +2,7 @@ import { request } from '../lib/transport';
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Icon, List, Searchbar, Text } from 'react-native-paper';
-import { native, type TvApp, type TvInput } from '../../modules/tv-remote';
+import { native, type TvApp, type TvInput } from '../../modules/wave-remote';
 import { commands, errorMessage } from '../lib/remote';
 import { palette } from '../theme';
 import { Sheet } from './Sheet';

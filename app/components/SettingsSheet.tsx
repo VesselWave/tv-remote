@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, Icon, List, Text, TouchableRipple } from 'react-native-paper';
-import { native, type RemoteState } from '../../modules/tv-remote';
+import { native, type RemoteState } from '../../modules/wave-remote';
 import { connectionLabel } from '../lib/remote';
 import { palette } from '../theme';
 import { Sheet } from './Sheet';

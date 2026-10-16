@@ -1,4 +1,4 @@
-package lean.tvremote
+package me.vwave.remote
 
 import android.content.Context
 import android.view.ViewGroup.LayoutParams
@@ -17,9 +17,9 @@ class TvTouchpadView(context: Context, appContext: AppContext) : ExpoView(contex
   private fun install() {
     removeAllViews()
     pad = Touchpad(context, 0xFF1E222A.toInt(), 0xFF8A93A6.toInt(), natural, object : Touchpad.Pointer {
-      override fun move(dx: Int, dy: Int) { TvRemoteModule.pointer { it.move(dx, dy) } }
-      override fun click() { TvRemoteModule.pointer { it.click() } }
-      override fun scroll(dx: Int, dy: Int) { TvRemoteModule.pointer { it.scroll(dx, dy) } }
+      override fun move(dx: Int, dy: Int) { WaveRemoteModule.pointer { it.move(dx, dy) } }
+      override fun click() { WaveRemoteModule.pointer { it.click() } }
+      override fun scroll(dx: Int, dy: Int) { WaveRemoteModule.pointer { it.scroll(dx, dy) } }
     })
     addView(pad, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
   }

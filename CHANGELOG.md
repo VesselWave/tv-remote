@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Renamed from TV Remote to Wave Remote. The package ID is now `me.vwave.remote` and the download site is [remote.vwave.me](https://remote.vwave.me).
+- Because the package ID changed, this version installs alongside 0.2 instead of updating it. Pair your TV again, then uninstall the old app.
+
 ## 0.2 — 2026-10-15
 
 The remote is rebuilt with Expo and React Native, keeping the same layout and protocol engine.

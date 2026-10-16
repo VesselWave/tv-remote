@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Talk SSAP to a real webOS TV using TV Remote's stored client key, so no new pairing prompt.
+"""Talk SSAP to a real webOS TV using Wave Remote's stored client key, so no new pairing prompt.
 
 usage: ssap_probe.py <tv-ip> <keyfile> <step>...
   step:  ssap://uri[=json-payload]     request, print the response

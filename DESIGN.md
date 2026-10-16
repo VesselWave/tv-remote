@@ -1,5 +1,5 @@
 ---
-name: TV Remote
+name: Wave Remote
 description: A familiar dark Android remote with Material setup and menus.
 colors:
   background: "#0F1115"
@@ -132,7 +132,7 @@ components:
     padding: "10px"
 ---
 
-# Design System: TV Remote
+# Design System: Wave Remote
 
 ## Overview
 

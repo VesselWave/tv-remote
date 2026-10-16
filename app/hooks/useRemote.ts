@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
-import { initialState, native } from '../../modules/tv-remote';
+import { initialState, native } from '../../modules/wave-remote';
 import { errorMessage } from '../lib/remote';
 
 export function useRemote() {

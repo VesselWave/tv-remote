@@ -3,7 +3,7 @@ import { AppState, Pressable, StyleSheet, View, type StyleProp, type ViewStyle }
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { native } from '../../modules/tv-remote';
+import { native } from '../../modules/wave-remote';
 import { palette } from '../theme';
 
 type Props = {

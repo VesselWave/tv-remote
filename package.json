@@ -1,5 +1,5 @@
 {
-  "name": "tv-remote",
+  "name": "wave-remote",
   "private": true,
   "main": "index.ts",
   "scripts": {

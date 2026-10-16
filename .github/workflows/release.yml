@@ -47,8 +47,8 @@ jobs:
           RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
           RELEASE_KEYSTORE: ${{ runner.temp }}/release.keystore
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-          TVREMOTE_STORE_PASSWORD: ${{ secrets.TVREMOTE_STORE_PASSWORD }}
-          TVREMOTE_KEY_PASSWORD: ${{ secrets.TVREMOTE_KEY_PASSWORD }}
+          WAVEREMOTE_STORE_PASSWORD: ${{ secrets.WAVEREMOTE_STORE_PASSWORD }}
+          WAVEREMOTE_KEY_PASSWORD: ${{ secrets.WAVEREMOTE_KEY_PASSWORD }}
         run: |
           set -euo pipefail
           : "${RELEASE_KEYSTORE_BASE64:?Missing release signing secrets; see docs/RELEASING.md}"
@@ -62,11 +62,11 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$RELEASE_TAG" --verify-tag --title "TV Remote $RELEASE_TAG" \
+          gh release create "$RELEASE_TAG" --verify-tag --title "Wave Remote $RELEASE_TAG" \
             --notes-file docs/release-notes.md \
-            "dist/tv-remote-$RELEASE_TAG.apk" \
-            "dist/tv-remote-$RELEASE_TAG.apk.sha256" \
-            "dist/tv-remote-$RELEASE_TAG.apk.certificate.txt"
+            "dist/wave-remote-$RELEASE_TAG.apk" \
+            "dist/wave-remote-$RELEASE_TAG.apk.sha256" \
+            "dist/wave-remote-$RELEASE_TAG.apk.certificate.txt"
       - name: Remove signing material
         if: always()
         run: rm -f "${{ runner.temp }}/release.keystore"
