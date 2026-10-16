@@ -18,8 +18,9 @@ type Props = {
   color?: string;
   style?: StyleProp<ViewStyle>;
 };
-export function RemoteButton({ label, icon, caption, onPress, repeat, disabled, accent, color = palette.text, style }: Props) {
+export function RemoteButton({ label, icon, caption, onPress, repeat, disabled, accent, color: enabledColor = palette.text, style }: Props) {
   const [pressed, setPressed] = useState(false);
+  const color = disabled ? palette.onDisabled : enabledColor;
   const held = useRef(false);
   const stop = () => {
     setPressed(false);
@@ -72,15 +73,16 @@ export function Dpad({ disabled }: { disabled: boolean }) {
   </View>;
 }
 export function Rocker({ label, up, down, disabled }: { label: string; up: string; down: string; disabled: boolean }) {
-  return <View style={styles.rocker}>
+  return <View style={[styles.rocker, disabled && styles.disabled]}>
     <RemoteButton label={`${label} up`} icon={label === 'Volume' ? 'plus' : 'chevron-up'} repeat={{ key: up }} disabled={disabled} style={styles.rockerButton} />
-    <Text style={styles.rockerLabel}>{label === 'Volume' ? 'VOL' : 'CH'}</Text>
+    <Text style={[styles.rockerLabel, disabled && styles.disabledText]}>{label === 'Volume' ? 'VOL' : 'CH'}</Text>
     <RemoteButton label={`${label} down`} icon={label === 'Volume' ? 'minus' : 'chevron-down'} repeat={{ key: down }} disabled={disabled} style={styles.rockerButton} />
   </View>;
 }
 const styles = StyleSheet.create({
   button: { minHeight: 48, borderRadius: 18, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', paddingHorizontal: 4 },
-  label: { textAlign: 'center' }, caption: { fontSize: 12, marginTop: 2, textAlign: 'center' }, pressed: { backgroundColor: palette.raised }, disabled: { opacity: 0.44 },
+  label: { textAlign: 'center' }, caption: { fontSize: 12, marginTop: 2, textAlign: 'center' }, pressed: { backgroundColor: palette.raised },
+  disabled: { backgroundColor: palette.disabled }, disabledText: { color: palette.onDisabled },
   dpad: { alignSelf: 'center', gap: 8 }, dpadRow: { flexDirection: 'row', gap: 8 },
   round: { width: 84, height: 84, borderRadius: 42 }, spacer: { width: 84, height: 84 },
   rocker: { width: 84, height: 144, borderRadius: 42, backgroundColor: palette.surface, overflow: 'hidden' },

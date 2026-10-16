@@ -9,6 +9,8 @@ colors:
   muted: "#A4ADBE"
   accent: "#3D7BFF"
   power: "#FF5A5F"
+  disabled: "#171A20"
+  on-disabled: "#4E5564"
   primary: "#ADC6FF"
   on-primary: "#002E69"
   primary-container: "#164788"
@@ -162,7 +164,9 @@ This is a code-derived record of the Expo implementation, not a runtime visual a
 
 `background` is the app canvas; `surface` holds remote buttons and sheets; `raised` separates navigation, selected modes and device summaries. `text` and `muted` distinguish primary labels from explanations. `outline` and `outline-variant` belong to the Material field/divider vocabulary. Tonal elevation colors live in the sidecar.
 
-`power` marks power, active mute and disconnected remote status. The softer `error` pair marks Material errors and the explicit Forget TV action; error containers retain their own foreground pair.
+`power` marks power, active mute and disconnected remote status.
+
+`disabled` and `on-disabled` are the one look for TV controls the TV can't take: every key, rocker (with its VOL/CH label), the OK control and the navigation row switch to them, whatever their usual fill. Power keeps its own look whenever it can act, so it stands alone as the way back. The softer `error` pair marks Material errors and the explicit Forget TV action; error containers retain their own foreground pair.
 
 **The Two Blues Rule.** Preserve the remote's accent blue; use Paper primary for Material actions and selections.
 
@@ -194,7 +198,7 @@ Remote keys are rounded rectangles; D-pad controls and rockers use the circular-
 
 ## Components
 
-- **Remote buttons:** centered text or MaterialCommunityIcons (26), clipped ripple, selection haptic and a raised pressed fill. Disabled controls use opacity 0.44. Repeat controls expose a hold hint and stop on release or app backgrounding.
+- **Remote buttons:** centered text or MaterialCommunityIcons (26), clipped ripple, selection haptic and a raised pressed fill. Disabled controls use the `disabled` fill and `on-disabled` foreground instead of fading, so differently filled controls dim to the same tone. While disconnected the touchpad is replaced by a `disabled` panel; the native pad isn't mounted. Repeat controls expose a hold hint and stop on release or app backgrounding.
 - **D-pad and rockers:** retain the source geometry. OK carries the blue accent; rocker labels remain muted between plus and minus keys.
 - **Mode selector and navigation:** mode choices have a minimum height of 48, with raised selected fill and muted unselected text. Bottom navigation retains raised fill and source order.
 - **Material buttons and fields:** contained primary actions, outlined secondary actions and text actions use Paper defaults. IP and keyboard inputs are outlined with labels and HelperText; errors and disabled state remain visible. Forget TV requires its existing confirmation step and error-colored action.

@@ -75,8 +75,8 @@
       }
     ],
     "nativeStates": {
-      "remoteDisabledOpacity": 0.44,
-      "touchpadDisabledOpacity": 0.6,
+      "remoteDisabledFill": "#171A20",
+      "remoteDisabledForeground": "#4E5564",
       "remoteRipple": "#FFFFFF22",
       "sheetScrim": "#00000099"
     },
@@ -180,7 +180,7 @@
       "kind": "button",
       "description": "Panel translation; native behavior remains authoritative.",
       "html": "<button class=\"ds-remote\">Inputs</button>",
-      "css": ".ds-remote{font-family:sans-serif;cursor:pointer;background:#1E222A;color:#E9ECF2;border:0;border-radius:18px;min-height:48px;padding:0 4px;font-size:15px;}.ds-remote:hover,.ds-remote:active{background:#2A2F3A}.ds-remote:disabled{opacity:.44}.ds-remote:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
+      "css": ".ds-remote{font-family:sans-serif;cursor:pointer;background:#1E222A;color:#E9ECF2;border:0;border-radius:18px;min-height:48px;padding:0 4px;font-size:15px;}.ds-remote:hover,.ds-remote:active{background:#2A2F3A}.ds-remote:disabled{background:#171A20;color:#4E5564}.ds-remote:focus-visible{outline:2px solid #ADC6FF;outline-offset:2px}",
       "refersTo": "remote-button"
     },
     {

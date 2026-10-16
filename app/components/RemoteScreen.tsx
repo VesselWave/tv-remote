@@ -53,9 +53,10 @@ export function RemoteScreen({ state, setPanel, power, run }: {
       })}
     </View>
     <View style={styles.pad}>
-      {state.touchpad && NativeTouchpad ? <View style={[styles.touchpad, !ready && styles.inactivePad]} pointerEvents={ready ? 'auto' : 'none'}>
-        <NativeTouchpad style={styles.nativePad} naturalScrolling={state.naturalScrolling} />
-        {!ready ? <View style={styles.offlinePad}><MaterialCommunityIcons name="television-off" size={28} color={palette.muted} /><Text variant="bodyMedium" style={styles.offlineText}>Connect to use the touchpad</Text></View> : null}
+      {state.touchpad && NativeTouchpad ? <View style={[styles.touchpad, !ready && styles.offlinePad]}>
+        {/* The native pad draws its own hints, so leave it out entirely while it can't be used. */}
+        {ready ? <NativeTouchpad style={styles.nativePad} naturalScrolling={state.naturalScrolling} />
+          : <><MaterialCommunityIcons name="television-off" size={28} color={palette.onDisabled} /><Text variant="bodyMedium" style={styles.offlineText}>Connect to use the touchpad</Text></>}
       </View> : <Dpad disabled={!ready} />}
     </View>
     <View style={styles.landingZone} />
@@ -78,6 +79,6 @@ const styles = StyleSheet.create({
   modeContent: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   pad: { flex: 1, minHeight: 268, justifyContent: 'center' },
   touchpad: { flex: 1, minHeight: 268, borderRadius: 28, overflow: 'hidden' }, nativePad: { flex: 1, minHeight: 268 },
-  inactivePad: { opacity: 0.6 }, offlinePad: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: palette.surface, alignItems: 'center', justifyContent: 'center', gap: 12 },
+  offlinePad: { backgroundColor: palette.disabled, alignItems: 'center', justifyContent: 'center', gap: 12 },
   offlineText: { color: palette.muted }, landingZone: { height: 72 }, navigation: { marginBottom: 0 }, navButton: { minHeight: 52, backgroundColor: palette.raised },
 });

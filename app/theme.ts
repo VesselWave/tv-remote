@@ -4,6 +4,8 @@ import { MD3DarkTheme } from 'react-native-paper';
 export const palette = {
   background: '#0F1115', surface: '#1E222A', raised: '#2A2F3A',
   text: '#E9ECF2', muted: '#A4ADBE', accent: '#3D7BFF', power: '#FF5A5F',
+  // One look for every TV control while the TV can't take input, whatever its usual fill.
+  disabled: '#171A20', onDisabled: '#4E5564',
 };
 export const theme = {
   ...MD3DarkTheme,
