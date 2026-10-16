@@ -6,7 +6,7 @@ import { commands, connectionLabel } from '../lib/remote';
 import { palette } from '../theme';
 import { Dpad, RemoteButton, Rocker } from './RemoteButton';
 
-export type Panel = 'settings' | 'inputs' | 'apps' | 'keyboard' | null;
+export type Panel = 'settings' | 'tvs' | 'inputs' | 'apps' | 'keyboard' | null;
 export function RemoteScreen({ state, setPanel, power, run }: {
   state: RemoteState; setPanel: (panel: Panel) => void; power: () => void;
   run: (action: () => Promise<unknown>) => Promise<boolean>;
@@ -21,6 +21,7 @@ export function RemoteScreen({ state, setPanel, power, run }: {
         <Text style={[styles.status, !ready && !busy && { color: palette.power }]} numberOfLines={2} accessibilityLiveRegion="polite">{connectionLabel(state)}</Text>
       </Pressable>
       {busy ? <ActivityIndicator size={18} style={styles.activity} /> : null}
+      <RemoteButton label={state.tvs.length > 1 ? 'Switch TV' : 'Add or switch TV'} icon="swap-horizontal" onPress={() => setPanel('tvs')} style={styles.more} />
       <RemoteButton label="Remote settings" icon="dots-horizontal" onPress={() => setPanel('settings')} style={styles.more} />
     </View>
     <View style={styles.row}>

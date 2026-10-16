@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Remembers more than one TV. Use the switch button next to the remote's settings to change TVs or add another; each TV keeps its own pairing and wake-up details. Forgetting a TV only removes that one.
+- Your existing pairing carries over.
+- The `.N` IP shorthand now uses the subnet of a TV the app already knows.
+
 ## 0.3 — 2026-10-16
 
 - Renamed from TV Remote to Wave Remote. The package ID is now `me.vwave.remote` and the download site is [remote.vwave.me](https://remote.vwave.me).

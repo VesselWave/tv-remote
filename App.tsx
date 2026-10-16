@@ -12,16 +12,24 @@ import { SettingsSheet } from './app/components/SettingsSheet';
 import { PickerSheet } from './app/components/PickerSheet';
 import { FeedbackContext } from './app/components/Sheet';
 import { KeyboardSheet } from './app/components/KeyboardSheet';
+import { TvSheet } from './app/components/TvSheet';
+import { native } from './modules/wave-remote';
 
 function RemoteApp() {
   const { state, loading, message, setMessage, run, power } = useRemote();
   const [panel, setPanel] = useState<Panel>(null);
-  const showRemote = !!state.host && (state.paired || state.state === 'ready');
+  // Adding a TV shows setup on top of the current one, which can be resumed with Back.
+  const [adding, setAdding] = useState(false);
+  const hasRemote = !!state.host && (state.paired || state.state === 'ready');
+  const showRemote = hasRemote && !adding;
   const close = () => setPanel(null);
+  const add = () => { setPanel(null); setAdding(true); void run(() => native!.disconnect()); };
+  const back = () => { setAdding(false); void run(() => native!.reconnect()); };
   return <FeedbackContext.Provider value={{ message, dismiss: () => setMessage('') }}><SafeAreaView style={styles.safe}>
     <StatusBar style="light" />
     {loading ? <View style={styles.loading}><ActivityIndicator size="large" accessibilityLabel="Loading your remote" /></View>
-      : showRemote ? <RemoteScreen state={state} setPanel={setPanel} power={() => void power()} run={run} /> : <SetupScreen state={state} run={run} />}
+      : showRemote ? <RemoteScreen state={state} setPanel={setPanel} power={() => void power()} run={run} /> : <SetupScreen state={state} run={run} onConnect={() => setAdding(false)} onBack={adding && hasRemote ? back : undefined} />}
+    <TvSheet state={state} open={panel === 'tvs'} onClose={close} onAdd={add} run={run} />
     <SettingsSheet state={state} open={panel === 'settings'} onClose={close} run={run} />
     {panel === 'apps' || panel === 'inputs' ? <PickerSheet key={`${panel}-${state.host}-${state.state}`} kind={panel} onClose={close} report={setMessage} ready={state.state === 'ready'} /> : null}
     {panel === 'keyboard' ? <KeyboardSheet open ready={state.state === 'ready'} onClose={close} /> : null}

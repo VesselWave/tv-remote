@@ -3,16 +3,18 @@ import { connectionLabel, normalizeHost } from '../../app/lib/remote';
 import type { RemoteState } from '../../modules/wave-remote';
 
 const disconnected: RemoteState = {
-  host: '192.168.86.112', name: 'LG TV', paired: true, state: 'disconnected', detail: null,
-  volume: -1, muted: false, touchpad: false, naturalScrolling: true, waking: false, canWakeBluetooth: false,
+  host: '192.168.0.1', name: 'LG TV', paired: true, state: 'disconnected', detail: null,
+  volume: -1, muted: false, touchpad: false, naturalScrolling: true, waking: false, canWakeBluetooth: false, tvs: [],
 };
 describe('manual connection addresses', () => {
-  test('accepts IPv4 addresses and the personal LAN shorthand', () => {
-    expect(normalizeHost(' 192.168.86.112 ')).toBe('192.168.86.112');
-    expect(normalizeHost('.112')).toBe('192.168.86.112');
+  test('accepts IPv4 addresses and the .N shorthand on a known TV\'s subnet', () => {
+    expect(normalizeHost(' 192.168.0.1 ')).toBe('192.168.0.1');
+    expect(normalizeHost('.20', '192.168.0.1')).toBe('192.168.0.20');
+    expect(normalizeHost('.20', '10.1.2.3')).toBe('10.1.2.20');
+    expect(normalizeHost('.20')).toBeNull();
   });
   test('rejects malformed, out-of-range and non-address input before native calls', () => {
-    for (const host of ['', '.256', '256.1.2.3', '192.168.1', '1.2.3.4:3001', 'http://1.2.3.4', '1.2.3.4/path', '1.2.3.-1', '1.2.3.4\nextra']) {
+    for (const host of ['', '.256', '.-1', '256.1.2.3', '192.168.1', '1.2.3.4:3001', 'http://1.2.3.4', '1.2.3.4/path', '1.2.3.-1', '1.2.3.4\nextra']) {
       expect(normalizeHost(host)).toBeNull();
     }
   });

@@ -16,4 +16,5 @@ find tests/stubs tests/test -name '*.java' | sort > out/test-sources.txt
 javac --release 11 -cp "$JSON" -d out/tests @out/test-sources.txt \
     src/me/vwave/remote/{HeldKey,Tv,WebSocket,Prefs,Net}.java
 java -cp "out/tests:$JSON" me.vwave.remote.HeldKeyTest
+java -cp "out/tests:$JSON" me.vwave.remote.PrefsTest
 python3 tests/run_protocol.py

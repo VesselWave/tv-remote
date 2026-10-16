@@ -1,7 +1,9 @@
 import type { RemoteState } from '../../modules/wave-remote';
 
-export function normalizeHost(raw: string): string | null {
-  const host = raw.trim().replace(/^\.(\d{1,3})$/, '192.168.86.$1');
+/** `.N` is shorthand for host N on the same /24 as `near`, a TV address the app already knows. */
+export function normalizeHost(raw: string, near?: string | null): string | null {
+  const subnet = near?.match(/^(\d{1,3}\.){3}/)?.[0];
+  const host = raw.trim().replace(/^\.(\d{1,3})$/, subnet ? `${subnet}$1` : '$&');
   return /^(\d{1,3}\.){3}\d{1,3}$/.test(host) && host.split('.').every((part) => Number(part) <= 255)
     ? host : null;
 }

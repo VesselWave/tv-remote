@@ -13,7 +13,10 @@ export interface RemoteState {
   naturalScrolling: boolean;
   waking: boolean;
   canWakeBluetooth: boolean;
+  /** Saved TVs, including the selected one while it pairs. */
+  tvs: SavedTv[];
 }
+export interface SavedTv { host: string; name: string | null; paired: boolean }
 export interface FoundTv { host: string; name: string; btMac: string | null }
 export interface TvInput { id: string; label?: string; connected?: boolean }
 export interface TvApp { id: string; title?: string; params?: Record<string, unknown> }
@@ -44,5 +47,5 @@ export const NativeTouchpad = native
 export const initialState: RemoteState = {
   host: null, name: null, paired: false, state: 'disconnected', detail: null,
   volume: -1, muted: false, touchpad: false, naturalScrolling: true,
-  waking: false, canWakeBluetooth: false,
+  waking: false, canWakeBluetooth: false, tvs: [],
 };

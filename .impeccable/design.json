@@ -219,7 +219,7 @@
       "name": "Device Card",
       "kind": "card",
       "description": "Panel translation; native behavior remains authoritative.",
-      "html": "<div class=\"ds-device\"><strong>LG TV</strong><span>192.168.86.112</span><small>Connected</small></div>",
+      "html": "<div class=\"ds-device\"><strong>LG TV</strong><span>192.168.0.1</span><small>Connected</small></div>",
       "css": ".ds-device{display:flex;flex-direction:column;gap:4px;background:#2A2F3A;color:#E9ECF2;border-radius:16px;padding:20px;font-family:sans-serif}.ds-device strong{font-size:16px;font-weight:500;line-height:24px}.ds-device span{font-size:14px;line-height:20px;color:#A4ADBE}.ds-device small{font-size:12px;line-height:16px;color:#A4ADBE}",
       "refersTo": "device-card"
     },
@@ -227,7 +227,7 @@
       "name": "Outlined TV Field",
       "kind": "input",
       "description": "Panel translation; native behavior remains authoritative.",
-      "html": "<fieldset class=\"ds-field\"><legend>TV IP address</legend><input aria-label=\"TV IP address\" placeholder=\"192.168.86.112\" inputmode=\"decimal\"></fieldset>",
+      "html": "<fieldset class=\"ds-field\"><legend>TV IP address</legend><input aria-label=\"TV IP address\" placeholder=\"192.168.0.1\" inputmode=\"decimal\"></fieldset>",
       "css": ".ds-field{border:1px solid #7C8595;border-radius:4px;background:#1E222A;color:#A4ADBE;font:16px sans-serif;padding:8px 16px}.ds-field legend{font-size:12px}.ds-field input{background:transparent;color:#E9ECF2;border:0;font:16px sans-serif;width:100%;outline:none}.ds-field:hover{border-color:#E9ECF2}.ds-field:focus-within{border-color:#ADC6FF;outline:1px solid #ADC6FF;color:#ADC6FF}"
     },
     {

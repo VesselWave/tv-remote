@@ -232,7 +232,9 @@ class WaveRemoteModule : Module() {
     "state" to tv.state().name.lowercase(), "detail" to detail,
     "volume" to volume, "muted" to muted, "touchpad" to prefs.touchpad(),
     "naturalScrolling" to prefs.naturalScrolling(), "waking" to (wakeUntil != 0L),
-    "canWakeBluetooth" to (prefs.btMac() != null && prefs.wakeRegistered())
+    "canWakeBluetooth" to (prefs.btMac() != null && prefs.wakeRegistered()),
+    "tvs" to prefs.hosts().filter { prefs.paired(it) || it == prefs.host() }
+      .map { mapOf("host" to it, "name" to prefs.name(it), "paired" to prefs.paired(it)) }
   )
   private fun emit() { sendEvent("onChange", snapshot()) }
   private fun jsonMap(value: JSONObject): Map<String, Any?> = value.keys().asSequence().associateWith { jsonValue(value.opt(it)) }
