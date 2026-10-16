@@ -235,7 +235,7 @@ class WaveRemoteModule : Module() {
   private fun onName(name: String) { emit() }
 
   private fun snapshot(): Map<String, Any?> = mapOf(
-    "host" to prefs.host(), "name" to prefs.host()?.let { prefs.label(it) } ?: prefs.name(), "paired" to (prefs.clientKey() != null),
+    "host" to prefs.host(), "name" to (prefs.host()?.let { prefs.label(it) } ?: prefs.name()), "paired" to (prefs.clientKey() != null),
     "state" to tv.state().name.lowercase(), "detail" to detail,
     "volume" to volume, "muted" to muted, "touchpad" to prefs.touchpad(),
     "naturalScrolling" to prefs.naturalScrolling(), "waking" to (wakeUntil != 0L),
