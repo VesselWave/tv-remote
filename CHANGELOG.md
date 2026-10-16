@@ -4,6 +4,7 @@
 
 - Remembers more than one TV. Use the switch button next to the remote's settings to change TVs or add another; each TV keeps its own pairing and wake-up details. Forgetting a TV only removes that one.
 - Your existing pairing carries over.
+- Give a TV its own name on this phone, to tell apart several of the same model: tap the pencil next to it in the TV list. Leave it empty to go back to the TV's name.
 - The `.N` IP shorthand now uses the subnet of a TV the app already knows.
 
 ## 0.3 — 2026-10-16

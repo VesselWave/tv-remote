@@ -16,7 +16,8 @@ export interface RemoteState {
   /** Saved TVs, including the selected one while it pairs. */
   tvs: SavedTv[];
 }
-export interface SavedTv { host: string; name: string | null; paired: boolean }
+/** `name` is the custom `label` if set, else the name the TV reports (`tvName`). */
+export interface SavedTv { host: string; name: string | null; tvName: string | null; label: string | null; paired: boolean }
 export interface FoundTv { host: string; name: string; btMac: string | null }
 export interface TvInput { id: string; label?: string; connected?: boolean }
 export interface TvApp { id: string; title?: string; params?: Record<string, unknown> }
@@ -33,6 +34,7 @@ declare class WaveRemoteNative extends NativeModule<Events> {
   disconnect(): Promise<void>;
   discover(): Promise<FoundTv[]>;
   forget(): Promise<void>;
+  rename(host: string, label: string): Promise<void>;
   request(uri: string, payload: Record<string, unknown> | null): Promise<TvResponse>;
   button(key: string): Promise<void>;
   startHeld(key: string, pointer: boolean): Promise<void>;

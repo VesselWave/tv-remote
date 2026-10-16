@@ -97,6 +97,13 @@ class WaveRemoteModule : Module() {
       tv.connect()
     }.runOnQueue(Queues.MAIN)
 
+    AsyncFunction("rename") { host: String, label: String ->
+      prepare()
+      require(label.trim().length <= 40) { "Use a name of 40 characters or fewer" }
+      prefs.setLabel(host, label)
+      emit()
+    }.runOnQueue(Queues.MAIN)
+
     AsyncFunction("reconnect") { prepare(); stopWake(); tv.connect() }.runOnQueue(Queues.MAIN)
     AsyncFunction("disconnect") { prepare(); stopHeld(); stopWake(); tv.disconnect() }.runOnQueue(Queues.MAIN)
     AsyncFunction("forget") {
@@ -228,13 +235,14 @@ class WaveRemoteModule : Module() {
   private fun onName(name: String) { emit() }
 
   private fun snapshot(): Map<String, Any?> = mapOf(
-    "host" to prefs.host(), "name" to prefs.name(), "paired" to (prefs.clientKey() != null),
+    "host" to prefs.host(), "name" to prefs.host()?.let { prefs.label(it) } ?: prefs.name(), "paired" to (prefs.clientKey() != null),
     "state" to tv.state().name.lowercase(), "detail" to detail,
     "volume" to volume, "muted" to muted, "touchpad" to prefs.touchpad(),
     "naturalScrolling" to prefs.naturalScrolling(), "waking" to (wakeUntil != 0L),
     "canWakeBluetooth" to (prefs.btMac() != null && prefs.wakeRegistered()),
     "tvs" to prefs.hosts().filter { prefs.paired(it) || it == prefs.host() }
-      .map { mapOf("host" to it, "name" to prefs.name(it), "paired" to prefs.paired(it)) }
+      .map { mapOf("host" to it, "name" to (prefs.label(it) ?: prefs.name(it)), "tvName" to prefs.name(it),
+        "label" to prefs.label(it), "paired" to prefs.paired(it)) }
   )
   private fun emit() { sendEvent("onChange", snapshot()) }
   private fun jsonMap(value: JSONObject): Map<String, Any?> = value.keys().asSequence().associateWith { jsonValue(value.opt(it)) }

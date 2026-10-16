@@ -42,6 +42,15 @@ public final class PrefsTest {
         check("switched back", "key-a".equals(prefs.clientKey()) && "pin-a".equals(prefs.certPin()) && "Living room".equals(prefs.name()));
         check("other TV's name readable", "Bedroom".equals(prefs.name("10.0.0.6")));
 
+        // A custom label survives the TV reporting its name again, and clears back to it.
+        prefs.setLabel("10.0.0.6", "  Kids' room ");
+        prefs.setName("Living room");
+        check("label kept apart from the learned name", "Kids' room".equals(prefs.label("10.0.0.6")) && "Living room".equals(prefs.name()));
+        prefs.setLabel("10.0.0.5", "Lounge");
+        prefs.setLabel("10.0.0.5", " ");
+        prefs.setLabel("10.0.0.9", "Unknown");
+        check("blank label clears; unknown TV ignored", prefs.label("10.0.0.5") == null && prefs.label("10.0.0.9") == null);
+
         // A TV that never paired is dropped when another is selected.
         prefs.setTv("10.0.0.7", "Kitchen");
         prefs.setTv("10.0.0.6", null);
@@ -51,7 +60,7 @@ public final class PrefsTest {
         // Forgetting removes only the selected TV.
         prefs.forget();
         check("forgotten TV gone, none selected", prefs.host() == null && prefs.hosts().equals(Arrays.asList("10.0.0.5"))
-                && !ctx.store.containsKey("tv.10.0.0.6.key") && prefs.clientKey() == null);
+                && !ctx.store.containsKey("tv.10.0.0.6.key") && !ctx.store.containsKey("tv.10.0.0.6.label") && prefs.clientKey() == null);
         check("other TV still paired", prefs.paired("10.0.0.5"));
 
         // Fresh install.

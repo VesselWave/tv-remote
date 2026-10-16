@@ -13,7 +13,7 @@ import java.util.List;
  * under "tv.<host>.*"; "host" is the selected one, and the per-TV getters and setters act on it.
  */
 final class Prefs {
-    private static final String[] TV_FIELDS = {"name", "key", "pin", "macs", "btMac", "wakeRegistered"};
+    private static final String[] TV_FIELDS = {"name", "label", "key", "pin", "macs", "btMac", "wakeRegistered"};
     private final SharedPreferences sp;
 
     Prefs(Context ctx) {
@@ -61,6 +61,8 @@ final class Prefs {
         return h.isEmpty() ? Collections.<String>emptyList() : Arrays.asList(h.split(","));
     }
     String name(String host) { return sp.getString(field(host, "name"), null); }
+    /** A name the user gave this TV, to tell apart several of the same model; kept when the TV's own name is relearned. */
+    String label(String host) { return sp.getString(field(host, "label"), null); }
     boolean paired(String host) { return sp.getString(field(host, "key"), null) != null; }
 
     /**
@@ -106,6 +108,12 @@ final class Prefs {
     void setCertPin(String pin) { put("pin", pin); }
     void setMacs(List<String> macs) { put("macs", android.text.TextUtils.join(",", macs)); }
     void setName(String name) { put("name", name); }
+    /** An empty or null label goes back to the TV's own name. */
+    void setLabel(String host, String label) {
+        if (!hosts().contains(host)) return;
+        String l = label != null ? label.trim() : "";
+        sp.edit().putString(field(host, "label"), l.isEmpty() ? null : l).apply();
+    }
     void setBtMac(String mac) { put("btMac", mac); }
     void setWakeRegistered(boolean on) {
         String k = current("wakeRegistered");
