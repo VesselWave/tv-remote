@@ -31,7 +31,6 @@ export function SettingsSheet({ state, open, onClose, run }: {
       <Divider style={styles.divider} />
       <List.Item title="Reconnect" description="Start a fresh connection to this TV" left={(props) => <List.Icon {...props} icon="refresh" />} onPress={() => { void run(() => native!.reconnect()).then((success) => { if (success) close(); }); }} style={styles.action} />
       <List.Item title="Forget this TV" titleStyle={{ color: '#FFB4AB' }} description="Remove its saved pairing" left={(props) => <List.Icon {...props} color="#FFB4AB" icon="link-off" />} onPress={() => setConfirmForget(true)} style={styles.action} />
-      <View style={styles.local}><Icon source="shield-check-outline" color={palette.muted} size={18} /><Text variant="bodySmall" style={styles.secondary}>Your pairing stays on this phone.</Text></View>
     </ScrollView>}
   </Sheet>;
 }
@@ -40,5 +39,5 @@ const styles = StyleSheet.create({
   deviceInfo: { flex: 1, gap: 4 }, secondary: { color: palette.muted }, sectionTitle: { marginTop: 28, marginBottom: 8, marginHorizontal: 24, color: '#ADC6FF' },
   explanation: { marginHorizontal: 24, color: palette.muted, marginBottom: 12 }, radio: { marginHorizontal: 12, borderRadius: 12 }, radioContent: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 16, minHeight: 80 },
   divider: { marginHorizontal: 24, marginVertical: 20 }, action: { paddingHorizontal: 12, minHeight: 80 },
-  local: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 24 }, confirm: { paddingHorizontal: 24, gap: 24 }, actions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap' },
+  confirm: { paddingHorizontal: 24, gap: 24 }, actions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap' },
 });

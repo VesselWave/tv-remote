@@ -88,7 +88,6 @@ export function SetupScreen({ state, run, onConnect, onBack }: {
     <TextInput label="TV IP address" placeholder="192.168.0.1" mode="outlined" value={host} onChangeText={(value) => { setHost(value); setInvalid(false); }} keyboardType="decimal-pad" autoCorrect={false} autoCapitalize="none" returnKeyType="go" onSubmitEditing={() => connect()} error={invalid} disabled={!native || busy} />
     <HelperText type={invalid ? 'error' : 'info'}>{invalid ? 'Enter a valid IP address, such as 192.168.0.1.' : 'Find it in your TV’s Settings → Network.'}</HelperText>
     <Button mode="contained" icon="lan-connect" onPress={() => connect()} disabled={!native || busy || !host.trim()} contentStyle={styles.connect}>Connect</Button>
-    <View style={styles.privacy}><Icon source="shield-check-outline" size={20} color={palette.muted} /><Text variant="bodySmall" style={styles.secondary}>Local network only. No account required.</Text></View>
   </ScrollView>;
 }
 const styles = StyleSheet.create({
@@ -100,5 +99,5 @@ const styles = StyleSheet.create({
   sectionHeading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 48 },
   devices: { gap: 8 }, device: { backgroundColor: palette.surface, borderRadius: 16, minHeight: 80 }, empty: { color: palette.muted, paddingVertical: 20, lineHeight: 22 },
   savedHeading: { minHeight: 48, textAlignVertical: 'center', marginBottom: 8 },
-  manualHeading: { marginTop: 32, marginBottom: 16 }, connect: { minHeight: 52 }, privacy: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 32 },
+  manualHeading: { marginTop: 32, marginBottom: 16 }, connect: { minHeight: 52 },
 });
