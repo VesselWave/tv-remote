@@ -83,6 +83,37 @@ public final class ProtocolTest {
         String ev = events.poll(5, TimeUnit.SECONDS);
         check("pin mismatch refused (" + ev + ")", ev != null && ev.startsWith("state:DISCONNECTED") && ev.contains("certificate"));
 
+        // 7. A refused 3001 falls back to plain 3000 only for a TV that never pinned a certificate.
+        String legacyHost = "127.0.0.2";
+        try (java.net.ServerSocket legacy = new java.net.ServerSocket(Tv.LEGACY_PORT, 1, java.net.InetAddress.getByName(legacyHost))) {
+            legacy.setSoTimeout(3000);
+            prefs.setTv(legacyHost, "Legacy");
+            prefs.setClientKey("legacy-key");
+            prefs.setCertPin("11".repeat(32));
+            main(tv::connect);
+            expect("state:CONNECTING");
+            ev = events.poll(5, TimeUnit.SECONDS);
+            boolean refused = ev != null && ev.startsWith("state:DISCONNECTED");
+            try (java.net.Socket s = legacy.accept()) {
+                refused = false;
+            } catch (java.net.SocketTimeoutException e) {
+                // Nothing reached port 3000.
+            }
+            check("pinned TV never downgrades to plain ws (" + ev + ")", refused);
+
+            prefs.setCertPin(null);
+            main(tv::connect);
+            expect("state:CONNECTING");
+            boolean fellBack;
+            try (java.net.Socket s = legacy.accept()) {
+                fellBack = true;
+            } catch (java.net.SocketTimeoutException e) {
+                fellBack = false;
+            }
+            check("unpinned TV still falls back to plain ws://:3000", fellBack);
+            main(tv::disconnect);
+        }
+
         System.out.println(failures == 0 ? "ALL PASSED" : failures + " FAILED");
         System.exit(failures == 0 ? 0 : 1);
     }

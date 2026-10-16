@@ -119,7 +119,7 @@ final class Net {
             lock.release();
         }
         for (Map.Entry<String, String> e : locations.entrySet()) {
-            String xml = e.getValue() != null ? fetch(e.getValue()) : "";
+            String xml = e.getValue() != null ? fetch(e.getKey(), e.getValue()) : "";
             String name = tag(xml, "friendlyName");
             if (name != null && name.startsWith("[LG] ")) name = name.substring(5);
             String bt = tag(xml, "bluetoothMac");
@@ -134,12 +134,20 @@ final class Net {
         return m.find() ? m.group(1).trim() : null;
     }
 
-    private static String fetch(String location) {
+    /**
+     * Fetches an SSDP device description, only from the device that answered: any host on the LAN
+     * can reply to a search, so don't let it point the app at another address or follow redirects.
+     */
+    static String fetch(String ip, String location) {
         try {
-            HttpURLConnection c = (HttpURLConnection) new URL(location).openConnection();
+            URL url = new URL(location);
+            if (!"http".equals(url.getProtocol()) || !ip.equals(url.getHost())) return "";
+            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+            c.setInstanceFollowRedirects(false);
             c.setConnectTimeout(1500);
             c.setReadTimeout(1500);
             try (InputStream in = c.getInputStream()) {
+                if (c.getResponseCode() != 200) return "";
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 byte[] b = new byte[4096];
                 int n;

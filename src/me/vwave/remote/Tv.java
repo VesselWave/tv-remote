@@ -140,8 +140,11 @@ final class Tv {
                     main.removeCallbacks(keepalive);
                     closePointer();
                     failPending("Disconnected");
-                    // TVs from before webOS 4 only listen on plain ws://:3000.
-                    if (port == SECURE_PORT && state == State.CONNECTING && cause instanceof ConnectException) {
+                    // TVs from before webOS 4 only listen on plain ws://:3000. A TV with a pinned
+                    // certificate has spoken TLS before, so never downgrade it: a refused 3001 there
+                    // could be forced by someone on the network to read the client key in the clear.
+                    if (port == SECURE_PORT && state == State.CONNECTING && cause instanceof ConnectException
+                            && prefs.certPin() == null) {
                         open(host, LEGACY_PORT);
                         return;
                     }

@@ -16,5 +16,26 @@ public final class WolTest {
         for (Net.Found f : tvs.values()) found |= "Mock LG TV".equals(f.name) && "a8:23:fe:00:00:03".equals(f.btMac);
         System.out.println((found ? "ok   " : "FAIL ") + "SSDP discovery (name + bluetoothMac) " + tvs.keySet());
         if (!found) throw new AssertionError("Mock SSDP discovery failed");
+
+        // A device description is only fetched from the device that answered, without redirects.
+        String host = a.length > 0 ? a[0] : "127.0.0.1";
+        com.sun.net.httpserver.HttpServer redirect = com.sun.net.httpserver.HttpServer.create(
+                new java.net.InetSocketAddress(host, 0), 0);
+        redirect.createContext("/", x -> {
+            x.getResponseHeaders().add("Location", "http://" + host + ":1990/desc.xml");
+            x.sendResponseHeaders(302, -1);
+            x.close();
+        });
+        redirect.start();
+        try {
+            boolean scoped = Net.fetch(host, "http://" + host + ":1990/desc.xml").contains("friendlyName")
+                    && Net.fetch("192.0.2.1", "http://" + host + ":1990/desc.xml").isEmpty()
+                    && Net.fetch(host, "file:///etc/hosts").isEmpty()
+                    && Net.fetch(host, "http://" + host + ":" + redirect.getAddress().getPort() + "/").isEmpty();
+            System.out.println((scoped ? "ok   " : "FAIL ") + "SSDP description only from the answering IP, no redirects");
+            if (!scoped) throw new AssertionError("SSDP fetch not scoped");
+        } finally {
+            redirect.stop(0);
+        }
     }
 }
