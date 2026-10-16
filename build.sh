@@ -14,7 +14,7 @@ VERSION_CODE=$(cat VERSION_CODE)
 if [[ ! "$VERSION_CODE" =~ ^[1-9][0-9]{0,8}$ ]]; then
     echo 'VERSION_CODE must be a positive integer of at most nine digits' >&2; exit 1
 fi
-# Comma-separated Android ABIs. arm64-v8a covers current phones and keeps the APK near 30 MB.
+# Comma-separated Android ABIs. arm64-v8a covers current phones and keeps the APK small.
 ABIS=${ABIS:-arm64-v8a}
 mode=${1:-debug}
 case "$mode" in
@@ -45,6 +45,8 @@ done
 [[ -d node_modules ]] || { echo 'Run bun install first' >&2; exit 1; }
 [[ -f "$KS" ]] || { echo "Signing keystore not found: $KS" >&2; exit 1; }
 
+# android/ is generated; start clean so a stale copy can't leak old modules or settings into the APK.
+rm -rf android
 bunx expo prebuild --platform android --no-install
 # GRADLE_FLAGS passes extra Gradle options, such as --max-workers=2 on machines with little memory.
 # shellcheck disable=SC2086

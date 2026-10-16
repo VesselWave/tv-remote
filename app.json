@@ -4,13 +4,12 @@
     "slug": "wave-remote",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
-    "scheme": "waveremote",
     "platforms": ["android"],
     "android": {
       "package": "me.vwave.remote",
       "permissions": ["INTERNET", "ACCESS_WIFI_STATE", "CHANGE_WIFI_MULTICAST_STATE", "BLUETOOTH", "BLUETOOTH_ADMIN", "BLUETOOTH_ADVERTISE"],
-      "blockedPermissions": ["android.permission.RECORD_AUDIO", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"]
+      "blockedPermissions": ["android.permission.RECORD_AUDIO", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.SYSTEM_ALERT_WINDOW", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"]
     },
-    "plugins": ["expo-dev-client", "expo-font", ["expo-splash-screen", {"backgroundColor": "#101418", "dark": {"backgroundColor": "#101418"}}], "./plugins/with-wave-remote.cjs"]
+    "plugins": ["expo-font", ["expo-splash-screen", {"backgroundColor": "#101418", "dark": {"backgroundColor": "#101418"}}], "./plugins/with-wave-remote.cjs"]
   }
 }

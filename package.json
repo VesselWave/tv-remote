@@ -3,7 +3,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "start": "expo start --dev-client --port 4000",
+    "start": "expo start --port 4000",
     "android": "expo run:android --port 4000",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -13,7 +13,6 @@
     "@expo/vector-icons": "^15.0.2",
     "eslint-config-expo": "~57.0.2",
     "expo": "~57.0.30",
-    "expo-dev-client": "~57.0.20",
     "expo-font": "~57.0.4",
     "expo-haptics": "~57.0.3",
     "expo-splash-screen": "~57.0.10",
@@ -29,5 +28,12 @@
     "@types/react": "~19.2.0",
     "eslint": "^9.0.0",
     "typescript": "~6.0.3"
+  },
+  "expo": {
+    "autolinking": {
+      "android": {
+        "buildFromSource": [".*"]
+      }
+    }
   }
 }

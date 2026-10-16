@@ -11,7 +11,10 @@ function request(extra = {}) { return { projectRoot, introspect: false, ...extra
 
 describe('Android integration plugin', () => {
   test('retains LAN access, private pairing, and permission boundaries', async () => {
-    const manifest = { application: [{ $: {} }], 'uses-permission': [
+    const manifest = { application: [{ $: {}, 'meta-data': [
+      { $: { 'android:name': 'expo.modules.updates.ENABLED', 'android:value': 'false' } },
+      { $: { 'android:name': 'other.setting', 'android:value': 'kept' } },
+    ] }], 'uses-permission': [
       { $: { 'android:name': 'android.permission.BLUETOOTH' } },
       { $: { 'android:name': 'android.permission.BLUETOOTH_ADMIN' } },
       { $: { 'android:name': 'android.permission.BLUETOOTH_ADVERTISE' } },
@@ -21,6 +24,17 @@ describe('Android integration plugin', () => {
     expect(result.modResults.manifest.application[0].$['android:allowBackup']).toBe('false');
     expect(result.modResults.manifest['uses-permission'][0].$['android:maxSdkVersion']).toBe('30');
     expect(result.modResults.manifest['uses-permission'][2].$['android:maxSdkVersion']).toBeUndefined();
+    expect(result.modResults.manifest.application[0]['meta-data'].map((item: { $: Record<string, string> }) => item.$['android:name'])).toEqual(['other.setting']);
+  });
+  test('release builds shrink, compress, and leave out the builder\'s IP address', async () => {
+    const properties = [{ type: 'property', key: 'expo.useLegacyPackaging', value: 'false' }, { type: 'comment', value: 'kept' }];
+    const result = await config().mods.android.gradleProperties({ modResults: properties, modRequest: request() });
+    const value = (key: string) => result.modResults.filter((item: { key?: string }) => item.key === key).map((item: { value: string }) => item.value);
+    expect(value('expo.useLegacyPackaging')).toEqual(['true']);
+    expect(value('android.enableMinifyInReleaseBuilds')).toEqual(['true']);
+    expect(value('android.enableShrinkResourcesInReleaseBuilds')).toEqual(['true']);
+    expect(value('reactNativeDevServerIp')).toEqual(['localhost']);
+    expect(result.modResults).toContainEqual({ type: 'comment', value: 'kept' });
   });
   test('volume-key handler is inserted once and template mismatch is explicit', async () => {
     const mod = config().mods.android.mainActivity;

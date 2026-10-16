@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text, TouchableRipple } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { native, NativeTouchpad, type RemoteState } from '../../modules/wave-remote';
 import { commands, connectionLabel } from '../lib/remote';
 import { palette } from '../theme';
