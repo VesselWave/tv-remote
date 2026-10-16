@@ -24,7 +24,7 @@ Preserve SSDP and manual connection, pairing and pinned certificates, D-pad with
 Protocol engine in src/me/vwave/remote; protocol notes in docs/PROTOCOL.md; mock TV in tools and JVM tests in tests. Existing screenshots may predate the current code.
 
 ## Brand Commitments
-User likes the existing remote UI and button positions. Preserve the current source order and dark palette; modernize setup, settings and menus with familiar Android Material components. The saved screenshots are from an older layout and must not override MainActivity.java. Keep header, power/input/mute, volume/apps/keyboard/channel, playback, mode selector, central pad, 72dp landing zone, and back/home/TV settings in that order.
+User likes the existing remote UI and button positions. Preserve the current source order and dark palette; modernize setup, settings and menus with familiar Android Material components. The saved screenshots are from an older layout and must not override `app/components/RemoteScreen.tsx`. Keep header, power/input/mute, volume/apps/keyboard/channel, playback, mode selector, central pad, 72dp landing zone, and back/home/TV settings in that order.
 
 ## Open Decisions
 iOS support is outside the current scope.

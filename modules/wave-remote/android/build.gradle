@@ -16,7 +16,6 @@ android {
   sourceSets {
     main {
       java.srcDirs += new File(projectDir, '../../../src')
-      java.exclude '**/MainActivity.java'
     }
   }
 }

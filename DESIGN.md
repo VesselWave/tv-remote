@@ -138,7 +138,7 @@ components:
 
 **Creative North Star: "The familiar Android remote"**
 
-Keep the existing remote's dark palette, control geometry and button order. Setup, settings and menus use React Native Paper's Android Material 3 components. PRODUCT.md supplies this binding direction; MainActivity.java is the reference for the incumbent remote, ahead of older saved screenshots.
+Keep the existing remote's dark palette, control geometry and button order. Setup, settings and menus use React Native Paper's Android Material 3 components. PRODUCT.md supplies this binding direction; `app/components/RemoteScreen.tsx` is the reference for the remote, ahead of older saved screenshots.
 
 This is a code-derived record of the Expo implementation, not a runtime visual approval. Sources are `app/theme.ts`, `app/components/`, `App.tsx` and the installed Paper Android theme. Frontmatter uses portable px strings for numeric native dimensions; interpret them as React Native layout units and native text sizes, not browser sizing requirements.
 
