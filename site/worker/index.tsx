@@ -10,8 +10,17 @@ const API = 'https://api.github.com/repos/VesselWave/wave-remote/releases/latest
 // Matches public/_headers, which covers the static files.
 const SECURITY_HEADERS = {
   'Strict-Transport-Security': 'max-age=31536000',
-  'Content-Security-Policy':
-    "default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' https://static.cloudflareinsights.com",
+    "connect-src 'self' https://cloudflareinsights.com",
+    "style-src-attr 'unsafe-inline'",
+    "img-src 'self' data:",
+    "object-src 'none'",
+    "base-uri 'none'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+  ].join('; '),
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
