@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="docs/brand/cover.svg" alt="TV Remote — Less app. More remote. A tiny, private Android remote for LG webOS TVs." width="100%">
+  <img src="docs/brand/cover.svg" alt="Wave Remote — Less app. More remote. A tiny, private Android remote for LG webOS TVs." width="100%">
 </p>
 
 <p align="center">
-  <a href="https://github.com/VesselWave/tv-remote/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/VesselWave/tv-remote?style=flat-square&amp;color=3d7bff"></a>
-  <a href="https://github.com/VesselWave/tv-remote/actions/workflows/ci.yml"><img alt="Checks and APK" src="https://github.com/VesselWave/tv-remote/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/VesselWave/wave-remote/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/VesselWave/wave-remote?style=flat-square&amp;color=3d7bff"></a>
+  <a href="https://github.com/VesselWave/wave-remote/actions/workflows/ci.yml"><img alt="Checks and APK" src="https://github.com/VesselWave/wave-remote/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Android 7 or newer" src="https://img.shields.io/badge/Android-7%2B-3d7bff?style=flat-square">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-3d7bff?style=flat-square"></a>
 </p>
@@ -13,7 +13,7 @@
 Control your LG webOS TV without an account, cloud service, ads, or analytics.<br>
 Built with Expo and React Native on a native Java protocol engine.</p>
 
-<p align="center"><a href="https://tvremote.vwave.me"><b>↓ Download the APK</b></a> · <a href="#get-connected">Setup</a> · <a href="#build-it-yourself">Build</a> · <a href="CHANGELOG.md">Changelog</a></p>
+<p align="center"><a href="https://remote.vwave.me"><b>↓ Download the APK</b></a> · <a href="#get-connected">Setup</a> · <a href="#build-it-yourself">Build</a> · <a href="CHANGELOG.md">Changelog</a></p>
 
 ## A remote, without the baggage
 
@@ -27,23 +27,23 @@ Built with Expo and React Native on a native Java protocol engine.</p>
 ## See it in action
 
 <p align="center">
-  <img src="docs/screenshots/buttons.png" alt="TV Remote on a Pixel 7: directional buttons, power, inputs, volume, channels, and media controls" width="32%">
+  <img src="docs/screenshots/buttons.png" alt="Wave Remote on a Pixel 7: directional buttons, power, inputs, volume, channels, and media controls" width="32%">
   &nbsp;&nbsp;
-  <img src="docs/screenshots/touchpad.png" alt="TV Remote touchpad mode with a dedicated vertical scroll strip" width="32%">
+  <img src="docs/screenshots/touchpad.png" alt="Wave Remote touchpad mode with a dedicated vertical scroll strip" width="32%">
 </p>
 <p align="center"><sub>Real app screenshots on Pixel 7. Buttons on the left, touchpad on the right.</sub></p>
 
 ## Get connected
 
-1. Download the `.apk` from the [latest release](https://github.com/VesselWave/tv-remote/releases/latest) (or from [tvremote.vwave.me](https://tvremote.vwave.me)) on your **Android 7+** phone (arm64). Allow installation from the browser or file manager when Android asks.
+1. Download the `.apk` from the [latest release](https://github.com/VesselWave/wave-remote/releases/latest) (or from [remote.vwave.me](https://remote.vwave.me)) on your **Android 7+** phone (arm64). Allow installation from the browser or file manager when Android asks.
 2. Put your phone and TV on the **same local network**. The TV can use Ethernet while the phone uses Wi-Fi. Guest networks and client isolation can block discovery and control.
-3. Turn on the TV, open TV Remote, and select your TV. If discovery misses it, enter the TV’s IP address from its network settings.
+3. Turn on the TV, open Wave Remote, and select your TV. If discovery misses it, enter the TV’s IP address from its network settings.
 4. Accept the pairing prompt **on the TV**. It may identify the client as **LG Mobile** because of the protocol registration manifest; see [NOTICE.md](NOTICE.md).
 
 To verify a download, put its `.sha256` file beside the APK and run:
 
 ```sh
-sha256sum --check tv-remote-v0.2.apk.sha256
+sha256sum --check wave-remote-v0.2.apk.sha256
 ```
 
 Use the filename for your version. Every release also includes the APK signing certificate details. Future official releases use the same signing identity so they can install as updates. Locally built debug APKs use a different key and cannot update official APKs in place.
@@ -84,7 +84,7 @@ Newer TVs use TLS with trust on first use and certificate pinning. Older TVs may
 
 ## Build it yourself
 
-The app is an Expo SDK 57 / React Native project in TypeScript with React Native Paper. A local Expo module (`modules/tv-remote`) wraps the Java protocol engine in `src/lean/tvremote`: discovery, pairing, certificate pinning, the pointer socket, held-key timing, wake-up and the native touchpad.
+The app is an Expo SDK 57 / React Native project in TypeScript with React Native Paper. A local Expo module (`modules/wave-remote`) wraps the Java protocol engine in `src/me/vwave/remote`: discovery, pairing, certificate pinning, the pointer socket, held-key timing, wake-up and the native touchpad.
 
 Requires **Bun**, **JDK 17+** (CI uses 21), **Python 3**, and the Android SDK with **platform 36 / build-tools 36.0.0**. Gradle downloads the remaining Android packages. Tests also need `curl`, `openssl`, and `sha256sum`.
 
@@ -95,7 +95,7 @@ bun install
 bun run typecheck && bun run lint && bun test
 ./test.sh
 ./build.sh debug
-adb install -r dist/tv-remote-v0.2-debug.apk
+adb install -r dist/wave-remote-v0.2-debug.apk
 ```
 
 `./build.sh` runs `expo prebuild` to generate `android/`, builds a release-optimized APK with Gradle, then signs and verifies it. `debug` uses a separate cached development key; `release` needs the private signing identity (see [RELEASING.md](docs/RELEASING.md)). Set `ABIS` (for example `arm64-v8a,armeabi-v7a`) to build for more architectures; the default is `arm64-v8a`. Expo Go can't load the native module, so use the built APK.
@@ -106,7 +106,7 @@ adb install -r dist/tv-remote-v0.2-debug.apk
 
 For manual protocol work, run `python3 tools/mock_tv.py <your-host-ip>`. `tools/ssap_probe.py` sends individual requests; `tools/tvshot.sh` captures the TV screen. `tools/build-legacy.sh` still builds the original framework-only Java app (v0.1 UI) for comparison. These developer tools are not part of the APK.
 
-[`DESIGN.md`](DESIGN.md) and [`PRODUCT.md`](PRODUCT.md) record the UI's design system and product constraints. [`site/`](site/README.md) is the download page at tvremote.vwave.me.
+[`DESIGN.md`](DESIGN.md) and [`PRODUCT.md`](PRODUCT.md) record the UI's design system and product constraints. [`site/`](site/README.md) is the download page at remote.vwave.me.
 
 ## Releases and contributing
 

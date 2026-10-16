@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
@@ -84,7 +84,7 @@ final class Net {
         Map<String, Found> found = new LinkedHashMap<>();
         Map<String, String> locations = new LinkedHashMap<>();
         WifiManager wifi = (WifiManager) ctx.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiManager.MulticastLock lock = wifi.createMulticastLock("tvremote-ssdp");
+        WifiManager.MulticastLock lock = wifi.createMulticastLock("waveremote-ssdp");
         lock.acquire();
         try (DatagramSocket socket = new DatagramSocket()) {
             byte[] search = ("M-SEARCH * HTTP/1.1\r\n"

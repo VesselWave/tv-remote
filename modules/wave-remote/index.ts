@@ -23,7 +23,7 @@ export interface TvResponse {
   [key: string]: unknown;
 }
 type Events = { onChange: (state: RemoteState) => void };
-declare class TvRemoteNative extends NativeModule<Events> {
+declare class WaveRemoteNative extends NativeModule<Events> {
   snapshot(): Promise<RemoteState>;
   connect(host: string, name: string, btMac: string | null): Promise<void>;
   reconnect(): Promise<void>;
@@ -37,9 +37,9 @@ declare class TvRemoteNative extends NativeModule<Events> {
   power(bluetooth: boolean): Promise<void>;
   preferences(touchpad: boolean, naturalScrolling: boolean): Promise<void>;
 }
-export const native = requireOptionalNativeModule<TvRemoteNative>('TvRemote');
+export const native = requireOptionalNativeModule<WaveRemoteNative>('WaveRemote');
 export const NativeTouchpad = native
-  ? requireNativeView<ViewProps & { naturalScrolling: boolean }>('TvRemote')
+  ? requireNativeView<ViewProps & { naturalScrolling: boolean }>('WaveRemote')
   : null;
 export const initialState: RemoteState = {
   host: null, name: null, paired: false, state: 'disconnected', detail: null,

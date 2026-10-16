@@ -10,11 +10,11 @@ type Mode = 'buttons' | 'touchpad';
 const screens: Record<Mode, { src: string; alt: string }> = {
   buttons: {
     src: '/screens/buttons.webp',
-    alt: 'TV Remote in Buttons mode: power, inputs and mute, volume and channel rockers, apps, keyboard, playback, and a blue OK button inside the D-pad.',
+    alt: 'Wave Remote in Buttons mode: power, inputs and mute, volume and channel rockers, apps, keyboard, playback, and a blue OK button inside the D-pad.',
   },
   touchpad: {
     src: '/screens/touchpad.webp',
-    alt: 'TV Remote in Touchpad mode: the same top controls above a large touchpad with a scroll strip on its right edge.',
+    alt: 'Wave Remote in Touchpad mode: the same top controls above a large touchpad with a scroll strip on its right edge.',
   },
 };
 
@@ -34,7 +34,7 @@ export default function App({ release }: { release: Release | null }) {
     <div className="mx-auto flex min-h-dvh w-full max-w-[1180px] flex-col px-6 sm:px-10">
       <header className="flex h-20 shrink-0 items-center justify-between">
         <a href="/" className="-m-1 rounded-[14px] p-1 outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <img src="/icon.svg" alt="TV Remote" width={40} height={40} className="size-10 rounded-[11px]" />
+          <img src="/icon.svg" alt="Wave Remote" width={40} height={40} className="size-10 rounded-[11px]" />
         </a>
         <Button asChild variant="ghost" className="-mr-3">
           <a href={REPO_URL}>
@@ -47,7 +47,7 @@ export default function App({ release }: { release: Release | null }) {
       <main className="grid flex-1 items-center gap-x-20 gap-y-14 pt-6 pb-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:py-6">
         <div className="max-w-[34rem]">
           <h1 className="font-display text-[clamp(3.5rem,9vw,6rem)] leading-[0.9] font-[780] tracking-[-0.035em] [font-stretch:112%]">
-            TV Remote
+            Wave Remote
           </h1>
           <p className="mt-6 max-w-[30ch] text-balance text-[clamp(1.125rem,2vw,1.3125rem)] leading-snug text-muted-foreground">
             {'Control your LG\u00a0webOS\u00a0TV from your Android phone, over your own Wi-Fi.'}

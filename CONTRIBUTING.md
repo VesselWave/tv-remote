@@ -3,7 +3,7 @@
 Small, focused changes are welcome. Open an issue before a large UI or protocol change.
 Keep the app local: no account requirements, analytics, ads, or cloud services. Prefer
 Expo and React Native Paper components over new dependencies, and keep protocol code in
-the Java engine under `src/lean/tvremote`.
+the Java engine under `src/me/vwave/remote`.
 
 Run `bun run typecheck`, `bun run lint`, `bun test`, and `./test.sh` before submitting a
 change. For Android compilation, set `ANDROID_HOME` and `JAVA_HOME`, then run

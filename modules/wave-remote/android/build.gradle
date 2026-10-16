@@ -3,11 +3,11 @@ plugins {
   id 'expo-module-gradle-plugin'
 }
 
-group = 'lean.tvremote'
+group = 'me.vwave.remote'
 version = '1.0.0'
 
 android {
-  namespace 'lean.tvremote.module'
+  namespace 'me.vwave.remote.module'
   defaultConfig {
     versionCode 1
     versionName '1.0.0'

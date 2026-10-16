@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, HelperText, Icon, List, Surface, Text, TextInput } from 'react-native-paper';
-import { native, type FoundTv, type RemoteState } from '../../modules/tv-remote';
+import { native, type FoundTv, type RemoteState } from '../../modules/wave-remote';
 import { errorMessage, normalizeHost } from '../lib/remote';
 import { palette } from '../theme';
 
@@ -47,7 +47,7 @@ export function SetupScreen({ state, run }: { state: RemoteState; run: (action: 
     <Text variant="bodyLarge" style={styles.intro}>Your phone and TV need to be on the same Wi-Fi network.</Text>
     {!native ? <Surface elevation={1} style={styles.notice}>
       <Text variant="titleMedium">Android development build required</Text>
-      <Text variant="bodyMedium" style={styles.secondary}>TV control uses a custom native module. Open the installed TV Remote app; Expo Go cannot connect to your TV.</Text>
+      <Text variant="bodyMedium" style={styles.secondary}>TV control uses a custom native module. Open the installed Wave Remote app; Expo Go cannot connect to your TV.</Text>
     </Surface> : null}
     {busy ? <Surface elevation={1} style={styles.notice}>
       <View style={styles.busyHeading}><ActivityIndicator size={22} /><Text variant="titleMedium">{state.state === 'pairing' ? 'Approve on your TV' : 'Connecting to your TV'}</Text></View>

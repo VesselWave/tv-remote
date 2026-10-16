@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import android.Manifest;
 import android.app.Activity;
@@ -96,7 +96,7 @@ public final class MainActivity extends Activity implements Tv.Listener {
         debugIntent(intent);
     }
 
-    /** Debug builds only: {@code adb shell am start -n lean.tvremote/.MainActivity --es wake wol|ble} tests one wake path. */
+    /** Debug builds only: {@code adb shell am start -n me.vwave.remote/.MainActivity --es wake wol|ble} tests one wake path. */
     private void debugIntent(Intent intent) {
         if ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) == 0 || intent == null) return;
         String w = intent.getStringExtra("wake");

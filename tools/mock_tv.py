@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mock webOS TV for testing TV Remote: SSAP over wss://:3001, pointer socket, SSDP responder.
+"""Mock webOS TV for testing Wave Remote: SSAP over wss://:3001, pointer socket, SSDP responder.
 
 Implements the protocol as observed statically in LG ThinQ 5.2.12500 (see NOTICE.md).
 Every message is logged as one JSON line so tests can assert on it.

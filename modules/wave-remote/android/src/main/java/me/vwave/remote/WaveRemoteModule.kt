@@ -1,4 +1,4 @@
-package lean.tvremote
+package me.vwave.remote
 
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
 /** Expo boundary only: pairing, pins, SSAP and wake packets remain in the tested Java engine. */
-class TvRemoteModule : Module() {
+class WaveRemoteModule : Module() {
   private val main = Handler(Looper.getMainLooper())
   private val network = Executors.newSingleThreadExecutor()
   private lateinit var prefs: Prefs
@@ -41,7 +41,7 @@ class TvRemoteModule : Module() {
   }
 
   companion object {
-    private var active: WeakReference<TvRemoteModule>? = null
+    private var active: WeakReference<WaveRemoteModule>? = null
     internal fun pointer(action: (Tv) -> Unit) {
       val module = active?.get() ?: return
       if (module::tv.isInitialized && module.tv.isReady) action(module.tv)
@@ -64,16 +64,16 @@ class TvRemoteModule : Module() {
     val context = requireNotNull(appContext.reactContext)
     prefs = Prefs(context)
     tv = Tv(prefs, object : Tv.Listener {
-      override fun onState(state: Tv.State, detail: String?) { this@TvRemoteModule.onState(state, detail) }
-      override fun onVolume(value: Int, muted: Boolean) { this@TvRemoteModule.onVolume(value, muted) }
-      override fun onName(name: String) { this@TvRemoteModule.onName(name) }
+      override fun onState(state: Tv.State, detail: String?) { this@WaveRemoteModule.onState(state, detail) }
+      override fun onVolume(value: Int, muted: Boolean) { this@WaveRemoteModule.onVolume(value, muted) }
+      override fun onName(name: String) { this@WaveRemoteModule.onName(name) }
     })
     ble = Ble(context)
     active = WeakReference(this)
   }
 
   override fun definition() = ModuleDefinition {
-    Name("TvRemote")
+    Name("WaveRemote")
     Events("onChange")
     View(TvTouchpadView::class) {
       Prop("naturalScrolling") { view: TvTouchpadView, natural: Boolean -> view.setNaturalScrolling(natural) }
@@ -191,7 +191,7 @@ class TvRemoteModule : Module() {
         generation++
         foreground = false
         if (::tv.isInitialized) { stopHeld(); stopWake(); tv.disconnect() }
-        if (active?.get() === this@TvRemoteModule) active = null
+        if (active?.get() === this@WaveRemoteModule) active = null
         network.shutdownNow()
       }
     }

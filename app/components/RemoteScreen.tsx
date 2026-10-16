@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text, TouchableRipple } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { native, NativeTouchpad, type RemoteState } from '../../modules/tv-remote';
+import { native, NativeTouchpad, type RemoteState } from '../../modules/wave-remote';
 import { commands, connectionLabel } from '../lib/remote';
 import { palette } from '../theme';
 import { Dpad, RemoteButton, Rocker } from './RemoteButton';

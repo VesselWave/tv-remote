@@ -5,13 +5,13 @@ import { RELEASES_URL, type Release } from '../src/release';
 
 type Env = { ASSETS: Fetcher };
 
-const API = 'https://api.github.com/repos/VesselWave/tv-remote/releases/latest';
+const API = 'https://api.github.com/repos/VesselWave/wave-remote/releases/latest';
 
 // Cached at the edge for ten minutes to stay well inside GitHub's anonymous API limit.
 async function latest(): Promise<Release | null> {
   try {
     const response = await fetch(API, {
-      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'tvremote.vwave.me' },
+      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'remote.vwave.me' },
       cf: { cacheTtl: 600, cacheEverything: true },
     });
     if (!response.ok) return null;
@@ -21,7 +21,8 @@ async function latest(): Promise<Release | null> {
       html_url: string;
       assets: { name: string; size: number; digest?: string; browser_download_url: string }[];
     };
-    const apk = release.assets.find((asset) => /^tv-remote-v[\d.]+\.apk$/.test(asset.name));
+    // 0.2 and earlier shipped as tv-remote-v*.apk, before the rename.
+    const apk = release.assets.find((asset) => /^(?:wave|tv)-remote-v[\d.]+\.apk$/.test(asset.name));
     if (!apk) return null;
     return {
       version: release.tag_name.replace(/^v/, ''),

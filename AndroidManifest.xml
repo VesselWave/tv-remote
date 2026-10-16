@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lean.tvremote">
+    package="me.vwave.remote">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -13,7 +13,7 @@
 
     <!-- Cleartext: webOS TVs serve their SSDP device description over plain http on the LAN. -->
     <application
-        android:label="TV Remote"
+        android:label="Wave Remote"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:usesCleartextTraffic="true"

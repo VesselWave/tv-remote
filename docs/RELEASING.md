@@ -1,4 +1,4 @@
-# Shipping TV Remote
+# Shipping Wave Remote
 
 ## Signing identity
 
@@ -8,14 +8,14 @@ cannot be downloaded later. Never commit a keystore, password, or `.env` file.
 
 The initial release preserves the private signing identity of the original development
 APK, rewrapped with a random password. It is held locally under
-`~/.local/share/tv-remote/` and in the repository's Actions secrets. Losing that private
+`~/.local/share/wave-remote/` and in the repository's Actions secrets. Losing that private
 key prevents compatible updates to installed copies.
 
 For a fork, generate your own signing identity (do not reuse the original project's key):
 
 ```sh
 keytool -genkeypair -keystore /private/path/release.keystore \
-  -alias tvremote -keyalg RSA -keysize 4096 -validity 10000
+  -alias waveremote -keyalg RSA -keysize 4096 -validity 10000
 ```
 
 Configure these GitHub Actions repository secrets:
@@ -24,8 +24,8 @@ Configure these GitHub Actions repository secrets:
 | --- | --- |
 | `RELEASE_KEYSTORE_BASE64` | Base64-encoded keystore file, without line wrapping. |
 | `RELEASE_KEY_ALIAS` | Key alias in that keystore. |
-| `TVREMOTE_STORE_PASSWORD` | Keystore password. |
-| `TVREMOTE_KEY_PASSWORD` | Key password (often the same as store password). |
+| `WAVEREMOTE_STORE_PASSWORD` | Keystore password. |
+| `WAVEREMOTE_KEY_PASSWORD` | Key password (often the same as store password). |
 
 Use `gh secret set` with stdin to avoid passwords in command history. For example:
 
@@ -39,8 +39,8 @@ to sign and verify every APK, including the public certificate fingerprint.
 
 ## Local release build
 
-Set `RELEASE_KEYSTORE`, `RELEASE_KEY_ALIAS`, `TVREMOTE_STORE_PASSWORD`, and
-`TVREMOTE_KEY_PASSWORD` in a private shell environment, then run:
+Set `RELEASE_KEYSTORE`, `RELEASE_KEY_ALIAS`, `WAVEREMOTE_STORE_PASSWORD`, and
+`WAVEREMOTE_KEY_PASSWORD` in a private shell environment, then run:
 
 ```sh
 ./test.sh
@@ -48,7 +48,7 @@ Set `RELEASE_KEYSTORE`, `RELEASE_KEY_ALIAS`, `TVREMOTE_STORE_PASSWORD`, and
 ```
 
 The release path never creates or substitutes a signing key. Debug builds use a
-separate cached key. The package ID remains `lean.tvremote`.
+separate cached key. The package ID remains `me.vwave.remote`.
 
 ## Publish a version
 
@@ -58,7 +58,7 @@ separate cached key. The package ID remains `lean.tvremote`.
 4. Commit and push `main`, then create and push the matching tag:
 
 ```sh
-git tag -a "v$(cat VERSION)" -m "TV Remote $(cat VERSION)"
+git tag -a "v$(cat VERSION)" -m "Wave Remote $(cat VERSION)"
 git push origin "v$(cat VERSION)"
 ```
 

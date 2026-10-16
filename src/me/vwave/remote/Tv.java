@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -502,7 +502,7 @@ final class Tv {
             return new JSONObject()
                     .put("manifestVersion", 1)
                     .put("appVersion", "1.0")
-                    .put("deviceName", "TV Remote")
+                    .put("deviceName", "Wave Remote")
                     .put("allowFullPagePopup", true)
                     .put("allowFirstuseConnection", true)
                     .put("signed", signed)

@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 /** Repeats a held key, with a bounded direction-key ramp inspired by the physical remote. */
 final class HeldKey implements Runnable {

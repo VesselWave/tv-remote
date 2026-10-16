@@ -9,7 +9,7 @@ export type Release = {
   page: string;
 };
 
-export const REPO_URL = 'https://github.com/VesselWave/tv-remote';
+export const REPO_URL = 'https://github.com/VesselWave/wave-remote';
 export const RELEASES_URL = `${REPO_URL}/releases/latest`;
 
 export function megabytes(bytes: number) {

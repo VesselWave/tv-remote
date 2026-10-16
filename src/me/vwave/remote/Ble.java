@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;

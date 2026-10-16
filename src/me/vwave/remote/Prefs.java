@@ -1,4 +1,4 @@
-package lean.tvremote;
+package me.vwave.remote;
 
 import android.content.Context;
 import android.content.SharedPreferences;
