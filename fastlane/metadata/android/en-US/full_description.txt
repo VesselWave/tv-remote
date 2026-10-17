@@ -9,10 +9,12 @@ Control your LG webOS TV from your Android phone, over your own Wi-Fi. Wave Remo
 <li>Remembers several TVs and switches between them</li>
 </ul>
 
-<b>Setup:</b> connect your phone to the same network as the TV, open the app, pick your TV and accept the prompt on the TV. The prompt may say "LG Mobile": for compatibility, the app registers with the TV using the same public registration data as LG's mobile app. It only talks to your TV, never to LG or any other server.
+<b>Setup:</b> connect your phone to the same network as the TV, open the app, pick your TV and accept the prompt on the TV. The prompt may say "LG Mobile": for compatibility, the app registers with the TV using the same public registration data as LG's mobile app. TV control is performed directly over the local network; no LG account or cloud service is required.
 
 To turn the TV on from the app, connect once while it's on and enable <i>Mobile TV On</i> (or <i>Turn on via Wi-Fi</i>) in the TV's settings.
 
 Pairing keys stay on your phone. On webOS 4 and later the connection to the TV is encrypted, and the TV's certificate is pinned after the first pairing.
+
+Release builds are reproducible: an F-Droid build from source has been verified to match the signed release APK byte for byte.
 
 Works with LG webOS TVs; tested with an LG 65UT7570PUB (webOS 24). Independent project, not affiliated with LG.
