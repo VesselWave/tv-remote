@@ -13,6 +13,6 @@ Control your LG webOS TV from your Android phone, over your own Wi-Fi. Wave Remo
 
 To turn the TV on from the app, connect once while it's on and enable <i>Mobile TV On</i> (or <i>Turn on via Wi-Fi</i>) in the TV's settings.
 
-Pairing keys stay on your phone. The connection to the TV is encrypted and the TV's certificate is pinned after the first pairing.
+Pairing keys stay on your phone. On webOS 4 and later the connection to the TV is encrypted, and the TV's certificate is pinned after the first pairing.
 
 Works with LG webOS TVs; tested with an LG 65UT7570PUB (webOS 24). Independent project, not affiliated with LG.

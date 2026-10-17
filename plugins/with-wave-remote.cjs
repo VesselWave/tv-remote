@@ -1,6 +1,6 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { withAndroidManifest, withGradleProperties, withMainActivity, withFinalizedMod } = require('expo/config-plugins');
+const { withAndroidManifest, withGradleProperties, withMainActivity, withFinalizedMod, withProjectBuildGradle } = require('expo/config-plugins');
 
 // Release build settings, kept here so a plain Gradle build (as F-Droid runs it) matches ./build.sh.
 const GRADLE_PROPERTIES = {
@@ -14,6 +14,19 @@ const GRADLE_PROPERTIES = {
   // React Native otherwise embeds the building machine's IP address in resources.arsc.
   reactNativeDevServerIp: 'localhost',
 };
+
+// F-Droid publishes our signed APK only if its own build matches it byte for byte (docs/fdroid).
+// The NDK's default build ID hashes the build paths into every native library, so drop it;
+// per-config flags come after the NDK's, so this one wins.
+const REPRODUCIBLE_NATIVE_LIBS = `
+subprojects { project ->
+  ['com.android.application', 'com.android.library'].each { id ->
+    project.pluginManager.withPlugin(id) {
+      project.android.defaultConfig.externalNativeBuild.cmake.arguments '-DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO=-Wl,--build-id=none'
+    }
+  }
+}
+`;
 
 module.exports = function withWaveRemote(config) {
   config = withAndroidManifest(config, (mod) => {
@@ -34,6 +47,15 @@ module.exports = function withWaveRemote(config) {
       const existing = mod.modResults.find((item) => item.type === 'property' && item.key === key);
       if (existing) existing.value = value;
       else mod.modResults.push({ type: 'property', key, value });
+    }
+    return mod;
+  });
+  config = withProjectBuildGradle(config, (mod) => {
+    // Before the React Native root plugin, which evaluates :app as soon as it is applied.
+    const anchor = 'apply plugin: "expo-root-project"';
+    if (!mod.modResults.contents.includes(REPRODUCIBLE_NATIVE_LIBS)) {
+      if (!mod.modResults.contents.includes(anchor)) throw new Error('Could not find where to make native libraries reproducible.');
+      mod.modResults.contents = mod.modResults.contents.replace(anchor, `${REPRODUCIBLE_NATIVE_LIBS}\n${anchor}`);
     }
     return mod;
   });
