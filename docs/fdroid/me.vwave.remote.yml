@@ -14,9 +14,9 @@ Repo: https://github.com/VesselWave/wave-remote.git
 Binaries: https://github.com/VesselWave/wave-remote/releases/download/v%v/wave-remote-v%v.apk
 
 Builds:
-  - versionName: '0.6.1'
-    versionCode: 10013
-    commit: 07e9d975af8c45753870b99ecb7a84b767218896
+  - versionName: '0.6.2'
+    versionCode: 10014
+    commit: b0304b25debf812bb9c0b47afaed659f084881fb
     sudo:
       - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
@@ -68,5 +68,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: VERSION_CODE|(\d+)|VERSION|(.+)
-CurrentVersion: '0.6.1'
-CurrentVersionCode: 10013
+CurrentVersion: '0.6.2'
+CurrentVersionCode: 10014
