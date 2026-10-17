@@ -16,13 +16,19 @@ const GRADLE_PROPERTIES = {
 };
 
 // F-Droid publishes our signed APK only if its own build matches it byte for byte (docs/fdroid).
-// The NDK's default build ID hashes the build paths into every native library, so drop it;
-// per-config flags come after the NDK's, so this one wins.
+// Native code must not record where it was built: assertions embed source paths, so map the
+// checkout and Gradle's cache to fixed names, and drop the NDK's build ID, which hashes the
+// paths in the debug info (per-config flags come after the NDK's, so this one wins).
 const REPRODUCIBLE_NATIVE_LIBS = `
 subprojects { project ->
+  def prefixMaps = "-ffile-prefix-map=\${rootDir.parentFile}=. -ffile-prefix-map=\${gradle.gradleUserHomeDir}=gradle-home"
   ['com.android.application', 'com.android.library'].each { id ->
     project.pluginManager.withPlugin(id) {
-      project.android.defaultConfig.externalNativeBuild.cmake.arguments '-DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO=-Wl,--build-id=none'
+      project.android.defaultConfig.externalNativeBuild.cmake {
+        cFlags prefixMaps
+        cppFlags prefixMaps
+        arguments '-DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO=-Wl,--build-id=none'
+      }
     }
   }
 }

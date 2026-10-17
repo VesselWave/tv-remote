@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.6 — 2026-10-17
 
 - Reconnects on its own when the TV comes back, including when it was turned on with its own remote, while the app is open. A TV in standby doesn't make the remote flash "Connected".
 - While the TV is off or disconnected, every control dims to the same color and only the power button stays lit.
 - The touchpad's hint text no longer shows through "Connect to use the touchpad".
+- Release builds use Node.js and Gradle, with normalized native paths and preserved signing alignment for F-Droid rebuild verification.
 
 ## 0.5 — 2026-10-16
 

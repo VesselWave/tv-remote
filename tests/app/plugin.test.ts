@@ -36,6 +36,20 @@ describe('Android integration plugin', () => {
     expect(value('reactNativeDevServerIp')).toEqual(['localhost']);
     expect(result.modResults).toContainEqual({ type: 'comment', value: 'kept' });
   });
+  test('normalizes checkout and Gradle cache paths before evaluating native modules', async () => {
+    const mod = config().mods.android.projectBuildGradle;
+    const contents = 'apply plugin: "expo-root-project"\n';
+    const first = await mod({ modResults: { language: 'groovy', contents }, modRequest: request() });
+    const result = first.modResults.contents;
+    expect(result).toContain('-ffile-prefix-map=${rootDir.parentFile}=.');
+    expect(result).toContain('-ffile-prefix-map=${gradle.gradleUserHomeDir}=gradle-home');
+    expect(result).toContain('-DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO=-Wl,--build-id=none');
+    expect(result.indexOf('subprojects {')).toBeLessThan(result.indexOf(contents.trim()));
+    const second = await mod({ modResults: first.modResults, modRequest: request() });
+    expect(second.modResults.contents).toBe(result);
+    await expect(mod({ modResults: { contents: 'unknown template' }, modRequest: request() }))
+      .rejects.toThrow('Could not find where');
+  });
   test('volume-key handler is inserted once and template mismatch is explicit', async () => {
     const mod = config().mods.android.mainActivity;
     const source = { language: 'kt', contents: 'package me.vwave.remote\nclass MainActivity : ReactActivity() {\n}\n' };

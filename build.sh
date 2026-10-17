@@ -42,12 +42,16 @@ esac
 for tool in zipalign apksigner; do
     [[ -x "$BT/$tool" ]] || { echo "Missing $BT/$tool; install Android SDK build-tools 36.0.0" >&2; exit 1; }
 done
-[[ -d node_modules ]] || { echo 'Run bun install first' >&2; exit 1; }
+command -v node >/dev/null || { echo 'Node.js is required to build the app' >&2; exit 1; }
+[[ -f node_modules/expo/bin/cli ]] || { echo 'Install the locked dependencies first; see README.md' >&2; exit 1; }
 [[ -f "$KS" ]] || { echo "Signing keystore not found: $KS" >&2; exit 1; }
+
+# Match F-Droid: compile Expo native modules from source rather than bundled AARs.
+find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
 
 # android/ is generated; start clean so a stale copy can't leak old modules or settings into the APK.
 rm -rf android
-bunx expo prebuild --platform android --no-install
+node node_modules/expo/bin/cli prebuild --platform android --no-install
 # GRADLE_FLAGS passes extra Gradle options, such as --max-workers=2 on machines with little memory.
 # shellcheck disable=SC2086
 (cd android && ./gradlew assembleRelease -PreactNativeArchitectures="$ABIS" --console=plain ${GRADLE_FLAGS:-})
@@ -58,7 +62,9 @@ if [[ "$mode" == debug ]]; then suffix="-debug"; fi
 mkdir -p dist
 APK="dist/wave-remote-v$VERSION_NAME$suffix.apk"
 "$BT/zipalign" -c -P 16 4 "$UNSIGNED"
-"$BT/apksigner" sign --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
+# Keep Gradle's verified ZIP alignment: newer apksigner otherwise rewrites its
+# padding, preventing F-Droid's apksigcopier from reproducing the signed APK.
+"$BT/apksigner" sign --alignment-preserved --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
     --ks-pass env:WAVEREMOTE_STORE_PASSWORD --key-pass env:WAVEREMOTE_KEY_PASSWORD \
     --out "$APK" "$UNSIGNED"
 rm -f "$APK.idsig"

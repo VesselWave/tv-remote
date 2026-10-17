@@ -1,0 +1,4 @@
+Reconnects automatically when a paired TV comes back while the app is open.
+Disconnected controls share one dimmed color, with power still lit.
+Touchpad hint text stays hidden behind the disconnected message.
+Release builds use Node.js and preserve native reproducibility and APK alignment for F-Droid verification.
