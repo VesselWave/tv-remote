@@ -106,8 +106,8 @@ as build.sh. No private signing key is needed to run this verification.
 
 This proves production-signed local reproducibility across Ubuntu/Temurin and
 Debian/OpenJDK environments. It does not claim official F-Droid VM/pipeline
-execution or acceptance. No real phone/TV smoke test was possible because no adb
-device was attached and agent device access was disabled. F-Droid must still
+execution or acceptance. On a Pixel 7, the production APK installed over 0.5, kept the saved TV and showed the corrected disconnected screen. TV-facing behavior is unchanged from 0.5 and was not retested against a TV.
+F-Droid must still
 review policy disclosures and the submission; publication must use and verify
 the actual versioned release APK. Earlier debug-only experiments are historical
 and are superseded by this production verification.

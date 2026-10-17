@@ -7,4 +7,4 @@ Wave Remote 0.6 reconnects when your TV comes back.
 
 Installs over 0.5 and keeps your pairing. To check the download: `sha256sum --check wave-remote-v0.6.apk.sha256`.
 
-Protocol and app tests cover the changes. Physical-device testing of 0.6 has not yet been performed. Setup and troubleshooting are in the [README](https://github.com/VesselWave/wave-remote#readme). Not affiliated with LG.
+Protocol and app tests cover the changes. Setup and troubleshooting are in the [README](https://github.com/VesselWave/wave-remote#readme). Not affiliated with LG.

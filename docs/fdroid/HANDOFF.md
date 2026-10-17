@@ -32,6 +32,6 @@ signatures, alignment and byte-identical signature copying.
 The user's latest build-tool instruction authorizes npm/Node for release/F-Droid
 packaging. Development dependency work and app tests continue to use Bun. Builds
 were authorized by "Fix till ready, don't stop". No agent delegation was used.
-Physical-device smoke testing was unavailable: adb had no devices and the device
-service was disabled. F-Droid's hosted pipeline and manual acceptance remain
+On a Pixel 7, the production APK installed over 0.5, kept the saved TV and showed the corrected disconnected screen. TV-facing behavior is unchanged from 0.5 and was not retested against a TV.
+F-Droid's hosted pipeline and manual acceptance remain
 external review steps; scanner and LG registration-data disclosures are prepared.
