@@ -13,6 +13,8 @@ CLIENT_KEY = "mock-client-key-0001"
 LOG = open(os.path.join(HERE, "mock_tv.log"), "a", buffering=1)
 
 state = {"volume": 12, "muted": False, "input": "HDMI_1", "app": "com.webos.app.home"}
+# Test hook (ssap://mock/pointerSocket): "answer", "ignore", or seconds to wait before answering.
+pointer_mode = {"mode": "answer"}
 subs = []  # (writer, id) for audio/getVolume
 
 
@@ -123,7 +125,15 @@ async def handle_control(reader, writer, peer):
             send(writer, {"type": "response", "id": mid, "payload": {"returnValue": True, "launchPoints": [
                 {"id": "netflix", "title": "Netflix"}, {"id": "youtube.leanback.v4", "title": "YouTube"},
                 {"id": "com.webos.app.livetv", "title": "Live TV"}]}})
+        elif uri == "ssap://mock/pointerSocket":
+            pointer_mode["mode"] = p.get("mode", "answer")
+            send(writer, {"type": "response", "id": mid, "payload": {"returnValue": True}})
         elif uri == "ssap://com.webos.service.networkinput/getPointerInputSocket":
+            mode = pointer_mode["mode"]
+            if mode == "ignore":
+                continue
+            if isinstance(mode, (int, float)):
+                await asyncio.sleep(mode)
             ip = writer.get_extra_info("sockname")[0]
             send(writer, {"type": "response", "id": mid, "payload": {"returnValue": True,
                  "socketPath": f"wss://{ip}:3001/resources/0123456789abcdef/netinput.pointer.sock"}})

@@ -1,0 +1,5 @@
+- A press made while the button channel is still opening is no longer sent seconds later; if the TV never opens it, the next press retries
+- Connecting gives up after 5 seconds if the TV stops answering
+- Holding a button repeats for at most 10 seconds
+- A TV dropping the connection while starting up no longer reports a changed certificate
+- Pairings are left out of device-to-device transfers to a new phone

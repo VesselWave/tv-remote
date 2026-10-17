@@ -39,6 +39,8 @@ module.exports = function withWaveRemote(config) {
     const app = mod.modResults.manifest.application[0];
     app.$['android:usesCleartextTraffic'] = 'true';
     app.$['android:allowBackup'] = 'false';
+    // From Android 12, allowBackup no longer stops device-to-device transfers; these rules do.
+    app.$['android:dataExtractionRules'] = '@xml/data_extraction_rules';
     // Expo writes update-service settings even with expo-updates absent; the app never fetches updates.
     app['meta-data'] = (app['meta-data'] ?? []).filter((item) => !item.$['android:name'].startsWith('expo.modules.updates.'));
     for (const permission of mod.modResults.manifest['uses-permission'] ?? []) {
@@ -74,6 +76,7 @@ module.exports = function withWaveRemote(config) {
       ['mipmap-anydpi-v26/ic_launcher.xml', 'mipmap-anydpi-v26/ic_launcher.xml'],
       ['mipmap-anydpi-v26/ic_launcher.xml', 'mipmap-anydpi-v26/ic_launcher_round.xml'],
       ['values/colors.xml', 'values/tv_remote_icon.xml'],
+      ['xml/data_extraction_rules.xml', 'xml/data_extraction_rules.xml'],
     ];
     for (const [from, to] of copies) {
       const target = path.join(destination, to);

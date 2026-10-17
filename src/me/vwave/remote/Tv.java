@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -49,6 +50,10 @@ final class Tv {
     /** A TV going to standby doesn't always close the socket, so ping it and give up after silence. */
     static final int PING_MS = 10_000;
     static final int SILENCE_MS = 25_000;
+    /** A key press waiting for the pointer socket is dropped after this, rather than reaching the TV late. */
+    static final long STALE_FRAME_MS = 2000;
+    /** How long the TV may take to answer getPointerInputSocket before the next press asks again. */
+    static final long POINTER_REQUEST_MS = 5000;
 
     private final Prefs prefs;
     private final Listener listener;
@@ -57,10 +62,14 @@ final class Tv {
     private final Map<Integer, Callback> pending = new ConcurrentHashMap<>();
     private final Set<Integer> subscriptions = ConcurrentHashMap.newKeySet();
     private final List<String> queuedFrames = new ArrayList<>();
+    /** System.currentTimeMillis() when each of {@link #queuedFrames} was queued. */
+    private final List<Long> queuedAt = new ArrayList<>();
 
     private WebSocket ws;
     private WebSocket pointer;
     private boolean pointerRequested;
+    /** Identifies the current pointer socket request, so a late answer to an abandoned one is ignored. */
+    private int pointerAttempt;
     private PinningTrust trust;
     private State state = State.DISCONNECTED;
     private int registerId;
@@ -335,17 +344,32 @@ final class Tv {
             return;
         }
         queuedFrames.add(frame);
+        queuedAt.add(System.currentTimeMillis());
         if (pointerRequested) return;
         pointerRequested = true;
+        final int attempt = ++pointerAttempt;
+        // A TV that never answers would otherwise leave every later press queued until reconnecting.
+        main.postDelayed(() -> {
+            if (attempt == pointerAttempt && pointerRequested && pointer == null) {
+                pointerRequested = false;
+                clearQueue();
+            }
+        }, POINTER_REQUEST_MS);
         request("ssap://com.webos.service.networkinput/getPointerInputSocket", null, (p, e) -> {
+            if (attempt != pointerAttempt || !pointerRequested) return;
             String path = p != null ? p.optString("socketPath") : "";
             if (path.isEmpty()) {
                 pointerRequested = false;
-                queuedFrames.clear();
+                clearQueue();
                 return;
             }
             openPointer(path);
         });
+    }
+
+    private void clearQueue() {
+        queuedFrames.clear();
+        queuedAt.clear();
     }
 
     private void openPointer(String socketPath) {
@@ -360,8 +384,12 @@ final class Tv {
             @Override public void onOpen() {
                 main.post(() -> {
                     if (pointer != self[0]) return;
-                    for (String f : queuedFrames) pointer.send(f);
-                    queuedFrames.clear();
+                    // An OK pressed seconds ago would land on whatever has focus by now; drop it.
+                    long fresh = System.currentTimeMillis() - STALE_FRAME_MS;
+                    for (int i = 0; i < queuedFrames.size(); i++) {
+                        if (queuedAt.get(i) >= fresh) pointer.send(queuedFrames.get(i));
+                    }
+                    clearQueue();
                 });
             }
 
@@ -373,6 +401,8 @@ final class Tv {
                     if (pointer != self[0]) return;
                     pointer = null;
                     pointerRequested = false;
+                    // Presses queued for a socket that never opened are stale by the next attempt.
+                    clearQueue();
                 });
             }
         });
@@ -384,7 +414,8 @@ final class Tv {
         if (pointer != null) pointer.close();
         pointer = null;
         pointerRequested = false;
-        queuedFrames.clear();
+        pointerAttempt++;
+        clearQueue();
     }
 
     // ---- helpers ------------------------------------------------------------------------------
@@ -403,8 +434,16 @@ final class Tv {
     private static String describe(Exception e) {
         if (e == null) return null;
         if (e instanceof ConnectException) return "TV not reachable (is it on?)";
-        if (e.getCause() instanceof CertificateException || e instanceof javax.net.ssl.SSLHandshakeException) {
-            return "TV certificate changed. Forget the TV and pair again.";
+        // Only a certificate the pin rejected means re-pairing. A TV that drops the connection
+        // mid-handshake (while starting up, say) fails the handshake too, and just needs a retry.
+        for (Throwable t = e; t != null && t.getCause() != t; t = t.getCause()) {
+            if (t instanceof CertificateException || String.valueOf(t.getMessage()).contains("TV certificate changed")) {
+                return "TV certificate changed. Forget the TV and pair again.";
+            }
+        }
+        for (Throwable t = e; t != null && t.getCause() != t; t = t.getCause()) {
+            if (t instanceof SocketTimeoutException) return "The TV didn't respond. Try again.";
+            if (t instanceof javax.net.ssl.SSLException) return "The TV closed the connection. Try again.";
         }
         String m = e.getMessage();
         return m != null ? m : e.getClass().getSimpleName();

@@ -73,6 +73,43 @@ public final class ProtocolTest {
         main(tv::connect);
         expect("state:CONNECTING");
         expect("state:READY");
+
+        // 5a. A TV that never offers a pointer socket doesn't strand presses: the request is
+        // abandoned, its queued press dropped, and the next press asks again.
+        CompletableFuture<JSONObject> ignore = new CompletableFuture<>();
+        main(() -> tv.request("ssap://mock/pointerSocket", new JSONObject().put("mode", "ignore"), (p, e) -> ignore.complete(p)));
+        ignore.get(3, TimeUnit.SECONDS);
+        long mark = java.nio.file.Files.size(log);
+        main(() -> tv.button("EXIT"));
+        Thread.sleep(Tv.POINTER_REQUEST_MS + 500);
+        CompletableFuture<JSONObject> answer = new CompletableFuture<>();
+        main(() -> tv.request("ssap://mock/pointerSocket", new JSONObject().put("mode", "answer"), (p, e) -> answer.complete(p)));
+        answer.get(3, TimeUnit.SECONDS);
+        main(() -> tv.button("HOME"));
+        Thread.sleep(1500);
+        mock = new String(java.nio.file.Files.readAllBytes(log)).substring((int) mark);
+        check("press after an unanswered pointer request goes through", mock.contains("type:button\\nname:HOME"));
+        check("press queued for the unanswered request is dropped", !mock.contains("type:button\\nname:EXIT"));
+
+        // 5b. A pointer socket that opens late doesn't deliver a press made seconds earlier.
+        main(tv::disconnect);
+        expect("state:DISCONNECTED");
+        main(tv::connect);
+        expect("state:READY");
+        CompletableFuture<JSONObject> slow = new CompletableFuture<>();
+        main(() -> tv.request("ssap://mock/pointerSocket", new JSONObject().put("mode", 3), (p, e) -> slow.complete(p)));
+        slow.get(3, TimeUnit.SECONDS);
+        mark = java.nio.file.Files.size(log);
+        main(() -> tv.button("RED"));
+        Thread.sleep(4500);
+        main(() -> tv.button("GREEN"));
+        Thread.sleep(800);
+        mock = new String(java.nio.file.Files.readAllBytes(log)).substring((int) mark);
+        check("press after a late pointer socket goes through", mock.contains("type:button\\nname:GREEN"));
+        check("stale press is not replayed when the socket opens late", !mock.contains("type:button\\nname:RED"));
+        CompletableFuture<JSONObject> reset = new CompletableFuture<>();
+        main(() -> tv.request("ssap://mock/pointerSocket", new JSONObject().put("mode", "answer"), (p, e) -> reset.complete(p)));
+        reset.get(3, TimeUnit.SECONDS);
         main(tv::disconnect);
         expect("state:DISCONNECTED");
 
@@ -116,6 +153,33 @@ public final class ProtocolTest {
             }
             check("unpinned TV still falls back to plain ws://:3000", fellBack);
             main(tv::disconnect);
+        }
+
+        // 9. A TV that accepts the connection but never answers gives up instead of "Connecting…" forever.
+        try (java.net.ServerSocket silent = new java.net.ServerSocket(Tv.SECURE_PORT, 1, java.net.InetAddress.getByName("127.0.0.3"))) {
+            prefs.setTv("127.0.0.3", "Silent");
+            long started = System.currentTimeMillis();
+            main(tv::connect);
+            expect("state:CONNECTING");
+            ev = events.poll(WebSocket.HANDSHAKE_TIMEOUT_MS + 3000, TimeUnit.MILLISECONDS);
+            check("silent TV times out (" + ev + ")", ev != null && ev.startsWith("state:DISCONNECTED")
+                    && ev.contains("didn't respond") && System.currentTimeMillis() - started >= WebSocket.HANDSHAKE_TIMEOUT_MS - 500);
+        }
+
+        // 10. A TV that closes the connection mid-handshake isn't reported as a changed certificate.
+        try (java.net.ServerSocket closing = new java.net.ServerSocket(Tv.SECURE_PORT, 1, java.net.InetAddress.getByName("127.0.0.4"))) {
+            prefs.setTv("127.0.0.4", "Booting");
+            prefs.setClientKey("booting-key");
+            prefs.setCertPin("22".repeat(32));
+            main(tv::connect);
+            expect("state:CONNECTING");
+            closing.setSoTimeout(3000);
+            try (java.net.Socket s = closing.accept()) {
+                s.getInputStream().read(); // The ClientHello starts; hang up on it.
+            }
+            ev = events.poll(5, TimeUnit.SECONDS);
+            check("handshake dropped by the TV is not a certificate change (" + ev + ")",
+                    ev != null && ev.equals("state:DISCONNECTED:The TV closed the connection. Try again."));
         }
 
         System.out.println(failures == 0 ? "ALL PASSED" : failures + " FAILED");

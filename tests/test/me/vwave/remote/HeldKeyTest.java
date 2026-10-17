@@ -84,7 +84,17 @@ public final class HeldKeyTest {
                 "a stalled UI does not send a catch-up burst");
         late.stop();
 
-        System.out.println("PASS: taps, cancellation, ramp, rate caps, restart, ordinary keys, stalled UI");
+        for (boolean accelerate : new boolean[] {true, false}) {
+            Clock lost = new Clock();
+            HeldKey runaway = new HeldKey(lost, () -> lost.events.add(lost.time), accelerate);
+            runaway.start(); // The release never arrives.
+            lost.until(60000);
+            long last = lost.events.get(lost.events.size() - 1);
+            check(last < HeldKey.MAX_HOLD_MS && last > HeldKey.MAX_HOLD_MS - 300 && lost.pending == null,
+                    "a hold whose release is lost stops repeating by itself");
+        }
+
+        System.out.println("PASS: taps, cancellation, ramp, rate caps, restart, ordinary keys, stalled UI, lost release");
         System.out.println("Direction events/sec: slow=" + slow + ", capped=" + fast);
     }
 }

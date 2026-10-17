@@ -22,6 +22,7 @@ describe('Android integration plugin', () => {
     const result = await config().mods.android.manifest({ modResults: { manifest }, modRequest: request() });
     expect(result.modResults.manifest.application[0].$['android:usesCleartextTraffic']).toBe('true');
     expect(result.modResults.manifest.application[0].$['android:allowBackup']).toBe('false');
+    expect(result.modResults.manifest.application[0].$['android:dataExtractionRules']).toBe('@xml/data_extraction_rules');
     expect(result.modResults.manifest['uses-permission'][0].$['android:maxSdkVersion']).toBe('30');
     expect(result.modResults.manifest['uses-permission'][2].$['android:maxSdkVersion']).toBeUndefined();
     expect(result.modResults.manifest.application[0]['meta-data'].map((item: { $: Record<string, string> }) => item.$['android:name'])).toEqual(['other.setting']);
@@ -70,6 +71,10 @@ describe('Android integration plugin', () => {
       expect(await fs.readFile(path.join(root, 'app/src/main/res/drawable/splashscreen_logo.xml'), 'utf8')).toContain('<vector');
       expect(await fs.readFile(path.join(values, 'tv_remote_icon.xml'), 'utf8')).toContain('icon_bg');
       expect(await fs.readFile(path.join(root, 'app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml'), 'utf8')).toContain('@drawable/ic_launcher_fg');
+      const rules = await fs.readFile(path.join(root, 'app/src/main/res/xml/data_extraction_rules.xml'), 'utf8');
+      for (const section of ['cloud-backup', 'device-transfer']) {
+        expect(rules.split(`<${section}>`)[1]?.split(`</${section}>`)[0]).toContain('<exclude domain="sharedpref" path="." />');
+      }
     } finally { await fs.rm(root, { recursive: true, force: true }); }
   });
 });

@@ -9,6 +9,8 @@ The app trusts a TV certificate on first pairing, then pins its SHA-256 fingerpr
 Pair on a trusted home network. Legacy TVs can use unencrypted WebSockets on port 3000,
 and SSDP device descriptions use HTTP. The pointer transport is selected by the TV.
 This is a local remote, not a secure tunnel across untrusted networks.
+Pairing keys and pinned certificates are excluded from Android backups and
+device-to-device transfers, so a new phone pairs again.
 
 Release signing material is stored outside the repository and in encrypted CI secrets.
 Release builds fail when signing credentials are absent; they never generate a new key.

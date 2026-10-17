@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.2 — 2026-10-17
+
+- A button pressed while the remote is still opening its connection for buttons and the touchpad is no longer sent seconds later, when it could land on something else. If the TV never opens that connection, the next press tries again instead of every button doing nothing until you reconnect.
+- Connecting gives up after 5 seconds if the TV stops answering partway, instead of showing "Connecting…" forever.
+- Holding a button repeats for at most 10 seconds, so a missed release can't keep turning the volume up.
+- A TV that closes the connection while starting up no longer shows "TV certificate changed. Forget the TV and pair again", and the remote keeps trying to reconnect. Only a certificate that really changed asks you to pair again.
+- Pairings are left out of Android's device-to-device transfer, as they already were from backups. On a new phone, pair the TV again.
+
 ## 0.6.1 — 2026-10-17
 
 - No changes to the app itself: a clearer store description and documentation.

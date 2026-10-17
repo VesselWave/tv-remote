@@ -2,6 +2,9 @@ package me.vwave.remote;
 
 /** Repeats a held key, with a bounded direction-key ramp inspired by the physical remote. */
 final class HeldKey implements Runnable {
+    /** Repeats stop after this even if the release never arrives, so a lost touch can't max out the volume. */
+    static final long MAX_HOLD_MS = 10_000;
+
     interface Scheduler {
         long now();
         void post(Runnable task, long delayMs);
@@ -35,6 +38,10 @@ final class HeldKey implements Runnable {
 
     @Override public void run() {
         if (!running) return;
+        if (scheduler.now() - started >= MAX_HOLD_MS) {
+            running = false;
+            return;
+        }
         action.run();
         if (running) scheduler.post(this, interval(scheduler.now() - started));
     }

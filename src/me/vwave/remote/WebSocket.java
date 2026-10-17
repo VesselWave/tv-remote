@@ -28,6 +28,8 @@ final class WebSocket {
     }
 
     private static final int MAX_FRAME = 16 * 1024 * 1024;
+    /** For the TLS handshake and HTTP upgrade; after that the caller's keepalive notices silence. */
+    static final int HANDSHAKE_TIMEOUT_MS = 5000;
 
     private final String host;
     private final int port;
@@ -118,6 +120,8 @@ final class WebSocket {
             if (closed) return;
             s.connect(new InetSocketAddress(host, port), 5000);
             s.setTcpNoDelay(true);
+            // A TV that accepts the connection and then says nothing would otherwise hang here for good.
+            s.setSoTimeout(HANDSHAKE_TIMEOUT_MS);
             if (s instanceof SSLSocket) ((SSLSocket) s).startHandshake();
             InputStream in = new BufferedInputStream(s.getInputStream());
             out = s.getOutputStream();
@@ -139,6 +143,7 @@ final class WebSocket {
             while (!readLine(in).isEmpty()) {
                 // skip response headers
             }
+            s.setSoTimeout(0);
             open = true;
             lastHeard = System.currentTimeMillis();
             if (closed) return;
