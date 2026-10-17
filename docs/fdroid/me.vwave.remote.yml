@@ -1,9 +1,5 @@
-# Draft fdroiddata recipe, to copy to metadata/me.vwave.remote.yml in fdroiddata.
-# Follows fdroiddata's templates/build-react-native.yml. Expo modules already build from
-# source (package.json `expo.autolinking.android.buildFromSource`), and the release Gradle
-# properties come from plugins/with-wave-remote.cjs during `expo prebuild`.
 Categories:
-  - System
+  - Remote Controller
 License: MIT
 AuthorName: VesselWave
 WebSite: https://remote.vwave.me
@@ -15,40 +11,71 @@ AutoName: Wave Remote
 
 RepoType: git
 Repo: https://github.com/VesselWave/wave-remote.git
+Binaries: https://github.com/VesselWave/wave-remote/releases/download/v%v/wave-remote-v%v.apk
 
 Builds:
-  - versionName: '0.5'
-    versionCode: 10011
-    commit: v0.5
-    subdir: android/app
+  - versionName: '0.6'
+    versionCode: 10012
+    commit: f0c6f4b76049fafd27873586ecf37e154742ea45
     sudo:
+      - echo "deb https://deb.debian.org/debian bookworm main" > /etc/apt/sources.list.d/bookworm.list
       - apt-get update
-      - apt-get install -y npm
+      - apt-get install -y --no-install-recommends curl xz-utils openjdk-17-jdk-headless
+      - curl -fLo /tmp/node.tar.xz https://nodejs.org/dist/v24.22.0/node-v24.22.0-linux-x64.tar.xz
+      - echo "cc2f601cee82d9a5a233302fe307abc600727035fd7d2c3a3571755989e95008  /tmp/node.tar.xz"
+        | sha256sum -c -
+      - tar -xJf /tmp/node.tar.xz --strip-components=1 -C /usr/local
+      - rm /tmp/node.tar.xz
     init:
-      - cd ../..
-      - npm ci --ignore-scripts
-    gradle:
-      - yes
-    ndk: 27.1.12297006
+      - npm ci --ignore-scripts --no-audit --no-fund
+      - find node_modules -type d -name local-maven-repo -prune -exec rm -rf {} +
+    output: android/app/build/outputs/apk/release/app-release-unsigned.apk
     prebuild:
-      - cd ../..
-      - sed -i '/jvmToolchain\|JavaVersion/s/17/21/' node_modules/@react-native/gradle-plugin/*/build.gradle.kts
-        node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/src/main/kotlin/com/facebook/react/utils/JdkConfiguratorUtils.kt
-      - npx expo prebuild --platform android --no-install
+      - node node_modules/expo/bin/cli prebuild --platform android --clean --no-install
       - sed -i -e '/signingConfig /d' android/app/build.gradle
     scanignore:
       - node_modules/hermes-compiler/hermesc/linux64-bin/hermesc
+      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
       - node_modules/react-native-safe-area-context/android/build.gradle
       - node_modules/react-native-screens/android/build.gradle
-      - node_modules/expo-modules-core/android/ExpoModulesCorePlugin.gradle
-      - node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
     scandelete:
       - node_modules
-    gradleprops:
-      - reactNativeArchitectures=arm64-v8a
+    build:
+      - cd android
+      - LDFLAGS=-Wl,--build-id=none gradle assembleRelease -PreactNativeArchitectures=arm64-v8a
+    ndk: 27.1.12297006
+
+AllowedAPKSigningKeys: a2a5c53e76ebefe4c0c5b288904a813dc3d2a61e3802ac8066466167913ed69c
+
+MaintainerNotes: |-
+  Release 0.6 uses Node.js 24.22.0 (the upstream .node-version) and package-lock.json.
+  Bun is only used for upstream development checks, not release packaging.
+  Native prefix-map and signing-alignment fixes are included in the pinned commit.
+  Upstream omits v1/JAR signatures (minimum API 24) so signature copying also
+  works with Python 3.13; production v2/v3 signatures and fdroid publish verified.
+  See upstream docs/fdroid/REPRODUCIBILITY.md for build and signing verification.
+
+  Expo / React Native app after templates/build-react-native.yml. android/ is not
+  committed; `expo prebuild` generates it, so there is no subdir and gradle runs
+  from build:. package.json sets expo.autolinking.android.buildFromSource [".*"],
+  and init: deletes Expo's prebuilt local-maven-repo AARs to request source builds
+  of Expo native modules. React Native/Hermes artifacts and all scanner exceptions
+  still need F-Droid review. There is no expo-dev-client, expo-updates, Firebase or
+  Play Services. Release Gradle settings (R8, resource shrinking) come from
+  plugins/with-wave-remote.cjs during prebuild. scanignore retains the Linux
+  Hermes compiler (permitted by the inclusion policy) and local Maven declarations
+  in those three Gradle files; everything else
+  flagged under node_modules is deleted by scandelete (not the entire directory).
+
+  The app talks only to LG webOS TVs on the local network; nothing leaves the LAN.
+  usesCleartextTraffic is for the TV's SSDP device description, which webOS serves
+  over plain HTTP, and for TVs older than webOS 4, which only offer ws:// on port
+  3000. Newer TVs use TLS, with the certificate pinned at first pairing.
+  The LG-signed registration manifest in src/me/vwave/remote/Tv.java is
+  interoperability data the TV checks at pairing; see NOTICE.md upstream.
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: VERSION_CODE|(\d+)|VERSION|(.+)
-CurrentVersion: '0.5'
-CurrentVersionCode: 10011
+CurrentVersion: '0.6'
+CurrentVersionCode: 10012

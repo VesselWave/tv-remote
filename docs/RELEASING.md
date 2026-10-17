@@ -47,6 +47,18 @@ Set `RELEASE_KEYSTORE`, `RELEASE_KEY_ALIAS`, `WAVEREMOTE_STORE_PASSWORD`, and
 ./build.sh release
 ```
 
+The build uses the Node.js version in `.node-version` and invokes the installed
+Expo CLI directly. For release packaging, install dependencies with
+`npm ci --ignore-scripts --no-audit --no-fund`, as the F-Droid recipe does.
+Development dependency management and app tests use Bun. The CI checks and release
+packaging run in separate jobs; the packaging job does not install Bun.
+
+Release signing preserves ZIP alignment and disables legacy v1/JAR signatures.
+The minimum Android version is 7.0 (API 24), which supports the v2/v3 signatures.
+Removing unnecessary v1 entries also avoids Python 3.13 ZIP-flag changes during
+F-Droid signature copying. Use [the F-Droid verification script](../tools/verify-fdroid.sh)
+against each production release and independent rebuild before publication.
+
 The release path never creates or substitutes a signing key. Debug builds use a
 separate cached key. The package ID remains `me.vwave.remote`.
 
