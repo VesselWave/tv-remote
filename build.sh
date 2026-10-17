@@ -64,7 +64,9 @@ APK="dist/wave-remote-v$VERSION_NAME$suffix.apk"
 "$BT/zipalign" -c -P 16 4 "$UNSIGNED"
 # Keep Gradle's verified ZIP alignment: newer apksigner otherwise rewrites its
 # padding, preventing F-Droid's apksigcopier from reproducing the signed APK.
-"$BT/apksigner" sign --alignment-preserved --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
+# Android 7+ supports v2 signatures. Omit obsolete v1/JAR entries, whose ZIP flags
+# Python 3.13 rewrites during signature copying in current F-Droid tooling.
+"$BT/apksigner" sign --alignment-preserved --v1-signing-enabled false --ks "$KS" --ks-key-alias "$KEY_ALIAS" \
     --ks-pass env:WAVEREMOTE_STORE_PASSWORD --key-pass env:WAVEREMOTE_KEY_PASSWORD \
     --out "$APK" "$UNSIGNED"
 rm -f "$APK.idsig"
