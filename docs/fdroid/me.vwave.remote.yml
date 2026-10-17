@@ -11,10 +11,11 @@ AutoName: Wave Remote
 
 RepoType: git
 Repo: https://github.com/VesselWave/wave-remote.git
-Binaries: https://github.com/VesselWave/wave-remote/releases/download/v%v/wave-remote-v%v.apk
+Binaries: 
+  https://github.com/VesselWave/wave-remote/releases/download/v%v/wave-remote-v%v.apk
 
 Builds:
-  - versionName: '0.6.2'
+  - versionName: 0.6.2
     versionCode: 10014
     commit: b0304b25debf812bb9c0b47afaed659f084881fb
     sudo:
@@ -68,5 +69,5 @@ MaintainerNotes: |-
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 UpdateCheckData: VERSION_CODE|(\d+)|VERSION|(.+)
-CurrentVersion: '0.6.2'
+CurrentVersion: 0.6.2
 CurrentVersionCode: 10014
