@@ -1,9 +1,8 @@
 # Local webOS protocol
 
-These notes describe interoperability observations from the original research
-workspace. They are not an official LG specification. The implementation was tested
-on LG 65UT7570PUB / webOS 24 (firmware 33.31.75), using a Pixel 7.
-Other firmware and models have not been verified.
+Notes on the local protocol Wave Remote speaks, worked out against an LG 65UT7570PUB
+(webOS 24, firmware 33.31.75). This isn't an official LG specification, and other
+models and firmware may differ.
 
 ## Connection and pairing
 
@@ -56,8 +55,7 @@ The app advertises manufacturer ID **0x00C4**, with payload
 `phoneAddr[6] | 0x07 | 0x00 | tvBtMac[6]`, and service UUID
 `0000feba-0000-1000-8000-00805f9b34fb`. It advertises only; it does not scan.
 
-In the original hardware checks, Wake-on-LAN woke the TV in about four seconds,
-and BLE alone in about seven seconds. This is one tested setup, not a timing guarantee.
+On that TV, Wake-on-LAN wakes it in about four seconds and BLE alone in about seven.
 Both depend on TV standby settings and supported hardware.
 
 ## Standby detection
@@ -66,6 +64,3 @@ The tested TV may keep the control socket half-open and answer pings while going
 to standby. The power-state subscription reports `processing: "Request Power Off"`
 before reaching `state: "Suspend"`. Both signals are used, with WebSocket keep-alive
 and a silence timeout as a fallback.
-
-The automated tests cover the client against a synthetic mock, not a real TV.
-Physical BLE wake-up, touch sensitivity, and firmware compatibility require hardware checks.

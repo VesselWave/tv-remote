@@ -36,7 +36,7 @@ Tested with an LG 65UT7570PUB (webOS 24) and a Pixel 7. Other webOS TVs may work
 
 ## Building
 
-Needs Bun, JDK 17+, Python 3 and the Android SDK (platform 36, build-tools 36.0.0).
+Needs Bun, Node.js (the version in `.node-version`), JDK 17+, Python 3 and the Android SDK (platform 36, build-tools 36.0.0).
 
 ```sh
 bun install

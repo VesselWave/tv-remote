@@ -4,12 +4,9 @@ Wave Remote is an independent project by VesselWave. It is not affiliated with,
 sponsored by, or endorsed by LG Electronics. LG, LG ThinQ, and webOS are trademarks
 of their respective owners.
 
-The app and test tools were extracted from VesselWave's private `rea-stuff`
-research workspace, commit `2b50a50`. The Expo app (0.2) followed from the same
-workspace, commit `2dd8635`, which now includes this repository as a submodule. The local protocol was documented through
-interoperability research on ThinQ 5.2.12500. Public implementation notes are in
-[docs/PROTOCOL.md](docs/PROTOCOL.md). No ThinQ APK, decompiled application, or
-research dump is distributed here.
+The local protocol was worked out through interoperability research on LG ThinQ
+5.2.12500; implementation notes are in [docs/PROTOCOL.md](docs/PROTOCOL.md). No ThinQ
+APK, decompiled code or research material is distributed here.
 
 `Tv.Manifest` reproduces, field for field, the registration manifest ThinQ sends
 when it pairs with a TV: LG's app and vendor IDs, a list of permission names, and
@@ -29,7 +26,7 @@ on the JVM, is not bundled into the APK, and is licensed by its authors under
 [the JSON-java public domain notice](https://github.com/stleary/JSON-java/blob/20240303/LICENSE).
 Android supplies `org.json` at runtime.
 
-Since 0.2 the APK bundles open-source runtime libraries under their own licenses,
+The APK bundles open-source runtime libraries under their own licenses,
 including Expo, React Native and React (MIT), React Native Paper (MIT),
 `@expo/vector-icons` (MIT) with Material Design Icons by Pictogrammers (Apache-2.0),
 and their dependencies. `bun.lock` and `package-lock.json` list the exact versions.

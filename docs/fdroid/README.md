@@ -17,7 +17,7 @@ To check a release against an unsigned rebuild, for example F-Droid's
 `me.vwave.remote_<versionCode>.apk`:
 
 ```sh
-./tools/verify-fdroid.sh wave-remote-v0.6.apk me.vwave.remote_10012.apk \
+./tools/verify-fdroid.sh wave-remote-v0.6.1.apk me.vwave.remote_10013.apk \
   a2a5c53e76ebefe4c0c5b288904a813dc3d2a61e3802ac8066466167913ed69c
 ```
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1 — 2026-10-17
+
+- No changes to the app itself: a clearer store description and documentation.
+
 ## 0.6 — 2026-10-17
 
 - Reconnects on its own when the TV comes back, including when it was turned on with its own remote, while the app is open. A TV in standby doesn't make the remote flash "Connected".

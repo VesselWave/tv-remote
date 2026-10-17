@@ -1,0 +1,4 @@
+Same app as 0.6, with a clearer store description:
+- Reconnects automatically when a paired TV comes back while the app is open
+- Disconnected controls share one dimmed color, with power still lit
+- Touchpad hint text stays hidden behind the disconnected message
