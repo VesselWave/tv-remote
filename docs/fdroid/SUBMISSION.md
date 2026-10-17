@@ -70,6 +70,3 @@ support ws://. Modern TVs use TLS with a certificate pinned on first pairing; a 
 already paired over TLS cannot be downgraded to cleartext. Pairing keys stay local.
 The app depends on an LG TV's firmware, not an installed proprietary Android app
 or a vendor cloud endpoint.
-
-The release passed app/protocol tests. On a Pixel 7, the production APK installed over 0.5, kept the saved TV and showed the corrected disconnected screen. TV-facing behavior is unchanged from 0.5 and was not retested against a TV. Screenshots
-represent the existing connected UI; no new captures are claimed.

@@ -49,9 +49,6 @@ actual execution of the recipe's sudo provisioning. It was not run on F-Droid's
 hosted VM. The SDK was supplied from the host. Initial dependency/Gradle downloads
 started from empty caches; the final rebuild reused each side's own downloaded
 cache after the signing fix. Compiled outputs were not shared between builds.
-On a Pixel 7, the production APK installed over 0.5, kept the saved TV and showed the corrected disconnected screen. TV-facing behavior is unchanged from 0.5 and was not retested against a TV.
-Existing connected-state screenshots remain representative; they were not relabeled
-as new captures.
 
 ## Publication and review
 

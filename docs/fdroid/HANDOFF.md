@@ -29,9 +29,6 @@ for the app's API 24+ minimum. Do not reinstate the Python 3.12 workaround or
 patch copied APKs. `tools/verify-fdroid.sh` verifies the actual production signer,
 signatures, alignment and byte-identical signature copying.
 
-The user's latest build-tool instruction authorizes npm/Node for release/F-Droid
-packaging. Development dependency work and app tests continue to use Bun. Builds
-were authorized by "Fix till ready, don't stop". No agent delegation was used.
-On a Pixel 7, the production APK installed over 0.5, kept the saved TV and showed the corrected disconnected screen. TV-facing behavior is unchanged from 0.5 and was not retested against a TV.
-F-Droid's hosted pipeline and manual acceptance remain
+Release/F-Droid packaging uses npm/Node. Development dependency work and app tests
+continue to use Bun. F-Droid's hosted pipeline and manual acceptance remain
 external review steps; scanner and LG registration-data disclosures are prepared.
